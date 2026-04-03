@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>114.ae - 跨境服务</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            margin: 0; padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2a1b4a, #4c1d95, #7e22ce, #c026d3);
+            color: white;
+            font-family: system-ui, -apple-system, sans-serif;
+            overflow-y: auto;
+        }
+
+        .stars { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+        .star {
+            position: absolute; background: #fff; border-radius: 50%;
+            box-shadow: 0 0 8px #f0abfc; animation: twinkle 4s infinite alternate;
+        }
+        @keyframes twinkle { from { opacity: 0.4; } to { opacity: 1; } }
+
+        .marquee {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+            background: rgba(30,15,60,0.9); padding: 7px 0; overflow: hidden; font-size: 13.5px;
+        }
+        .marquee-content {
+            display: inline-block; animation: marquee 24s linear infinite;
+            font-weight: 700; letter-spacing: 2px; color: #e0bbff;
+        }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        .container { 
+            position: relative; z-index: 10; 
+            max-width: 380px; margin: 90px auto 40px; 
+            padding: 0 20px; text-align: center; 
+        }
+
+        .title { font-size: 32px; font-weight: 900; background: linear-gradient(to right, #c4b5fd, #f0abfc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 8px 0 6px; }
+        .subtitle { font-size: 15px; color: #d8b4fe; }
+
+        .glass {
+            background: rgba(255,255,255,0.14);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255,255,255,0.22);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .node-box {
+            background: rgba(255,255,255,0.12);
+            padding: 16px;
+            border-radius: 16px;
+            margin: 12px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .node-info { text-align: left; flex: 1; }
+        .node-name { font-size: 13px; color: #d8b4fe; }
+        .node-address { font-size: 17px; font-family: monospace; }
+
+        .import-btn {
+            background: rgba(255,255,255,0.25);
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 12px;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .import-btn:hover { background: rgba(255,255,255,0.35); }
+    </style>
+</head>
+<body>
+
+    <div class="stars" id="stars"></div>
+
+    <!-- 跑马灯 -->
+    <div class="marquee">
+        <div class="marquee-content">
+            阿弥陀佛！&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            人生就是江湖！&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          人生就是一场演绎,有就多吃一点,无就知足常乐！&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+
+    <!-- 音乐按钮 -->
+    <button onclick="toggleMusic()" id="music-btn"
+            style="position: fixed; top: 14px; left: 14px; z-index: 100; width: 48px; height: 48px; background: rgba(255,255,255,0.15); border: none; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+        <i class="fas fa-music"></i>
+    </button>
+
+    <div class="container">
+        <div style="margin-bottom: 24px;">
+            <div style="width: 64px; height: 64px; background: rgba(255,255,255,0.15); border-radius: 20px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center;">
+                <i class="fab fa-telegram-plane" style="font-size: 38px; color: #c4b5fd;"></i>
+            </div>
+            <h1 class="title">Telegram</h1>
+            <p class="subtitle">114.ae做跨境业务的电报代理</p>
+        </div>
+
+        <div class="glass">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 13px;">
+                <div>
+                    <div style="color: #c4b5fe;">STATUS</div>
+                    <div style="color: #4ade80; font-weight: bold;">● 在线</div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="color: #c4b5fe;">PROTOCOL</div>
+                    <div style="font-weight: bold;">SOCKS5</div>
+                </div>
+            </div>
+
+            <!-- 节点列表 -->
+            <div id="node-list"></div>
+        </div>
+
+        <!-- 底部按钮 -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <a href="https://t.me/at114ae" target="_blank" 
+               class="btn-secondary" style="text-align: center; text-decoration: none; color: white;">
+                TG交流群组
+            </a>
+            <a href="https://dy.114.ae/" target="_blank" 
+               class="btn-secondary" style="text-align: center; text-decoration: none; color: white;">
+                科学上网通道
+            </a>
+                <a href="https://www.114.cn/tv/iptv.m3u" target="_blank" 
+               class="btn-secondary" style="text-align: center; text-decoration: none; color: white;">
+                佛教电视台等24小时直播
+            </a>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" style="position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); color: white; padding: 12px 24px; border-radius: 9999px; font-size: 14px; display: none; z-index: 200;">
+        配置已复制到剪贴板
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="https://files.catbox.moe/n0zlan.ogg" type="audio/ogg">
+    </audio>
+
+    <script>
+        // 11个节点（你提供的全部）
+        let proxies = [
+            { name: "节点 1", server: "143.14.105.121", port: "5555", user: "hanbaocloud", pass: "hanbaocloud" },
+            { name: "节点 2", server: "47.254.240.76", port: "5555", user: "socks5", pass: "socks5" },
+            { name: "节点 3", server: "47.239.202.242", port: "6666", user: "6666", pass: "6666" },
+            { name: "节点 4", server: "43.100.106.246", port: "2222", user: "2222", pass: "2222" },
+            { name: "节点 5", server: "47.83.174.84", port: "6666", user: "6666", pass: "6666" },
+            { name: "节点 6", server: "47.83.186.60", port: "5555", user: "5555", pass: "5555" },
+            { name: "节点 7", server: "47.83.8.104", port: "6666", user: "6666", pass: "6666" },
+            { name: "节点 8", server: "43.100.106.218", port: "2222", user: "2222", pass: "2222" },
+            { name: "节点 9", server: "47.83.1.61", port: "5555", user: "5555", pass: "5555" },
+            { name: "节点 10", server: "47.83.174.84", port: "6666", user: "6666", pass: "6666" },
+            { name: "节点 11", server: "47.83.186.60", port: "5555", user: "5555", pass: "5555" }
+        ];
+
+        function renderNodes() {
+            const list = document.getElementById('node-list');
+            list.innerHTML = '';
+            proxies.forEach((p, i) => {
+                const div = document.createElement('div');
+                div.className = 'node-box';
+                div.innerHTML = `
+                    <div class="node-info">
+                        <div class="node-name">${p.name}</div>
+                        <div class="node-address">${p.server}:${p.port}</div>
+                    </div>
+                    <button class="import-btn" onclick="importProxy(${i}); event.stopImmediatePropagation();">
+                        📥 导入
+                    </button>
+                `;
+                div.onclick = () => copyConfig(p);
+                list.appendChild(div);
+            });
+        }
+
+        function importProxy(index) {
+            const p = proxies[index];
+            const tgLink = `tg://socks?server=${p.server}&port=${p.port}&user=${p.user}&pass=${p.pass}`;
+            window.location.href = tgLink;
+        }
+
+        function copyConfig(p) {
+            const config = `tg://socks?server=${p.server}&port=${p.port}&user=${p.user}&pass=${p.pass}`;
+            navigator.clipboard.writeText(config).then(() => {
+                const toast = document.getElementById('toast');
+                toast.style.display = 'block';
+                setTimeout(() => toast.style.display = 'none', 2000);
+            });
+        }
+
+        // 音乐控制
+        let isPlaying = true;
+        const music = document.getElementById('bg-music');
+
+        function toggleMusic() {
+            isPlaying = !isPlaying;
+            if (isPlaying) music.play().catch(() => {});
+            else music.pause();
+            document.getElementById('music-btn').innerHTML = isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-music"></i>';
+        }
+
+        function createStars() {
+            const container = document.getElementById('stars');
+            for (let i = 0; i < 110; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 3.2 + 1.3;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.animationDuration = (Math.random() * 4 + 2.5) + 's';
+                container.appendChild(star);
+            }
+        }
+
+        window.onload = () => {
+            createStars();
+            renderNodes();
+            music.volume = 0.42;
+            music.play().catch(() => {});
+        };
+    </script>
+</body>
+</html>
