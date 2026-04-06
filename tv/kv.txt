@@ -1,0 +1,7 @@
+在 Cloudflare Worker 的设置中，请确保你的 KV 命名空间绑定​ 如下：
+
+变量名称: CHANNELS(绑定到你的原 FOTV KV)
+
+变量名称: TV_CHANNELS(绑定到你刚创建的 TV KV)
+
+完成以上步骤后，保存并部署 Worker。现在你应该可以通过 /访问 FOTV 频道，通过 /tv访问新添加的 TV 频道了。
