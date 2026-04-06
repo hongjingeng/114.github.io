@@ -3,6 +3,7 @@
     "CCTV-1": {
       "name": "CCTV-1 综合",
       "logo": "https://epg.112114.xyz/logo/CCTV-1.png",
+      "group": "央视频道",
       "urls": [
         "http://111.56.90.5/000000000000/5000000004000002226/1.m3u8",
         "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv1hd",
@@ -12,9 +13,11 @@
         "http://74.91.26.218:82/live/cctv1hd.m3u8"
       ]
     },
+
     "CCTV-2": {
       "name": "CCTV-2 财经",
       "logo": "https://epg.112114.xyz/logo/CCTV-2.png",
+      "group": "央视频道",
       "urls": [
         "http://111.56.90.5/000000000000/1000000001000012442/1.m3u8",
         "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv2hd",
@@ -22,5 +25,19 @@
         "http://153.0.171.163:85/tsfile/live/0002_1.m3u8?key=txiptv&playlive=1&authid=0",
         "http://107.150.60.122/live/cctv2hd.m3u8",
         "http://74.91.26.218:82/live/cctv2hd.m3u8"
+      ]
+    },
+
+    "湖南卫视": {
+      "name": "湖南卫视",
+      "logo": "https://epg.112114.xyz/logo/湖南卫视.png",
+      "group": "卫视频道",
+      "urls": [
+        "http://111.56.90.5/000000000000/1000000005000265024/1.m3u8",
+        "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=hnwshd",
+        "http://61.184.46.85:85/tsfile/live/1002_1.m3u8?key=txiptv&playlive=1&authid=0",
+        "http://153.0.171.163:85/tsfile/live/0128_1.m3u8?key=txiptv&playlive=1&authid=0",
+        "http://107.150.60.122/live/hnwshd.m3u8",
+        "http://74.91.26.218:82/live/hnwshd.m3u8"
       ]
     },
