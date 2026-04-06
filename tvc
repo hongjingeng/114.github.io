@@ -1,43 +1,495 @@
 {
   "tv": {
-    "CCTV-1": {
-      "name": "CCTV-1 综合",
-      "logo": "https://epg.112114.xyz/logo/CCTV-1.png",
-      "group": "央视频道",
+    "纬来体育HD": {
+      "name": "纬来体育HD",
+      "logo": "https://epg.112114.xyz/logo/纬来体育HD.png",
+      "group": "[三网]港澳台直播",
       "urls": [
-        "http://111.56.90.5/000000000000/5000000004000002226/1.m3u8",
-        "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv1hd",
-        "http://47.92.252.72:3566/608807420",
-        "http://153.0.171.163:85/tsfile/live/0001_1.m3u8?key=txiptv&playlive=1&authid=0",
-        "http://107.150.60.122/live/cctv1hd.m3u8",
-        "http://74.91.26.218:82/live/cctv1hd.m3u8"
+        "https://hls.livelivelive.space/stream/39480955.m3u8",
+        "https://live12.xiazhix1.top/live/39480955.m3u8"
       ]
     },
-
-    "CCTV-2": {
-      "name": "CCTV-2 财经",
-      "logo": "https://epg.112114.xyz/logo/CCTV-2.png",
-      "group": "央视频道",
+    "EZTV1": {
+      "name": "EZTV1",
+      "logo": "https://epg.112114.xyz/logo/EZTV1.png",
+      "group": "[三网]港澳台直播",
       "urls": [
-        "http://111.56.90.5/000000000000/1000000001000012442/1.m3u8",
-        "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv2hd",
-        "http://47.92.252.72:3566/631780532",
-        "http://153.0.171.163:85/tsfile/live/0002_1.m3u8?key=txiptv&playlive=1&authid=0",
-        "http://107.150.60.122/live/cctv2hd.m3u8",
-        "http://74.91.26.218:82/live/cctv2hd.m3u8"
+        "http://oh.eztv.vip/live/eztv1.m3u8"
       ]
     },
-
-    "湖南卫视": {
-      "name": "湖南卫视",
-      "logo": "https://epg.112114.xyz/logo/湖南卫视.png",
-      "group": "卫视频道",
+    "香港卫视": {
+      "name": "香港卫视",
+      "logo": "https://epg.112114.xyz/logo/香港卫视.png",
+      "group": "[三网]港澳台直播",
       "urls": [
-        "http://111.56.90.5/000000000000/1000000005000265024/1.m3u8",
-        "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=hnwshd",
-        "http://61.184.46.85:85/tsfile/live/1002_1.m3u8?key=txiptv&playlive=1&authid=0",
-        "http://153.0.171.163:85/tsfile/live/0128_1.m3u8?key=txiptv&playlive=1&authid=0",
-        "http://107.150.60.122/live/hnwshd.m3u8",
-        "http://74.91.26.218:82/live/hnwshd.m3u8"
+        "https://hkstv.tv/api/m3u8-proxy?url=http%3A%2F%2Fwebcast.hkstv.tv%2Flivestream%2Fmutfysrq%2Fplaylist.m3u8"
       ]
     },
+    "环球电视台": {
+      "name": "环球电视台",
+      "logo": "https://epg.112114.xyz/logo/环球电视台.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://utv1.hqtvzb.com:9999/hls/world.m3u8"
+      ]
+    },
+    "亚洲卫视": {
+      "name": "亚洲卫视",
+      "logo": "https://epg.112114.xyz/logo/亚洲卫视.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "https://p2hs.vzan.com/slowlive/821481626725612420/live.m3u8"
+      ]
+    },
+    "凤凰卫视中文": {
+      "name": "凤凰卫视中文",
+      "logo": "https://epg.112114.xyz/logo/凤凰卫视中文.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://cdn6.163189.xyz/163189/fhzx"
+      ]
+    },
+    "TntSports1": {
+      "name": "TntSports1",
+      "logo": "https://epg.112114.xyz/logo/TntSports1.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=3"
+      ]
+    },
+    "智林體育": {
+      "name": "智林體育",
+      "logo": "https://epg.112114.xyz/logo/智林體育.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=5"
+      ]
+    },
+    "JSPORTS1": {
+      "name": "JSPORTS1",
+      "logo": "https://epg.112114.xyz/logo/JSPORTS1.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=6"
+      ]
+    },
+    "SkyTennis+": {
+      "name": "SkyTennis+",
+      "logo": "https://epg.112114.xyz/logo/SkyTennis+.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=62"
+      ]
+    },
+    "鳳凰中文": {
+      "name": "鳳凰中文",
+      "logo": "https://epg.112114.xyz/logo/鳳凰中文.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=27"
+      ]
+    },
+    "TVB黃金華劇": {
+      "name": "TVB黃金華劇",
+      "logo": "https://epg.112114.xyz/logo/TVB黃金華劇.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=34"
+      ]
+    },
+    "TVB翡翠(馬來)": {
+      "name": "TVB翡翠(馬來)",
+      "logo": "https://epg.112114.xyz/logo/TVB翡翠(馬來).png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=28"
+      ]
+    },
+    "TVB明珠": {
+      "name": "TVB明珠",
+      "logo": "https://epg.112114.xyz/logo/TVB明珠.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=29"
+      ]
+    },
+    "TVBJ1": {
+      "name": "TVBJ1",
+      "logo": "https://epg.112114.xyz/logo/TVBJ1.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=26"
+      ]
+    },
+    "TVB1": {
+      "name": "TVB1",
+      "logo": "https://epg.112114.xyz/logo/TVB1.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=25"
+      ]
+    },
+    "千禧經典": {
+      "name": "千禧經典",
+      "logo": "https://epg.112114.xyz/logo/千禧經典.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=22"
+      ]
+    },
+    "HOY77": {
+      "name": "HOY77",
+      "logo": "https://epg.112114.xyz/logo/HOY77.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=35"
+      ]
+    },
+    "TVB-獎門人": {
+      "name": "TVB-獎門人",
+      "logo": "https://epg.112114.xyz/logo/TVB-獎門人.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=31"
+      ]
+    },
+    "TVB-金曲": {
+      "name": "TVB-金曲",
+      "logo": "https://epg.112114.xyz/logo/TVB-金曲.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=57"
+      ]
+    },
+    "RTHK31": {
+      "name": "RTHK31",
+      "logo": "https://epg.112114.xyz/logo/RTHK31.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=23"
+      ]
+    },
+    "TVB娛樂新聞": {
+      "name": "TVB娛樂新聞",
+      "logo": "https://epg.112114.xyz/logo/TVB娛樂新聞.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=36"
+      ]
+    },
+    "MYTV黃金翡翠": {
+      "name": "MYTV黃金翡翠",
+      "logo": "https://epg.112114.xyz/logo/MYTV黃金翡翠.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=32"
+      ]
+    },
+    "TVB翡翠劇集": {
+      "name": "TVB翡翠劇集",
+      "logo": "https://epg.112114.xyz/logo/TVB翡翠劇集.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=33"
+      ]
+    },
+    "澳視澳門": {
+      "name": "澳視澳門",
+      "logo": "https://epg.112114.xyz/logo/澳視澳門.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=41"
+      ]
+    },
+    "中國電影": {
+      "name": "中國電影",
+      "logo": "https://epg.112114.xyz/logo/中國電影.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=61"
+      ]
+    },
+    "TVBS新聞": {
+      "name": "TVBS新聞",
+      "logo": "https://epg.112114.xyz/logo/TVBS新聞.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=43"
+      ]
+    },
+    "民視": {
+      "name": "民視",
+      "logo": "https://epg.112114.xyz/logo/民視.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=55"
+      ]
+    },
+    "愛奇藝": {
+      "name": "愛奇藝",
+      "logo": "https://epg.112114.xyz/logo/愛奇藝.png",
+      "group": "[三网]港澳台直播",
+      "urls": []
+    },
+    "靖洋戲劇": {
+      "name": "靖洋戲劇",
+      "logo": "https://epg.112114.xyz/logo/靖洋戲劇.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=42"
+      ]
+    },
+    "靖天電影": {
+      "name": "靖天電影",
+      "logo": "https://epg.112114.xyz/logo/靖天電影.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=56"
+      ]
+    },
+    "龍華電影": {
+      "name": "龍華電影",
+      "logo": "https://epg.112114.xyz/logo/龍華電影.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=45"
+      ]
+    },
+    "龍華洋片": {
+      "name": "龍華洋片",
+      "logo": "https://epg.112114.xyz/logo/龍華洋片.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=60"
+      ]
+    },
+    "風雲恐怖電影": {
+      "name": "風雲恐怖電影",
+      "logo": "https://epg.112114.xyz/logo/風雲恐怖電影.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=59"
+      ]
+    },
+    "ROCK_Action": {
+      "name": "ROCK_Action",
+      "logo": "https://epg.112114.xyz/logo/ROCK_Action.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=50"
+      ]
+    },
+    "梦工场动漫": {
+      "name": "梦工场动漫",
+      "logo": "https://epg.112114.xyz/logo/梦工场动漫.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=40"
+      ]
+    },
+    "Duck TV兒童卡通": {
+      "name": "Duck TV兒童卡通",
+      "logo": "https://epg.112114.xyz/logo/Duck TV兒童卡通.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=39"
+      ]
+    },
+    "MOMO親子": {
+      "name": "MOMO親子",
+      "logo": "https://epg.112114.xyz/logo/MOMO親子.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=49"
+      ]
+    },
+    "金光布袋戲": {
+      "name": "金光布袋戲",
+      "logo": "https://epg.112114.xyz/logo/金光布袋戲.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=38"
+      ]
+    },
+    "民視綜藝": {
+      "name": "民視綜藝",
+      "logo": "https://epg.112114.xyz/logo/民視綜藝.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=46"
+      ]
+    },
+    "民視影劇": {
+      "name": "民視影劇",
+      "logo": "https://epg.112114.xyz/logo/民視影劇.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=53"
+      ]
+    },
+    "TVBS精采": {
+      "name": "TVBS精采",
+      "logo": "https://epg.112114.xyz/logo/TVBS精采.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=47"
+      ]
+    },
+    "臺視綜合": {
+      "name": "臺視綜合",
+      "logo": "https://epg.112114.xyz/logo/臺視綜合.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=51"
+      ]
+    },
+    "東森綜合2": {
+      "name": "東森綜合2",
+      "logo": "https://epg.112114.xyz/logo/東森綜合2.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=58"
+      ]
+    },
+    "韓流美食料理秀": {
+      "name": "韓流美食料理秀",
+      "logo": "https://epg.112114.xyz/logo/韓流美食料理秀.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=63"
+      ]
+    },
+    "娛樂百分百": {
+      "name": "娛樂百分百",
+      "logo": "https://epg.112114.xyz/logo/娛樂百分百.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=64"
+      ]
+    },
+    "綜藝大贏家": {
+      "name": "綜藝大贏家",
+      "logo": "https://epg.112114.xyz/logo/綜藝大贏家.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://iptv.4666888.xyz/iptv2A.php?id=65"
+      ]
+    },
+    "TVB plus": {
+      "name": "TVB plus",
+      "logo": "https://epg.112114.xyz/logo/TVB plus.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "https://o11.163189.xyz/stream/tvb/tvbp/"
+      ]
+    },
+    "TVB星河": {
+      "name": "TVB星河",
+      "logo": "https://epg.112114.xyz/logo/TVB星河.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://r.jdshipin.com/Voac4"
+      ]
+    },
+    "ViuTV": {
+      "name": "ViuTV",
+      "logo": "https://epg.112114.xyz/logo/ViuTV.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "https://163189/viu"
+      ]
+    },
+    "RHK32": {
+      "name": "RHK32",
+      "logo": "https://epg.112114.xyz/logo/RHK32.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://163189/rthk32"
+      ]
+    },
+    "华视": {
+      "name": "华视",
+      "logo": "https://epg.112114.xyz/logo/华视.png",
+      "group": "[三网]港澳台直播",
+      "urls": []
+    },
+    "中视": {
+      "name": "中视",
+      "logo": "https://epg.112114.xyz/logo/中视.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://:82/live/ctv.m3u8"
+      ]
+    },
+    "公视": {
+      "name": "公视",
+      "logo": "https://epg.112114.xyz/logo/公视.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://:82/live/pts.m3u8"
+      ]
+    },
+    "台视": {
+      "name": "台视",
+      "logo": "https://epg.112114.xyz/logo/台视.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "http://:82/live/ttv.m3u8"
+      ]
+    },
+    "Now新闻": {
+      "name": "Now新闻",
+      "logo": "https://epg.112114.xyz/logo/Now新闻.png",
+      "group": "[三网]港澳台直播",
+      "urls": []
+    },
+    "TVB星河 (备用)": {
+      "name": "TVB星河 (备用)",
+      "logo": "https://epg.112114.xyz/logo/TVB星河.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "https://o11.163189.xyz/stream/live/tvbxh/"
+      ]
+    },
+    "TVB明珠 (备用)": {
+      "name": "TVB明珠 (备用)",
+      "logo": "https://epg.112114.xyz/logo/TVB明珠.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "https://mytv.cdn.loc.cc/o12.php?id=mzt"
+      ]
+    },
+    "TVB Plus (备用)": {
+      "name": "TVB Plus (备用)",
+      "logo": "https://epg.112114.xyz/logo/TVB Plus.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "https://o11.163189.xyz/stream/tvb/tvbp/"
+      ]
+    },
+    "千禧经典台 (备用)": {
+      "name": "千禧经典台 (备用)",
+      "logo": "https://epg.112114.xyz/logo/千禧经典台.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "https://o11.163189.xyz/stream/live/tvbc/"
+      ]
+    },
+    "翡翠台 (备用)": {
+      "name": "翡翠台 (备用)",
+      "logo": "https://epg.112114.xyz/logo/翡翠台.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "https://o11.163189.xyz/stream/tvb/fct4k/"
+      ]
+    },
+    "华丽翡翠台": {
+      "name": "华丽翡翠台",
+      "logo": "https://epg.112114.xyz/logo/华丽翡翠台.png",
+      "group": "[三网]港澳台直播",
+      "urls": [
+        "https://o11.163189.xyz/stream/live/hlt/"
+      ]
+    }
+  }
+}
