@@ -1,0 +1,956 @@
+{
+  "cctv1": {
+    "name": "CCTV-1 综合",
+    "logo": "https://epg.112114.xyz/logo/CCTV1.png",
+    "group": "央视频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/6000000001000029752/1.m3u8",
+      "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv1hd",
+      "http://107.150.60.122/live/cctv1hd.m3u8",
+      "http://74.91.26.218:82/live/cctv1hd.m3u8",
+      "http://https://tv.cctv.com/live/cctv1/"
+    ]
+  },
+  "cctv2": {
+    "name": "CCTV-2 财经",
+    "logo": "https://epg.112114.xyz/logo/CCTV2.png",
+    "group": "央视频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000001000012442/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000023315/1.m3u8",
+      "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv2hd",
+      "http://107.150.60.122/live/cctv2hd.m3u8",
+      "http://38.75.136.137:98/gslb/dsdqbv/cctv2hd.m3u8?auth=test20251009",
+      "https://tv.cctv.com/live/cctv2/"
+    ]
+  },
+  "cctv3": {
+    "name": "CCTV-3 综艺",
+    "logo": "https://epg.112114.xyz/logo/CCTV3.png",
+    "group": "央视频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/6000000001000022313/1.m3u8",
+      "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv3hd",
+      "http://107.150.60.122/live/cctv3hd.m3u8",
+      "http://38.75.136.137:98/gslb/dsdqbv/cctv3hd.m3u8?auth=test20251009",
+      "https://tv.cctv.com/live/cctv3/"
+    ]
+  },
+  "cctv4": {
+    "name": "CCTV-4 中文国际",
+    "logo": "https://epg.112114.xyz/logo/CCTV4.png",
+    "group": "央视频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/5000000011000031102/1.m3u8",
+      "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv4hd",
+      "http://107.150.60.122/live/cctv4hd.m3u8",
+      "https://tv.cctv.com/live/cctv4/",
+      "https://www.youtube.com/watch?v=TsccmbyNk6g"
+    ]
+  },
+  "cctv5": {
+    "name": "CCTV-5 体育",
+    "logo": "https://epg.112114.xyz/logo/CCTV5.png",
+    "group": "央视频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000001000004794/1.m3u8",
+      "http://111.56.90.5/000000000000/6000000001000016431/1.m3u8",
+      "http://111.56.90.5/000000000000/6000000001000001710/1.m3u8",
+      "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv5hd",
+      "https://tv.cctv.com/live/cctv5/",
+      "http://107.150.60.122/live/cctv5hd.m3u8"
+    ]
+  },
+  "cctv5_plus": {
+    "name": "CCTV-5+ 体育赛事",
+    "logo": "https://epg.112114.xyz/logo/CCTV5PLUS.png",
+    "group": "央视频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/6000000001000015875/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000020505/1.m3u8",
+      "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv5p",
+      "https://tv.cctv.com/live/cctv5plus/",
+      "http://107.150.60.122/live/cctv5p.m3u8"
+    ]
+  },
+  "cctv6": {
+    "name": "CCTV-6 电影",
+    "logo": "https://epg.112114.xyz/logo/CCTV6.png",
+    "group": "央视频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/6000000001000004574/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000001737/1.m3u8",
+      "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv6hd",
+      "http://107.150.60.122/live/cctv6hd.m3u8",
+      "https://tv.cctv.com/live/cctv6/",
+      "http://38.75.136.137:98/gslb/dsdqbv/cctv6hd.m3u8?auth=test20251009"
+    ]
+  },
+  "cctv7": {
+    "name": "CCTV-7 国防军事",
+    "logo": "https://epg.112114.xyz/logo/CCTV7.png",
+    "group": "央视频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000001000024341/1.m3u8",
+      "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv7hd",
+      "http://107.150.60.122/live/cctv7hd.m3u8",
+      "https://tv.cctv.com/live/cctv7/",
+      "http://38.75.136.137:98/gslb/dsdqbv/cctv7hd.m3u8?auth=test20251009"
+    ]
+  },
+  "cctv8": {
+    "name": "CCTV-8 电视剧",
+    "logo": "https://epg.112114.xyz/logo/CCTV8.png",
+    "group": "央视频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/6000000001000001070/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000003736/1.m3u8",
+      "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv8hd",
+      "http://107.150.60.122/live/cctv8hd.m3u8d",
+      "https://tv.cctv.com/live/cctv8/",
+      "http://153.0.171.163:85/tsfile/live/1007_1.m3u8?key=txiptv&playlive=1&authid=0"
+    ]
+  },
+  "cctv9": {
+    "name": "CCTV-9 纪录",
+    "logo": "https://epg.112114.xyz/logo/CCTV9.png",
+    "group": "央视频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000001000014583/1.m3u8",
+      "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv9hd",
+      "http://107.150.60.122/live/cctv9hd.m3u8",
+      "http://153.0.171.163:85/tsfile/live/1008_1.m3u8?key=txiptv&playlive=1&authid=0",
+      "http://74.91.26.218:82/live/cctv9hd.m3u8",
+      "http://38.75.136.137:98/gslb/dsdqbv/cctv9hd.m3u8?auth=test20251009",
+      "https://tv.cctv.com/live/cctv9/",
+      "http://47.92.252.72:3566/673168140"
+    ]
+  },
+  "cctv10": {
+    "name": "CCTV-10 科教",
+    "logo": "https://epg.112114.xyz/logo/CCTV10.png",
+    "group": "央视频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/5000000004000012827/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000023734/1.m3u8",
+      "http://107.150.60.122/live/cctv10hd.m3u8",
+      "https://tv.cctv.com/live/cctv10/",
+      "http://74.91.26.218:82/live/cctv10hd.m3u8",
+      "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv10hd"
+    ]
+  },
+  "cctv11": {
+    "name": "CCTV-11 戏曲",
+    "logo": "https://epg.112114.xyz/logo/CCTV11.png",
+    "group": "央视频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/5000000011000031106/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000002000019789/1.m3u8",
+      "http://107.150.60.122/live/cctv11hd.m3u8",
+      "http://74.91.26.218:82/live/cctv11hd.m3u8",
+      "http://38.75.136.137:98/gslb/dsdqbv/cctv11hd.m3u8?auth=test20251009",
+      "http://153.0.171.163:85/tsfile/live/1010_1.m3u8?key=txiptv&playlive=1&authid=0",
+      "https://tv.cctv.com/live/cctv11/",
+      "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv11hd"
+    ]
+  },
+  "cctv12": {
+    "name": "CCTV-12 社会与法",
+    "logo": "https://epg.112114.xyz/logo/CCTV12.png",
+    "group": "央视频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000001000032494/1.m3u8",
+      "http://63.141.230.178:82/gslb/zbdq5.m3u8?id=cctv12hd",
+      "http://47.92.252.72:3566/673168185",
+      "http://107.150.60.122/live/cctv12hd.m3u8",
+      "http://74.91.26.218:82/live/cctv12hd.m3u8",
+      "https://tv.cctv.com/live/cctv12/"
+    ]
+  },
+  "cctv13": {
+    "name": "CCTV-13 新闻",
+    "logo": "https://epg.112114.xyz/logo/CCTV13.png",
+    "group": "央视频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000264014/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000018594/1.m3u8",
+      "http://111.56.90.5/000000000000/6000000001000021677/1.m3u8"
+    ]
+  },
+  "cctv14": {
+    "name": "CCTV-14 少儿",
+    "logo": "https://epg.112114.xyz/logo/CCTV14.png",
+    "group": "央视频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000264015/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000014160/1.m3u8",
+      "http://111.56.90.5/000000000000/6000000001000020413/1.m3u8"
+    ]
+  },
+  "cctv15": {
+    "name": "CCTV-15 音乐",
+    "logo": "https://epg.112114.xyz/logo/CCTV15.png",
+    "group": "央视频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000264016/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000013918/1.m3u8",
+      "http://111.56.90.5/000000000000/6000000001000030513/1.m3u8"
+    ]
+  },
+  "cctv16": {
+    "name": "CCTV-16 奥林匹克",
+    "logo": "https://epg.112114.xyz/logo/CCTV16.png",
+    "group": "央视频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000264017/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000018817/1.m3u8",
+      "http://111.56.90.5/000000000000/6000000001000001712/1.m3u8"
+    ]
+  },
+  "cctv17": {
+    "name": "CCTV-17 农业农村",
+    "logo": "https://epg.112114.xyz/logo/CCTV17.png",
+    "group": "央视频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000264018/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000020492/1.m3u8"
+    ]
+  },
+  "hunan_ws": {
+    "name": "湖南卫视",
+    "logo": "https://epg.112114.xyz/logo/湖南卫视.png",
+    "group": "省级卫视",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000265019/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000014766/1.m3u8",
+      "http://111.56.90.5/000000000000/6000000001000002078/1.m3u8",
+      "http://111.23.51.52/live/340001.m3u8",
+      "http://111.23.51.52/live/340002.m3u8",
+      "http://223.111.144.15/ott.is.ovp.bigtv.com.cn/3/1/1.m3u8"
+    ]
+  },
+  "zhejiang_ws": {
+    "name": "浙江卫视",
+    "logo": "https://epg.112114.xyz/logo/浙江卫视.png",
+    "group": "省级卫视",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000265017/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000016335/1.m3u8",
+      "http://111.56.90.5/000000000000/6000000001000024466/1.m3u8",
+      "http://111.12.162.22/live/340001.m3u8",
+      "http://111.12.162.22/live/340002.m3u8",
+      "http://223.111.144.15/ott.is.ovp.bigtv.com.cn/2/1/1.m3u8"
+    ]
+  },
+  "jiangsu_ws": {
+    "name": "江苏卫视",
+    "logo": "https://epg.112114.xyz/logo/江苏卫视.png",
+    "group": "省级卫视",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000265020/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000014163/1.m3u8",
+      "http://111.56.90.5/000000000000/6000000001000018512/1.m3u8",
+      "http://111.41.229.135/live/340001.m3u8",
+      "http://111.41.229.135/live/340002.m3u8",
+      "http://223.111.144.15/ott.is.ovp.bigtv.com.cn/1/1/1.m3u8"
+    ]
+  },
+  "dongfang_ws": {
+    "name": "东方卫视",
+    "logo": "https://epg.112114.xyz/logo/东方卫视.png",
+    "group": "省级卫视",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000265018/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000018596/1.m3u8",
+      "http://111.56.90.5/000000000000/6000000001000021678/1.m3u8",
+      "http://117.135.151.45/live/340001.m3u8",
+      "http://117.135.151.45/live/340002.m3u8"
+    ]
+  },
+  "beijing_ws": {
+    "name": "北京卫视",
+    "logo": "https://epg.112114.xyz/logo/北京卫视.png",
+    "group": "省级卫视",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000265027/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000017156/1.m3u8",
+      "http://111.56.90.5/000000000000/6000000001000020451/1.m3u8",
+      "http://117.132.60.40/live/340001.m3u8",
+      "http://117.132.60.40/live/340002.m3u8",
+      "http://223.111.144.15/ott.is.ovp.bigtv.com.cn/4/1/1.m3u8"
+    ]
+  },
+  "anhui_ws": {
+    "name": "安徽卫视",
+    "logo": "https://epg.112114.xyz/logo/安徽卫视.png",
+    "group": "省级卫视",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000265021/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000020499/1.m3u8",
+      "http://111.56.90.5/000000000000/6000000001000010325/1.m3u8",
+      "http://120.209.141.44/live/340001.m3u8"
+    ]
+  },
+  "shandong_ws": {
+    "name": "山东卫视",
+    "logo": "https://epg.112114.xyz/logo/山东卫视.png",
+    "group": "省级卫视",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000265022/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000024343/1.m3u8",
+      "http://111.17.200.41/live/340001.m3u8"
+    ]
+  },
+  "guangdong_ws": {
+    "name": "广东卫视",
+    "logo": "https://epg.112114.xyz/logo/广东卫视.png",
+    "group": "省级卫视",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000265024/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000013919/1.m3u8",
+      "http://183.59.161.42/live/340001.m3u8"
+    ]
+  },
+  "shenzhen_ws": {
+    "name": "深圳卫视",
+    "logo": "https://epg.112114.xyz/logo/深圳卫视.png",
+    "group": "省级卫视",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000265034/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000017155/1.m3u8",
+      "http://223.111.144.15/ott.is.ovp.bigtv.com.cn/34/1/1.m3u8"
+    ]
+  },
+  "chc_movie_hd": {
+    "name": "CHC影迷电影",
+    "logo": "https://epg.112114.xyz/logo/CHC影迷电影.png",
+    "group": "电影纪录",
+    "urls": [
+      "http://111.56.90.5/000000000000/5000000004000025178/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000011504/1.m3u8",
+      "http://111.23.51.52/live/340003.m3u8",
+      "http://111.41.229.135/live/340005.m3u8",
+      "http://183.59.161.42/live/340004.m3u8"
+    ]
+  },
+  "chc_action_hd": {
+    "name": "CHC动作电影",
+    "logo": "https://epg.112114.xyz/logo/CHC动作电影.png",
+    "group": "电影纪录",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000266005/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000011400/1.m3u8",
+      "http://111.31.39.22/live/340003.m3u8",
+      "http://111.17.200.41/live/340002.m3u8",
+      "http://117.132.60.40/live/340003.m3u8"
+    ]
+  },
+  "chc_family_hd": {
+    "name": "CHC家庭影院",
+    "logo": "https://epg.112114.xyz/logo/CHC家庭影院.png",
+    "group": "电影纪录",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000266006/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000024420/1.m3u8",
+      "http://111.63.113.43/live/340003.m3u8",
+      "http://111.6.172.43/live/340003.m3u8"
+    ]
+  },
+  "qiusuo_documentary": {
+    "name": "求索纪录",
+    "logo": "https://epg.112114.xyz/logo/求索纪录.png",
+    "group": "电影纪录",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000266014/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000009419/1.m3u8",
+      "http://111.47.199.141/live/340003.m3u8",
+      "http://111.75.143.141/live/340003.m3u8"
+    ]
+  },
+  "guangdong_zhujiang": {
+    "name": "广东珠江",
+    "logo": "https://epg.112114.xyz/logo/广东珠江.png",
+    "group": "地方频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000266020/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000020509/1.m3u8",
+      "http://183.59.161.42/live/340005.m3u8"
+    ]
+  },
+  "hunan_dushi": {
+    "name": "湖南都市",
+    "logo": "https://epg.112114.xyz/logo/湖南都市.png",
+    "group": "地方频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000266019/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000020510/1.m3u8",
+      "http://111.23.51.52/live/340005.m3u8"
+    ]
+  },
+  "henan_minsheng": {
+    "name": "河南民生",
+    "logo": "https://epg.112114.xyz/logo/河南民生.png",
+    "group": "地方频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000266021/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000020508/1.m3u8",
+      "http://111.6.172.43/live/340005.m3u8"
+    ]
+  },
+  "jiangsu_chengshi": {
+    "name": "江苏城市",
+    "logo": "https://epg.112114.xyz/logo/江苏城市.png",
+    "group": "地方频道",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000266018/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000020507/1.m3u8",
+      "http://111.41.229.135/live/340006.m3u8"
+    ]
+  },
+  "jay_chou_vod": {
+    "name": "周杰伦点播",
+    "logo": "https://epg.112114.xyz/logo/周杰伦.png",
+    "group": "音乐点播",
+    "urls": [
+      "https://txmov2.a.kwimgs.com/bs3/video-hls/5202783592042307185_hlsb.m3u8",
+      "https://txmov2.a.kwimgs.com/bs3/video-hls/5202783592042307186_hlsb.m3u8"
+    ]
+  },
+  "vietnam_drum_vod": {
+    "name": "越南鼓/DJ舞曲",
+    "logo": "https://epg.112114.xyz/logo/越南鼓.png",
+    "group": "音乐点播",
+    "urls": [
+      "https://txmov2.a.kwimgs.com/bs3/video-hls/5199968844019002757_hlsb.m3u8",
+      "https://txmov2.a.kwimgs.com/bs3/video-hls/5253167611834026799_hlsb.m3u8",
+      "https://txmov2.a.kwimgs.com/bs3/video-hls/5216295532296181792_hlsb.m3u8"
+    ]
+  },
+  "jiajia_shaoer": {
+    "name": "嘉佳少儿",
+    "logo": "https://epg.112114.xyz/logo/嘉佳少儿.png",
+    "group": "少儿卡通",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000265053/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000020485/1.m3u8"
+    ]
+  },
+  "youman_katong": {
+    "name": "优漫卡通",
+    "logo": "https://epg.112114.xyz/logo/优漫卡通.png",
+    "group": "少儿卡通",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000265052/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000020484/1.m3u8"
+    ]
+  },
+  "dongfang_shishang": {
+    "name": "东方时尚",
+    "logo": "https://epg.112114.xyz/logo/东方时尚.png",
+    "group": "时尚生活",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000266011/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000020504/1.m3u8"
+    ]
+  },
+  "si_tv_huanqiu": {
+    "name": "SiTV欢球精选",
+    "logo": "https://epg.112114.xyz/logo/SiTV.png",
+    "group": "精品点播",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000266017/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000020501/1.m3u8",
+      "http://111.40.196.43/live/340002.m3u8"
+    ]
+  },
+  "dongfang_movie_vod": {
+    "name": "东方电影点播",
+    "logo": "https://epg.112114.xyz/logo/东方电影.png",
+    "group": "精品点播",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000266023/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000024422/1.m3u8"
+    ]
+  },
+  "classic_theatre": {
+    "name": "经典剧场",
+    "logo": "https://epg.112114.xyz/logo/经典剧场.png",
+    "group": "精品点播",
+    "urls": [
+      "http://111.56.90.5/000000000000/1000000005000266016/1.m3u8",
+      "http://111.56.90.5/000000000000/1000000001000024421/1.m3u8"
+    ]
+  },
+  "wlty_hd_1": {
+    "name": "纬来体育HD",
+    "logo": "https://epg.112114.xyz/logo/纬来体育HD.png",
+    "group": "体育频道",
+    "urls": [
+      "https://hls.livelivelive.space/stream/39480955.m3u8"
+    ]
+  },
+  "wlty_hd_2": {
+    "name": "纬来体育HD",
+    "logo": "https://epg.112114.xyz/logo/纬来体育HD.png",
+    "group": "体育频道",
+    "urls": [
+      "https://live12.xiazhix1.top/live/39480955.m3u8"
+    ]
+  },
+  "eztv1": {
+    "name": "EZTV1",
+    "logo": "https://epg.112114.xyz/logo/EZTV1.png",
+    "group": "综合频道",
+    "urls": [
+      "http://oh.eztv.vip/live/eztv1.m3u8"
+    ]
+  },
+  "hkstv": {
+    "name": "香港卫视",
+    "logo": "https://epg.112114.xyz/logo/香港卫视.png",
+    "group": "港澳台",
+    "urls": [
+      "https://hkstv.tv/api/m3u8-proxy?url=http%3A%2F%2Fwebcast.hkstv.tv%2Flivestream%2Fmutfysrq%2Fplaylist.m3u8"
+    ]
+  },
+  "hqtv": {
+    "name": "环球电视台",
+    "logo": "https://epg.112114.xyz/logo/环球电视台.png",
+    "group": "海外频道",
+    "urls": [
+      "http://utv1.hqtvzb.com:9999/hls/world.m3u8"
+    ]
+  },
+  "yzws": {
+    "name": "亚洲卫视",
+    "logo": "https://epg.112114.xyz/logo/亚洲卫视.png",
+    "group": "港澳台",
+    "urls": [
+      "https://p2hs.vzan.com/slowlive/821481626725612420/live.m3u8"
+    ]
+  },
+  "fhzw": {
+    "name": "凤凰卫视中文",
+    "logo": "https://epg.112114.xyz/logo/凤凰卫视中文.png",
+    "group": "凤凰系列",
+    "urls": [
+      "http://cdn6.163189.xyz/163189/fhzw"
+    ]
+  },
+  "fhzx": {
+    "name": "凤凰卫视资讯",
+    "logo": "https://epg.112114.xyz/logo/凤凰卫视资讯.png",
+    "group": "凤凰系列",
+    "urls": [
+      "http://cdn6.163189.xyz/163189/fhzx"
+    ]
+  },
+  "tnt_sports_1": {
+    "name": "TntSports1",
+    "logo": "https://epg.112114.xyz/logo/TntSports1.png",
+    "group": "体育频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=3"
+    ]
+  },
+  "zlty": {
+    "name": "智林體育",
+    "logo": "https://epg.112114.xyz/logo/智林體育.png",
+    "group": "体育频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=5"
+    ]
+  },
+  "jsports1": {
+    "name": "JSPORTS1",
+    "logo": "https://epg.112114.xyz/logo/JSPORTS1.png",
+    "group": "体育频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=6"
+    ]
+  },
+  "sky_tennis": {
+    "name": "SkyTennis+",
+    "logo": "https://epg.112114.xyz/logo/SkyTennis+.png",
+    "group": "体育频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=62"
+    ]
+  },
+  "fhzw_2": {
+    "name": "鳳凰中文",
+    "logo": "https://epg.112114.xyz/logo/鳳凰中文.png",
+    "group": "凤凰系列",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=27"
+    ]
+  },
+  "tvb_hj": {
+    "name": "TVB黃金華劇",
+    "logo": "https://epg.112114.xyz/logo/TVB黃金華劇.png",
+    "group": "TVB系列",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=34"
+    ]
+  },
+  "tvb_fc_my": {
+    "name": "TVB翡翠(馬來)",
+    "logo": "https://epg.112114.xyz/logo/TVB翡翠(馬來).png",
+    "group": "TVB系列",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=28"
+    ]
+  },
+  "tvb_mz": {
+    "name": "TVB明珠",
+    "logo": "https://epg.112114.xyz/logo/TVB明珠.png",
+    "group": "TVB系列",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=29"
+    ]
+  },
+  "tvbj1": {
+    "name": "TVBJ1",
+    "logo": "https://epg.112114.xyz/logo/TVBJ1.png",
+    "group": "TVB系列",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=26"
+    ]
+  },
+  "tvb1": {
+    "name": "TVB1",
+    "logo": "https://epg.112114.xyz/logo/TVB1.png",
+    "group": "TVB系列",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=25"
+    ]
+  },
+  "qxjd": {
+    "name": "千禧經典",
+    "logo": "https://epg.112114.xyz/logo/千禧經典.png",
+    "group": "电影经典",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=22"
+    ]
+  },
+  "hoy77": {
+    "name": "HOY77",
+    "logo": "https://epg.112114.xyz/logo/HOY77.png",
+    "group": "港澳台",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=35"
+    ]
+  },
+  "tvb_jmr": {
+    "name": "TVB-獎門人",
+    "logo": "https://epg.112114.xyz/logo/TVB-獎門人.png",
+    "group": "TVB系列",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=31"
+    ]
+  },
+  "tvb_jq": {
+    "name": "TVB-金曲",
+    "logo": "https://epg.112114.xyz/logo/TVB-金曲.png",
+    "group": "TVB系列",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=57"
+    ]
+  },
+  "rthk31": {
+    "name": "RTHK31",
+    "logo": "https://epg.112114.xyz/logo/RTHK31.png",
+    "group": "港澳台",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=23"
+    ]
+  },
+  "tvb_ylxw": {
+    "name": "TVB娛樂新聞",
+    "logo": "https://epg.112114.xyz/logo/TVB娛樂新聞.png",
+    "group": "TVB系列",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=36"
+    ]
+  },
+  "mytv_hjfc": {
+    "name": "MYTV黃金翡翠",
+    "logo": "https://epg.112114.xyz/logo/MYTV黃金翡翠.png",
+    "group": "TVB系列",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=32"
+    ]
+  },
+  "tvb_fcjj": {
+    "name": "TVB翡翠劇集",
+    "logo": "https://epg.112114.xyz/logo/TVB翡翠劇集.png",
+    "group": "TVB系列",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=33"
+    ]
+  },
+  "as_am": {
+    "name": "澳視澳門",
+    "logo": "https://epg.112114.xyz/logo/澳視澳門.png",
+    "group": "港澳台",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=41"
+    ]
+  },
+  "zgdy": {
+    "name": "中國電影",
+    "logo": "https://epg.112114.xyz/logo/中國電影.png",
+    "group": "电影经典",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=61"
+    ]
+  },
+  "tvbs_xw": {
+    "name": "TVBS新聞",
+    "logo": "https://epg.112114.xyz/logo/TVBS新聞.png",
+    "group": "新闻资讯",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=43"
+    ]
+  },
+  "ms": {
+    "name": "民視",
+    "logo": "https://epg.112114.xyz/logo/民視.png",
+    "group": "台湾频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=55"
+    ]
+  },
+  "iqiyi": {
+    "name": "愛奇艺",
+    "logo": "https://epg.112114.xyz/logo/愛奇藝.png",
+    "group": "综合频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=21"
+    ]
+  },
+  "jy_xj": {
+    "name": "靖洋戲劇",
+    "logo": "https://epg.112114.xyz/logo/靖洋戲劇.png",
+    "group": "戏剧频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=42"
+    ]
+  },
+  "jt_dy": {
+    "name": "靖天電影",
+    "logo": "https://epg.112114.xyz/logo/靖天電影.png",
+    "group": "电影经典",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=56"
+    ]
+  },
+  "lh_dy": {
+    "name": "龍華電影",
+    "logo": "https://epg.112114.xyz/logo/龍華電影.png",
+    "group": "电影经典",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=45"
+    ]
+  },
+  "lh_yp": {
+    "name": "龍華洋片",
+    "logo": "https://epg.112114.xyz/logo/龍華洋片.png",
+    "group": "电影经典",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=60"
+    ]
+  },
+  "fy_kk": {
+    "name": "風雲恐怖電影",
+    "logo": "https://epg.112114.xyz/logo/風雲恐怖電影.png",
+    "group": "电影经典",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=59"
+    ]
+  },
+  "rock_action": {
+    "name": "ROCK_Action",
+    "logo": "https://epg.112114.xyz/logo/ROCK_Action.png",
+    "group": "体育频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=50"
+    ]
+  },
+  "mgc_dm": {
+    "name": "梦工场动漫",
+    "logo": "https://epg.112114.xyz/logo/梦工场动漫.png",
+    "group": "少儿频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=40"
+    ]
+  },
+  "duck_tv": {
+    "name": "Duck TV兒童卡通",
+    "logo": "https://epg.112114.xyz/logo/Duck TV兒童卡通.png",
+    "group": "少儿频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=39"
+    ]
+  },
+  "momo_qz": {
+    "name": "MOMO親子",
+    "logo": "https://epg.112114.xyz/logo/MOMO親子.png",
+    "group": "少儿频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=49"
+    ]
+  },
+  "jg_bdx": {
+    "name": "金光布袋戲",
+    "logo": "https://epg.112114.xyz/logo/金光布袋戲.png",
+    "group": "戏剧频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=38"
+    ]
+  },
+  "ms_zy": {
+    "name": "民視綜藝",
+    "logo": "https://epg.112114.xyz/logo/民視綜藝.png",
+    "group": "台湾频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=46"
+    ]
+  },
+  "ms_yj": {
+    "name": "民視影劇",
+    "logo": "https://epg.112114.xyz/logo/民視影劇.png",
+    "group": "台湾频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=53"
+    ]
+  },
+  "tvbs_jc": {
+    "name": "TVBS精采",
+    "logo": "https://epg.112114.xyz/logo/TVBS精采.png",
+    "group": "台湾频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=47"
+    ]
+  },
+  "ts_zh": {
+    "name": "臺視綜合",
+    "logo": "https://epg.112114.xyz/logo/臺視綜合.png",
+    "group": "台湾频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=51"
+    ]
+  },
+  "ds_zh_2": {
+    "name": "東森綜合2",
+    "logo": "https://epg.112114.xyz/logo/東森綜合2.png",
+    "group": "台湾频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=58"
+    ]
+  },
+  "hl_ms": {
+    "name": "韓流美食料理秀",
+    "logo": "https://epg.112114.xyz/logo/韓流美食料理秀.png",
+    "group": "综合频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=63"
+    ]
+  },
+  "yl_bfb": {
+    "name": "娛樂百分百",
+    "logo": "https://epg.112114.xyz/logo/娛樂百分百.png",
+    "group": "综艺频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=64"
+    ]
+  },
+  "zy_dyj": {
+    "name": "綜藝大贏家",
+    "logo": "https://epg.112114.xyz/logo/綜藝大贏家.png",
+    "group": "综艺频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=65"
+    ]
+  },
+  "tvb_plus": {
+    "name": "TVB plus",
+    "logo": "https://epg.112114.xyz/logo/TVB plus.png",
+    "group": "TVB系列",
+    "urls": [
+      "https://o11.163189.xyz/stream/tvb/tvbp/"
+    ]
+  },
+  "tvb_xh": {
+    "name": "TVB星河",
+    "logo": "https://epg.112114.xyz/logo/TVB星河.png",
+    "group": "TVB系列",
+    "urls": [
+      "http://r.jdshipin.com/Voac4"
+    ]
+  },
+  "viutv": {
+    "name": "ViuTV",
+    "logo": "https://epg.112114.xyz/logo/ViuTV.png",
+    "group": "港澳台",
+    "urls": [
+      "https://cdn.163189.xyz/163189/viu"
+    ]
+  },
+  "rhk32": {
+    "name": "RHK32",
+    "logo": "https://epg.112114.xyz/logo/RHK32.png",
+    "group": "港澳台",
+    "urls": [
+      "http://cdn.163189.xyz/163189/rthk32"
+    ]
+  },
+  "hs": {
+    "name": "华视",
+    "logo": "https://epg.112114.xyz/logo/华视.png",
+    "group": "台湾频道",
+    "urls": [
+      "http://74.91.26.218:82/live/cts.m3u8"
+    ]
+  },
+  "zs": {
+    "name": "中视",
+    "logo": "https://epg.112114.xyz/logo/中视.png",
+    "group": "台湾频道",
+    "urls": [
+      "http://74.91.26.218:82/live/ctv.m3u8"
+    ]
+  },
+  "gs": {
+    "name": "公视",
+    "logo": "https://epg.112114.xyz/logo/公视.png",
+    "group": "台湾频道",
+    "urls": [
+      "http://74.91.26.218:82/live/pts.m3u8"
+    ]
+  },
+  "ts": {
+    "name": "台视",
+    "logo": "https://epg.112114.xyz/logo/台视.png",
+    "group": "台湾频道",
+    "urls": [
+      "http://74.91.26.218:82/live/ttv.m3u8"
+    ]
+  },
+  "now_xw": {
+    "name": "Now新闻",
+    "logo": "https://epg.112114.xyz/logo/Now新闻.png",
+    "group": "新闻资讯",
+    "urls": [
+      "http://cdn.163189.xyz/163189/now"
+    ]
+  },
+  "bdkj": {
+    "name": "八度空间",
+    "logo": "https://epg.112114.xyz/logo/八度空间.png",
+    "group": "海外频道",
+    "urls": [
+      "http://iptv.4666888.xyz/iptv2A.php?id=61"
+    ]
+  }
+}
