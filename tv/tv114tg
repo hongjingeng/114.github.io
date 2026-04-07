@@ -1,0 +1,10 @@
+IPTV_CONFIG
+
+app_config
+
+{"tg":{"bot_token":"8733438538:AAFRDZeQjZCbq2N6cSGg_vIJEQ4fcqMBpkM","chat_id":"5470030079","enabled":true},"stats":{"total_requests":32,"by_day":{"2026-04-07":{"fotv":3,"tv":0,"errors":0}},"channels":{}}}
+
+
+bind
+
+TGIPTV_CONFIG
