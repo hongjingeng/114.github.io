@@ -6,7 +6,7 @@ export default {
     const hostname = url.hostname;
     const referer = request.headers.get("Referer") || "";
 
-    // ✅ 只允许指定域名访问（防刷接口）
+    // ✅ 只允许指定域名访问（防盗链）
     if (
       hostname !== "tv.114.ae" &&
       !hostname.endsWith(".114.ae")
@@ -49,7 +49,7 @@ export default {
       } catch {}
     };
 
-    // ==================== HTML（含防查看）====================
+    // ==================== HTML（防查看）====================
     const getHtmlHead = (title) => `
       <!DOCTYPE html>
       <html lang="zh-CN">
@@ -78,16 +78,9 @@ export default {
           footer { margin-top:40px; text-align:center; font-size:13px; color:#666; }
         </style>
         <script>
-          // ✅ 禁止右键
           document.addEventListener("contextmenu", e => e.preventDefault());
-
-          // ✅ 禁止选择
           document.addEventListener("selectstart", e => e.preventDefault());
-
-          // ✅ 干扰 F12
-          setInterval(() => {
-            debugger;
-          }, 1000);
+          setInterval(() => { debugger; }, 1000);
         </script>
       </head>
       <body>
@@ -137,12 +130,16 @@ export default {
         const region = request.headers.get("CF-Region") || "";
         const city = request.headers.get("CF-City") || "";
         const location = `${country}${region ? " / " + region : ""}${city ? " / " + city : ""}`;
+        const host = request.headers.get("Host") || "未知";
+        const refererInfo = request.headers.get("Referer") || "直接访问";
 
         await sendTG(
           `📺 <b>FOTV 首页被访问</b>
 📄 页面：${url.pathname}
 🌐 IP：${ip}
 📍 归属地：${location}
+🔗 当前域名：${host}
+📥 来源：${refererInfo}
 🕒 时间：${new Date().toLocaleString()}`
         );
 
@@ -161,6 +158,8 @@ export default {
         const region = request.headers.get("CF-Region") || "";
         const city = request.headers.get("CF-City") || "";
         const location = `${country}${region ? " / " + region : ""}${city ? " / " + city : ""}`;
+        const host = request.headers.get("Host") || "未知";
+        const refererInfo = request.headers.get("Referer") || "直接访问";
 
         try {
           await sendTG(
@@ -168,6 +167,8 @@ export default {
 📄 页面：${url.pathname}
 🌐 IP：${ip}
 📍 归属地：${location}
+🔗 当前域名：${host}
+📥 来源：${refererInfo}
 🕒 时间：${new Date().toLocaleString()}`
           );
         } catch {}
