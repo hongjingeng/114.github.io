@@ -542,6 +542,22 @@
         color: #673AB7;
         font-size: 14px;
     }
+     .bookmark-links {
+    display: block;
+}
+
+.bookmark-links.hidden {
+    display: none;
+}
+
+/* 可选：箭头指示状态 */
+.fold-indicator::after {
+    content: "▶";
+}
+
+.bookmark.open .fold-indicator::after {
+    content: "▼";
+}
     }
     </style>
 </head>
