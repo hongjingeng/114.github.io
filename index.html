@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>114.ae跨境服务</title>
+    <meta name="description" content="114.ae 跨境服务 - 香港保险、保诚保险、安盛保险、跨境代理工具、IPTV订阅、海外公司注册、域名查询一站式海外华人服务 | 微信 jingeng">
+    <meta name="keywords" content="114.ae, 跨境服务, 香港保诚保险, 香港安盛保险, Clash代理工具, V2Ray, IPTV订阅, .ae域名, 海外华人服务, 微信 jingeng, TG代理">
+    <meta name="author" content="114.ae">
+    <title>114.ae 跨境服务 | 香港保险 · 代理工具 · 海外业务一站式</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; }
@@ -53,25 +56,74 @@
         }
         .avatar:hover { transform: scale(1.05); }
 
-        .special-links {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 25px auto; max-width: 90%;
+        /* ====================== 我们的服务（合并后单个闪电效果） ====================== */
+        .our-services {
+            margin: 25px auto;
+            max-width: 1250px;
+            text-align: center;
         }
-        .special-link {
-            padding: 10px 15px; background: rgba(255, 255, 255, 0.15);
-            border-radius: 12px; text-decoration: none; color: rgba(255, 255, 255, 0.9);
-            font-weight: bold; font-size: 13px; transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2); display: flex; align-items: center;
-            justify-content: center; text-align: center;
+        .service-header {
+            display: inline-flex; align-items: center; gap: 12px;
+            padding: 16px 40px; background: rgba(255, 255, 255, 0.18);
+            border-radius: 50px; color: #fff; font-weight: bold; font-size: 17px;
+            border: 2px solid rgba(255, 255, 255, 0.4); cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
-        .special-link:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.25); color: #fff; }
+        .service-header:hover { background: rgba(255, 255, 255, 0.28); transform: translateY(-3px); }
+        .service-header i { font-size: 22px; }
 
-        /* 重点修复：三个板块左右对称排列（桌面三栏并排，左右对称） */
+        .service-content {
+            display: none;
+            margin-top: 18px;
+            position: relative;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .service-content.show { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+
+        /* 横向闪电特效 */
+        .service-content.show::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            width: 0;
+            height: 5px;
+            background: linear-gradient(90deg, transparent, #00ffcc, #00ffff, transparent);
+            box-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffff;
+            opacity: 0;
+            transform: translateX(-50%);
+            animation: lightning-flash 1.4s ease forwards;
+        }
+        @keyframes lightning-flash {
+            0%   { width: 0; opacity: 0; }
+            20%  { width: 100%; opacity: 1; }
+            45%  { width: 100%; opacity: 1; }
+            65%  { width: 40%; opacity: 0; }
+            100% { width: 0; opacity: 0; }
+        }
+
+        .service-item a {
+            display: block; padding: 16px 12px; background: rgba(168, 85, 247, 0.15);
+            border-radius: 18px; text-decoration: none; color: #fff;
+            font-size: 14.5px; text-align: center; transition: all 0.3s ease;
+            border: 1px solid rgba(168, 85, 247, 0.25); min-height: 58px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .service-item a:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0, 255, 200, 0.4); }
+
+        /* ====================== 书签区 ====================== */
         .bookmarks {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);   /* 默认三栏左右对称 */
+            grid-template-columns: repeat(3, 1fr);
             gap: 35px;
-            margin: 20px auto;
-            max-width: 1250px;   /* 整体居中控制 */
+            margin: 40px auto;
+            max-width: 1250px;
             justify-content: center;
         }
         .bookmark {
@@ -112,66 +164,95 @@
         }
         .bookmark-links.collapsed { display: none; }
 
-        .link-item { width: 100%; }
         .link-item a {
             display: block; padding: 14px 10px; background: rgba(168, 85, 247, 0.12);
             border-radius: 15px; font-size: 14px; transition: all 0.3s ease;
             color: #fff; text-decoration: none; border: 1px solid rgba(168, 85, 247, 0.12);
             text-align: center; line-height: 1.3; min-height: 52px;
             display: flex; align-items: center; justify-content: center;
-            word-break: break-all;
         }
         .link-item a:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
 
-        /* 语言切换按钮移到 footer（避免被跑马灯挡住） */
-        .language-switcher {
-            display: flex; justify-content: center; gap: 12px; margin: 15px 0 20px;
-            flex-wrap: wrap;
+        /* ====================== 业务介绍弹窗 + 详情弹窗 ====================== */
+        #business-modal, #detail-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.88);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
         }
-        .lang-btn {
-            padding: 8px 22px; background: rgba(255, 255, 255, 0.15);
-            border-radius: 30px; color: #fff; font-size: 15px; font-weight: bold;
-            border: 1px solid rgba(255, 255, 255, 0.3); transition: all 0.3s ease;
-            cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+        .modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            width: 92%;
+            max-width: 1280px;
+            max-height: 92vh;
+            overflow-y: auto;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
         }
-        .lang-btn:hover { background: rgba(255, 255, 255, 0.3); transform: translateY(-2px); }
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 25px; color: #fff;
+        }
+        .modal-header h2 { font-size: 28px; }
+        .close-modal {
+            font-size: 34px; cursor: pointer; color: #fff; width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; background: rgba(255,255,255,0.15);
+        }
+        .business-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .business-item {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 18px;
+            padding: 22px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+        .business-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0, 255, 200, 0.25);
+            background: rgba(255, 255, 255, 0.22);
+        }
+        .business-item h3 { color: #4CAF50; margin-bottom: 8px; font-size: 19px; }
+        .business-item p { font-size: 15px; margin-bottom: 16px; opacity: 0.95; }
 
-        /* 手机优化：桌面三栏左右对称，手机自动单列 */
-        @media (max-width: 1024px) {
-            .special-links { grid-template-columns: repeat(4, 1fr); }
-            .bookmarks { grid-template-columns: repeat(3, 1fr); }
+        /* 详情页联系方式（默认隐藏） */
+        .contact-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 16px;
+            display: none;
         }
+        .contact-section.show { display: block; animation: fadeIn 0.4s; }
+        .contact-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,0.3);
+        }
+        .contact-item:last-child { border-bottom: none; }
+
+        /* 手机优化 */
         @media (max-width: 768px) {
-            .container { padding: 12px; padding-top: 55px; }
-            .avatar { width: 110px; height: 110px; }
-            .special-links { grid-template-columns: repeat(2, 1fr); gap: 10px; max-width: 95%; }
-            .special-link { padding: 9px 12px; font-size: 12.5px; }
-            .bookmark { padding: 20px; border-radius: 25px; }
-            .bookmark-title { font-size: 18px; }
-            .bookmarks { 
-                grid-template-columns: 1fr;   /* 手机上下排列 */
-                gap: 25px; 
-            }
-            .bookmark-links { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-            .link-item a { padding: 12px 8px; font-size: 13.5px; min-height: 48px; }
+            .bookmarks { grid-template-columns: 1fr; gap: 25px; }
+            .service-content.show { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 480px) {
-            .bookmark-links { grid-template-columns: repeat(2, 1fr); gap: 9px; }
-            .link-item a { font-size: 13px; padding: 11px 6px; }
-            .marquee-content { font-size: 12.5px; }
-            .language-switcher { gap: 8px; }
-            .lang-btn { padding: 7px 18px; font-size: 14px; }
-        }
-        @media (max-width: 360px) {
-            .bookmark-links { grid-template-columns: 1fr; }
+            .service-content.show { grid-template-columns: 1fr; }
         }
 
         .footer { 
             text-align: center; padding: 30px 20px 40px; color: #673AB7; font-size: 14px; 
             max-width: 1250px; margin: 0 auto; 
-        }
-        .footer-multi {
-            display: flex; flex-direction: column; gap: 8px; margin-top: 15px; font-size: 13px; opacity: 0.9;
         }
     </style>
 </head>
@@ -191,25 +272,32 @@
         <header>
             <h1>114 跨境服务 广告 👉 微信： jingeng </h1>
             <div class="avatar"></div>
-            <div class="special-links">
-                <a href="https://www.114.ae/music" target="_blank" class="special-link"><i class="fas fa-tv"></i> 114.ae在线听歌</a>
-                <a href="https://t.me/at114ae" target="_blank" class="special-link"><i class="fab fa-telegram"></i>TG联系</a>
-                <a href="https://www.114.ae/tg" target="_blank" class="special-link"><i class="fab fa-telegram"></i>TG代理</a>
-                <a href="https://wa.me/message/VBL34SHP73GYH1" target="_blank" class="special-link"><i class="fab fa-whatsapp"></i>WhatsApp 联系</a>
-                <a href="https://www.114.ae" target="_blank" class="special-link"><i class="fab fa-telegram"></i>微信: jingeng</a>
-                <a href="https://dy.114.ae/dyuuid" target="_blank" class="special-link"><i class="fas fa-server"></i> 跨境客户临时代理使用</a>
-                <a href="https://iptv.114.ae" target="_blank" class="special-link"><i class="fas fa-tv"></i> 24小时佛教的电视台iptv订阅</a>
-                <a href="https://i.114.ae" target="_blank" class="special-link"><i class="fas fa-tv"></i>iptv订阅 各种电视台 26.4-10更新</a>
-                <a href="https://tv.114.ae" target="_blank" class="special-link"><i class="fas fa-tv"></i> 在线看电视网页版</a>
-                <a href="https://ex.114.ae" target="_blank" class="special-link"><i class="fas fa-tv"></i> 汇率实时换算</a>
-                <a href="https://ym.114.ae" target="_blank" class="special-link"><i class="fas fa-tv"></i> .ae阿联酋域名实时查询线路1</a>
-                <a href="https://www.jingeng.cn/" target="_blank" class="special-link"><i class="fas fa-tv"></i> 金更个人网站</a>
+
+            <!-- 我们的服务（合并后的单个闪电效果） -->
+            <div class="our-services">
+                <div class="service-header" onclick="toggleOurServices(this)">
+                    <i class="fas fa-bolt"></i>
+                    我们的服务
+                </div>
+                <div class="service-content" id="service-content">
+                    <div class="service-item"><a href="https://www.114.ae/music" target="_blank">114.ae在线听歌</a></div>
+                    <div class="service-item"><a href="https://t.me/at114ae" target="_blank">TG联系</a></div>
+                    <div class="service-item"><a href="https://www.114.ae/tg" target="_blank">TG代理</a></div>
+                    <div class="service-item"><a href="https://wa.me/message/VBL34SHP73GYH1" target="_blank">WhatsApp 联系</a></div>
+                    <div class="service-item"><a href="https://www.114.ae" target="_blank">微信: jingeng</a></div>
+                    <div class="service-item"><a href="https://dy.114.ae/dyuuid" target="_blank">跨境客户临时代理使用</a></div>
+                    <div class="service-item"><a href="https://iptv.114.ae" target="_blank">24小时佛教电视台IPTV</a></div>
+                    <div class="service-item"><a href="https://i.114.ae" target="_blank">IPTV订阅（各种电视台）</a></div>
+                    <div class="service-item"><a href="https://tv.114.ae" target="_blank">在线看电视网页版</a></div>
+                    <div class="service-item"><a href="https://ex.114.ae" target="_blank">汇率实时换算</a></div>
+                    <div class="service-item"><a href="https://ym.114.ae" target="_blank">.ae阿联酋域名查询</a></div>
+                    <div class="service-item"><a href="https://www.jingeng.cn/" target="_blank">金更个人网站</a></div>
+                </div>
             </div>
         </header>
 
-        <!-- 三个板块：左右对称排列（桌面三栏并排） -->
+        <!-- 书签区（保持3栏左右对称） -->
         <div class="bookmarks">
-            <!-- 代理工具合集 -->
             <div class="bookmark">
                 <div class="bookmark-header collapsed" onclick="toggleBookmark(this)">
                     <div class="bookmark-title">代理工具软件合辑</div>
@@ -236,7 +324,6 @@
                 </div>
             </div>
 
-            <!-- 设定A -->
             <div class="bookmark">
                 <div class="bookmark-header collapsed" onclick="toggleBookmark(this)">
                     <div class="bookmark-title">设定A</div>
@@ -247,7 +334,6 @@
                 </div>
             </div>
 
-            <!-- 设定B -->
             <div class="bookmark">
                 <div class="bookmark-header collapsed" onclick="toggleBookmark(this)">
                     <div class="bookmark-title">设定B</div>
@@ -259,38 +345,73 @@
             </div>
         </div>
 
-        <!-- footer：语言按钮 + 版权（左右对称、居中） -->
+        <!-- 业务介绍按钮（已改为10个） -->
+        <div style="text-align:center; margin:40px 0 20px;">
+            <a onclick="openBusinessModal()" style="display:inline-block; padding:16px 48px; background:linear-gradient(90deg,#00ffcc,#00ffff); color:#1a0b2e; font-weight:bold; font-size:19px; border-radius:50px; text-decoration:none; box-shadow:0 10px 30px rgba(0,255,204,0.5);">
+                <i class="fas fa-briefcase"></i> 查看全部业务介绍（10个业务）
+            </a>
+        </div>
+
+        <!-- footer（已简化，只保留中文 + 语言切换按钮） -->
         <div class="footer">
             © 2026 立足海外. 服务于海外华人. 止于知足常乐<br>
             广告 👉 微信：jingeng | TG：@at114ae | WhatsApp 联系<br>
             
-            <!-- 语言切换按钮移到这里 -->
-            <div class="language-switcher">
-                <a href="#" onclick="switchLang('zh')" class="lang-btn"><i class="fas fa-language"></i> 中文</a>
-                <a href="#" onclick="switchLang('en')" class="lang-btn"><i class="fas fa-language"></i> English</a>
-                <a href="#" onclick="switchLang('ar')" class="lang-btn"><i class="fas fa-language"></i> العربية</a>
-            </div>
-
-            <div class="footer-multi">
-                <span>English: © 2026 Overseas-based. Serving overseas Chinese. Be content with what you have.<br>Ad 👉 WeChat: jingeng | TG: @at114ae | WhatsApp Contact</span>
-                <span>العربية: © 2026 مقرها في الخارج. خدمة الصينيين في الخارج. كن راضياً بما لديك.<br>إعلان 👉 وي تشات: jingeng | تي جي: @at114ae | واتساب اتصال</span>
+            <div style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+                <a href="#" onclick="switchLang('zh')" class="lang-btn" style="padding:8px 22px; background:rgba(255,255,255,0.15); border-radius:30px; color:#fff; font-size:15px; border:1px solid rgba(255,255,255,0.3);">中文</a>
+                <a href="#" onclick="switchLang('en')" class="lang-btn" style="padding:8px 22px; background:rgba(255,255,255,0.15); border-radius:30px; color:#fff; font-size:15px; border:1px solid rgba(255,255,255,0.3);">English</a>
+                <a href="#" onclick="switchLang('ar')" class="lang-btn" style="padding:8px 22px; background:rgba(255,255,255,0.15); border-radius:30px; color:#fff; font-size:15px; border:1px solid rgba(255,255,255,0.3);">العربية</a>
             </div>
             <br>（不挨批评，知足常乐 😂）
         </div>
     </div>
 
+    <!-- 业务介绍主弹窗（10个业务） -->
+    <div id="business-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📋 114.ae 跨境业务介绍（共10个业务）</h2>
+                <span class="close-modal" onclick="closeBusinessModal()">×</span>
+            </div>
+            <div class="business-grid" id="business-grid">
+                <!-- JS 动态生成 10 个业务卡片 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 业务详情弹窗（点击“立即了解”后弹出） -->
+    <div id="detail-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="detail-title"></h2>
+                <span class="close-modal" onclick="closeDetailModal()">×</span>
+            </div>
+            <div id="detail-desc" style="color:#fff; font-size:16px; line-height:1.8; margin-bottom:30px;"></div>
+            
+            <button onclick="toggleContacts()" style="padding:12px 30px; background:#00ffcc; color:#1a0b2e; border:none; border-radius:50px; font-weight:bold; cursor:pointer; margin-bottom:15px;">
+                <i class="fas fa-phone"></i> 显示联系方式
+            </button>
+            
+            <div id="contact-section" class="contact-section">
+                <div class="contact-item"><span>微信：</span><strong id="contact-wechat">jingeng</strong></div>
+                <div class="contact-item"><span>WhatsApp：</span><strong id="contact-whatsapp">+86 138-XXXX-XXXX</strong></div>
+                <div class="contact-item"><span>手机号码：</span><strong id="contact-phone">+852 9XXX XXXX</strong></div>
+                <p style="margin-top:15px; font-size:13px; opacity:0.8;">复制后可直接添加，24小时在线回复</p>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // SEO 已优化，跑马灯保持
         window.addEventListener('scroll', function() {
             document.body.classList.toggle('scrolled', window.scrollY > 50);
         });
 
         document.addEventListener('DOMContentLoaded', function() {
             const marquee = document.querySelector('.marquee');
-            if (marquee) {
-                const content = document.querySelector('.marquee-content');
-                marquee.appendChild(content.cloneNode(true));
-            }
+            if (marquee) marquee.appendChild(document.querySelector('.marquee-content').cloneNode(true));
             initializeBookmarks();
+            generateBusinessCards();   // 生成10个业务
         });
 
         function toggleBookmark(header) {
@@ -298,7 +419,6 @@
             const links = bookmark.querySelector('.bookmark-links');
             const isCollapsed = header.classList.toggle('collapsed');
             links.classList.toggle('collapsed', isCollapsed);
-
             const index = Array.from(document.querySelectorAll('.bookmark')).indexOf(bookmark);
             localStorage.setItem(`bookmark_${index}`, isCollapsed);
         }
@@ -308,10 +428,8 @@
                 const key = `bookmark_${i}`;
                 const saved = localStorage.getItem(key);
                 const shouldCollapse = saved === null || saved === 'true';
-                
                 const header = bookmark.querySelector('.bookmark-header');
                 const links = bookmark.querySelector('.bookmark-links');
-                
                 if (shouldCollapse) {
                     header.classList.add('collapsed');
                     links.classList.add('collapsed');
@@ -320,10 +438,80 @@
             });
         }
 
+        // 我们的服务 - 单个闪电效果
+        function toggleOurServices(header) {
+            const content = document.getElementById('service-content');
+            const isShow = content.classList.toggle('show');
+            header.classList.toggle('active', isShow);
+        }
+
+        // 10个业务数据（后期直接在这里修改）
+        const businesses = [
+            { id:1, title:"业务01 - 保险业务", desc:"香港保诚保险", detail:"香港保诚保险（Prudential）是全球顶级寿险品牌，提供终身寿险、重疾险、储蓄分红计划等。覆盖香港、内地及海外华人。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" },
+            { id:2, title:"业务02 - 保险业务", desc:"香港安盛保险", detail:"香港安盛保险（AXA）专注高端医疗保险、财产保险及退休规划，理赔快速，适合高净值华人家庭。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" },
+            { id:3, title:"业务03 - 跨境支付", desc:"海外快速转账", detail:"支持美元、欧元、迪拉姆等多币种即时到账，费率低至0.3%，专为海外华人设计。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" },
+            { id:4, title:"业务04 - 海外注册", desc:"香港公司注册", detail:"一站式香港有限公司注册，含银行开户、秘书服务、年审，全程线上办理，3天出证。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" },
+            { id:5, title:"业务05 - 域名服务", desc:".ae阿联酋域名", detail:"实时查询并注册阿联酋顶级域名，线路优化，适合中东业务扩展。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" },
+            { id:6, title:"业务06 - IPTV订阅", desc:"24小时佛教电视台", detail:"高清稳定IPTV订阅，包含佛教、新闻、体育、电影等全球频道，每月更新。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" },
+            { id:7, title:"业务07 - 代理工具", desc:"Clash / V2Ray定制", detail:"专业代理工具配置服务，支持Clash、V2Ray、Sing-box等，节点高速稳定。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" },
+            { id:8, title:"业务08 - 汇率工具", desc:"实时汇率换算", detail:"支持全球100+货币实时汇率查询与换算，数据来自多家银行，精准可靠。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" },
+            { id:9, title:"业务09 - 在线电视", desc:"网页版电视直播", detail:"无需安装软件，直接浏览器观看全球电视台，含中文、英文、阿拉伯语频道。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" },
+            { id:10, title:"业务10 - 网站搭建", desc:"个人/企业官网", detail:"快速搭建多语言个人网站或企业官网，支持SEO优化，手机完美适配。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" }
+        ];
+
+        function generateBusinessCards() {
+            const grid = document.getElementById('business-grid');
+            grid.innerHTML = '';
+            businesses.forEach(b => {
+                const card = document.createElement('div');
+                card.className = 'business-item';
+                card.innerHTML = `
+                    <h3>${b.title}</h3>
+                    <p>${b.desc}</p>
+                    <a onclick="openDetailModal(${b.id}); event.stopImmediatePropagation();" style="color:#00ffcc; font-size:14px; display:block; text-align:center; margin-top:10px; text-decoration:underline;">立即了解 →</a>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        let currentBusiness = null;
+        function openDetailModal(id) {
+            currentBusiness = businesses.find(b => b.id === id);
+            if (!currentBusiness) return;
+            
+            document.getElementById('detail-title').innerHTML = currentBusiness.title;
+            document.getElementById('detail-desc').innerHTML = `<p>${currentBusiness.detail}</p>`;
+            document.getElementById('contact-wechat').textContent = currentBusiness.wechat;
+            document.getElementById('contact-whatsapp').textContent = currentBusiness.whatsapp;
+            document.getElementById('contact-phone').textContent = currentBusiness.phone;
+            
+            // 重置联系方式为隐藏
+            document.getElementById('contact-section').classList.remove('show');
+            
+            closeBusinessModal();
+            document.getElementById('detail-modal').style.display = 'flex';
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detail-modal').style.display = 'none';
+        }
+
+        function toggleContacts() {
+            const section = document.getElementById('contact-section');
+            section.classList.toggle('show');
+        }
+
+        function openBusinessModal() {
+            document.getElementById('business-modal').style.display = 'flex';
+        }
+        function closeBusinessModal() {
+            document.getElementById('business-modal').style.display = 'none';
+        }
+
         function switchLang(lang) {
             if (lang === 'zh') alert('当前已是中文版本 👍');
-            else if (lang === 'en') alert('English version coming soon! （英文版开发中）');
-            else if (lang === 'ar') alert('النسخة العربية قيد التطوير! （阿拉伯文版开发中）');
+            else if (lang === 'en') alert('English version coming soon!');
+            else if (lang === 'ar') alert('النسخة العربية قيد التطوير!');
         }
     </script>
 </body>
