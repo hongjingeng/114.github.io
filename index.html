@@ -1,4 +1,3 @@
- /* 纯前端不加密 访问速度飞快 */
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -7,705 +6,324 @@
     <title>114.ae跨境服务</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; }
         body {
             color: #673AB7;
             line-height: 1.6;
             min-height: 100vh;
             overflow-x: hidden;
-            background: #135deg;
+            background: linear-gradient(135deg, #1a0b2e, #0f1e3d);
         }
-        
-        .video-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            overflow: hidden;
+        .dark-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); z-index: -1; }
+        .blur-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            backdrop-filter: blur(0px); z-index: -1; transition: backdrop-filter 0.5s ease; 
         }
-        
-        #video-bg {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.7;
-            transition: opacity 0.8s ease;
-        }
-        
-        .dark-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: -1;
-        }
-        
-        .blur-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            backdrop-filter: blur(0px);
-            z-index: -1;
-            transition: backdrop-filter 0.5s ease;
-        }
-        
-        body.scrolled .blur-overlay {
-            backdrop-filter: blur(8px);
-        }
-        
-        body.scrolled #video-bg {
-            opacity: 0.5;
-        }
-        
-        .container {
-            max-width: min(1200px, 90vw);
-            margin: 0 auto;
-            position: relative;
-            padding: 20px;
-            padding-top: 60px;
-        }
-        
+        body.scrolled .blur-overlay { backdrop-filter: blur(4px); }
+
         .marquee-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
+            position: fixed; top: 0; left: 0; width: 100%;
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(8px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 6px 0;
-            z-index: 1000;
+            padding: 6px 0; z-index: 1000;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
-        
-        .marquee {
-            display: inline-block;
-            white-space: nowrap;
-            animation: marquee 20s linear infinite;
-            padding-left: 100%;
-        }
-        
-        .marquee-content {
-            display: inline-block;
-            margin-right: 40px;
-            color: #673AB7;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        
-        .marquee-link {
-            color: #673AB7;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            padding: 0 15px;
-            position: relative;
-        }
-        
-        .marquee-link:hover {
-            color: #673AB7;
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-        }
-        
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px 0;
-        }
-        
+        .marquee { display: inline-block; white-space: nowrap; animation: marquee 20s linear infinite; padding-left: 100%; }
+        .marquee-content { display: inline-block; margin-right: 40px; color: #673AB7; font-weight: bold; font-size: 14px; }
+        .marquee-link { color: #673AB7; text-decoration: none; transition: all 0.3s ease; padding: 0 15px; }
+        .marquee-link:hover { text-shadow: 0 0 8px rgba(255, 255, 255, 0.5); }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        header { text-align: center; margin-bottom: 40px; padding: 30px 0; }
         h1 {
-            margin-bottom: 15px;
-            font-size: clamp(2em, 6vw, 3em);
-            font-weight: bold;
+            margin-bottom: 15px; font-size: clamp(2em, 6vw, 3em); font-weight: bold;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            display: inline-block;
             background: linear-gradient(90deg, #ff6b6b, #ffa726, #66bb6a, #42a5f5, #ab47bc);
-            background-size: 400% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            background-size: 400% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             animation: gradient-shift 8s ease infinite;
         }
-        
-        @keyframes gradient-shift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        .description {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: clamp(14px, 3.5vw, 18px);
-            margin-top: 10px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
+        @keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
         .avatar {
-            width: 484px;
-            height: 300px;
-            border-radius: 50%;
-            margin: 15px auto;
+            width: 484px; height: 300px; border-radius: 50%; margin: 15px auto;
             background-image: url('https://www.114.ae/tv/img/lvdumu.jpg');
-            background-size: cover;
-            background-position: center;
-            transition: all 0.3s ease;
+            background-size: cover; background-position: center; transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
-        
-        .avatar:hover {
-            transform: scale(1.05);
-        }
-        
+        .avatar:hover { transform: scale(1.05); }
+
         .special-links {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin: 25px auto;
-            max-width: 90%;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 25px auto; max-width: 90%;
         }
-        
         .special-link {
-            position: relative;
-            padding: 10px 15px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: bold;
-            font-size: 13px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
+            padding: 10px 15px; background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px; text-decoration: none; color: rgba(255, 255, 255, 0.9);
+            font-weight: bold; font-size: 13px; transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2); display: flex; align-items: center;
+            justify-content: center; text-align: center;
         }
-        
-        .special-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            background: rgba(255, 255, 255, 0.25);
-            color: #fff;
-        }
-        
-        .special-link i {
-            margin-right: 6px;
-            font-size: 12px;
-        }
-        
+        .special-link:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.25); color: #fff; }
+
+        /* 重点修复：三个板块左右对称排列（桌面三栏并排，左右对称） */
         .bookmarks {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+            grid-template-columns: repeat(3, 1fr);   /* 默认三栏左右对称 */
             gap: 35px;
-            margin-top: 20px;
+            margin: 20px auto;
+            max-width: 1250px;   /* 整体居中控制 */
+            justify-content: center;
         }
-        
         .bookmark {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 30px;
-            padding: 25px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            backdrop-filter: blur(5px);
+            background: rgba(255, 255, 255, 0.15); border-radius: 30px; padding: 25px;
+            transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column;
+            backdrop-filter: blur(3px);
         }
-        
-        .bookmark:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            background: rgba(255, 255, 255, 0.25);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-        
+        .bookmark:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); background: rgba(255, 255, 255, 0.25); }
+
         .bookmark-header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            position: relative;
-            transition: all 0.3s ease;
+            display: flex; flex-direction: column; align-items: center; cursor: pointer;
+            margin-bottom: 15px; padding-bottom: 15px; position: relative; transition: all 0.3s ease;
             text-align: center;
         }
-        
         .bookmark-title {
-            color: #4CAF50;
-            font-size: 20px;
-            line-height: 1.3;
-            font-weight: bold;
-            text-align: center;
-            position: relative;
-            padding: 0 10px;
-            margin-bottom: 12px;
-            letter-spacing: 0.5px;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-            transition: all 0.4s ease;
+            color: #4CAF50; font-size: 20px; line-height: 1.3; font-weight: bold;
+            text-align: center; padding: 0 10px; margin-bottom: 12px;
+            letter-spacing: 0.5px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
-        
-        .bookmark-header:hover .bookmark-title {
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
-            color: #a3d9ff;
-        }
-        
-        .bookmark-header.collapsed .bookmark-title {
-            color: #a3d9ff;
-            text-shadow: 0 0 15px rgba(163, 217, 255, 0.6);
-        }
-        
+        .bookmark-header.collapsed .bookmark-title { color: #a3d9ff; text-shadow: 0 0 15px rgba(163, 217, 255, 0.6); }
         .fold-indicator {
-            position: relative;
-            width: 80%;
-            height: 2px;
-            background: linear-gradient(90deg, 
-                rgba(255, 255, 255, 0) 0%, 
-                rgba(255, 255, 255, 0.5) 50%, 
-                rgba(255, 255, 255, 0) 100%);
-            border-radius: 2px;
-            overflow: hidden;
-            transition: all 0.4s ease;
+            position: relative; width: 80%; height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%);
+            border-radius: 2px; overflow: hidden; transition: all 0.4s ease;
         }
-        
-        .fold-indicator::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                rgba(255, 255, 255, 0) 0%, 
-                rgba(255, 255, 255, 0.8) 50%, 
-                rgba(255, 255, 255, 0) 100%);
-            animation: shimmer 2.5s infinite;
-        }
-        
-        .bookmark-header:hover .fold-indicator {
-            background: linear-gradient(90deg, 
-                rgba(163, 217, 255, 0) 0%, 
-                rgba(163, 217, 255, 0.7) 50%, 
-                rgba(163, 217, 255, 0) 100%);
-            height: 3px;
-            box-shadow: 0 0 8px rgba(163, 217, 255, 0.3);
-        }
-        
+        .bookmark-header:hover .fold-indicator,
         .bookmark-header.collapsed .fold-indicator {
-            background: linear-gradient(90deg, 
-                rgba(163, 217, 255, 0) 0%, 
-                rgba(163, 217, 255, 0.9) 50%, 
-                rgba(163, 217, 255, 0) 100%);
-            height: 3px;
-            box-shadow: 0 0 12px rgba(163, 217, 255, 0.5);
+            background: linear-gradient(90deg, rgba(163,217,255,0) 0%, rgba(163,217,255,0.9) 50%, rgba(163,217,255,0) 100%);
+            height: 3px; box-shadow: 0 0 12px rgba(163,217,255,0.5);
         }
-        
-        .bookmark-header.collapsed .fold-indicator::before {
-            background: linear-gradient(90deg, 
-                rgba(163, 217, 255, 0) 0%, 
-                rgba(163, 217, 255, 1) 50%, 
-                rgba(163, 217, 255, 0) 100%);
-            animation: shimmer-fast 1.5s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-        
-        @keyframes shimmer-fast {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-        
-        .fold-status {
-            display: none;
-        }
-        
+
         .bookmark-links {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            gap: 10px;
-            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-            max-height: none;
-            overflow: visible;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            transition: all 0.5s ease;
         }
-        
-        .bookmark-links.collapsed {
-            display: none;
-        }
-        
-        .link-row {
-            display: flex;
-            justify-content: center;
-            flex-grow: 1;
-            gap: 8px;
-        }
-        
-        .link-item {
-            flex: 1;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
+        .bookmark-links.collapsed { display: none; }
+
+        .link-item { width: 100%; }
         .link-item a {
-            display: block;
-            padding: 12px 8px;
-            background: rgba(168, 85, 247, 0.12);
-            border-radius: 15px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1.2;
-            height: 100%;
-            min-height: 45px;
-            color: #fff;
-            text-decoration: none;
-            border: 1px solid rgba(168, 85, 247, 0.12);
+            display: block; padding: 14px 10px; background: rgba(168, 85, 247, 0.12);
+            border-radius: 15px; font-size: 14px; transition: all 0.3s ease;
+            color: #fff; text-decoration: none; border: 1px solid rgba(168, 85, 247, 0.12);
+            text-align: center; line-height: 1.3; min-height: 52px;
+            display: flex; align-items: center; justify-content: center;
+            word-break: break-all;
         }
-        
-        .link-item a:hover {
-            background: rgba(168, 85, 247, 0.12);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            border-color: rgba(168, 85, 247, 0.12);
+        .link-item a:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
+
+        /* 语言切换按钮移到 footer（避免被跑马灯挡住） */
+        .language-switcher {
+            display: flex; justify-content: center; gap: 12px; margin: 15px 0 20px;
+            flex-wrap: wrap;
         }
-        
-        .music-player {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 100;
-            transition: all 0.4s ease;
-            opacity: 0.8;
+        .lang-btn {
+            padding: 8px 22px; background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px; color: #fff; font-size: 15px; font-weight: bold;
+            border: 1px solid rgba(255, 255, 255, 0.3); transition: all 0.3s ease;
+            cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
         }
-        
-        .music-player:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-            opacity: 1;
-            background: rgba(255, 255, 255, 0.25);
-        }
-        
-        .music-player i {
-            font-size: 20px;
-            color: #4CAF50;
-        }
-        
+        .lang-btn:hover { background: rgba(255, 255, 255, 0.3); transform: translateY(-2px); }
+
+        /* 手机优化：桌面三栏左右对称，手机自动单列 */
         @media (max-width: 1024px) {
-            .special-links {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 10px;
-            }
+            .special-links { grid-template-columns: repeat(4, 1fr); }
+            .bookmarks { grid-template-columns: repeat(3, 1fr); }
         }
-        
         @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-                padding-top: 50px;
+            .container { padding: 12px; padding-top: 55px; }
+            .avatar { width: 110px; height: 110px; }
+            .special-links { grid-template-columns: repeat(2, 1fr); gap: 10px; max-width: 95%; }
+            .special-link { padding: 9px 12px; font-size: 12.5px; }
+            .bookmark { padding: 20px; border-radius: 25px; }
+            .bookmark-title { font-size: 18px; }
+            .bookmarks { 
+                grid-template-columns: 1fr;   /* 手机上下排列 */
+                gap: 25px; 
             }
-            
-            .avatar {
-                width: 90px;
-                height: 90px;
-            }
-            
-            .special-links {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-                max-width: 95%;
-            }
-            
-            .special-link {
-                padding: 8px 12px;
-                font-size: 12px;
-            }
-            
-            .special-link i {
-                font-size: 11px;
-            }
-            
-            .bookmarks {
-                gap: 25px;
-            }
-            
-            .bookmark {
-                padding: 20px;
-                border-radius: 25px;
-            }
-            
-            .bookmark-title {
-                font-size: 18px;
-            }
-            
-            .link-item a {
-                font-size: 13px;
-                padding: 10px 6px;
-                min-height: 40px;
-            }
-            
-            .marquee-content {
-                font-size: 12px;
-            }
-            
-            .music-player {
-                width: 45px;
-                height: 45px;
-                bottom: 15px;
-                right: 15px;
-            }
-            
-            .music-player i {
-                font-size: 18px;
-            }
+            .bookmark-links { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .link-item a { padding: 12px 8px; font-size: 13.5px; min-height: 48px; }
         }
-        
         @media (max-width: 480px) {
-            .bookmarks {
-                grid-template-columns: 1fr;
-            }
-            
-            .special-links {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
-            }
-            
-            .special-link {
-                padding: 6px 8px;
-                font-size: 11px;
-            }
-            
-            .link-row {
-                flex-direction: column;
-                gap: 8px;
-            }
-            
-            .link-item {
-                margin: 0;
-            }
-            
-            .bookmark-title {
-                font-size: 16px;
-            }
-            
-            .fold-indicator {
-                width: 70%;
-            }
-            
+            .bookmark-links { grid-template-columns: repeat(2, 1fr); gap: 9px; }
+            .link-item a { font-size: 13px; padding: 11px 6px; }
+            .marquee-content { font-size: 12.5px; }
+            .language-switcher { gap: 8px; }
+            .lang-btn { padding: 7px 18px; font-size: 14px; }
         }
-         .footer {
-        text-align: center;
-        padding: 20px;
-        color: #673AB7;
-        font-size: 14px;
-    }
-    }
+        @media (max-width: 360px) {
+            .bookmark-links { grid-template-columns: 1fr; }
+        }
+
+        .footer { 
+            text-align: center; padding: 30px 20px 40px; color: #673AB7; font-size: 14px; 
+            max-width: 1250px; margin: 0 auto; 
+        }
+        .footer-multi {
+            display: flex; flex-direction: column; gap: 8px; margin-top: 15px; font-size: 13px; opacity: 0.9;
+        }
     </style>
 </head>
 <body>
-  
     <div class="dark-overlay"></div>
     <div class="blur-overlay"></div>
-    
+
     <div class="marquee-container">
         <div class="marquee">
             <span class="marquee-content">
-                <a href="https://www.114.ae" class="marquee-link">阿弥陀佛！       人生就是江湖！       人生就是一场演绎,有就多吃一点,无就知足常乐！      
- </a>
+                <a href="https://www.114.ae" class="marquee-link">阿弥陀佛！ 人生就是江湖！ 人生就是一场演绎,有就多吃一点,无就知足常乐！ </a>
             </span>
         </div>
     </div>
 
-    <div class="music-player" id="musicToggle">
-        <i class="fas fa-volume-up"></i>
-    </div>
-    
     <div class="container">
         <header>
-            <h1>114 跨境服务  广告 👉 微信： jingeng </h1>
+            <h1>114 跨境服务 广告 👉 微信： jingeng </h1>
             <div class="avatar"></div>
-            
             <div class="special-links">
-                 <a href="https://www.114.ae/music" target="_blank" class="special-link"><i class="fas fa-tv"></i> 114.ae在线听歌</a>  
+                <a href="https://www.114.ae/music" target="_blank" class="special-link"><i class="fas fa-tv"></i> 114.ae在线听歌</a>
                 <a href="https://t.me/at114ae" target="_blank" class="special-link"><i class="fab fa-telegram"></i>TG联系</a>
                 <a href="https://www.114.ae/tg" target="_blank" class="special-link"><i class="fab fa-telegram"></i>TG代理</a>
-                <a href="https://wa.me/message/VBL34SHP73GYH1" target="_blank" class="special-link"><i class="fab fa-telegram"></i>Whatapp 联系</a>
+                <a href="https://wa.me/message/VBL34SHP73GYH1" target="_blank" class="special-link"><i class="fab fa-whatsapp"></i>WhatsApp 联系</a>
                 <a href="https://www.114.ae" target="_blank" class="special-link"><i class="fab fa-telegram"></i>微信: jingeng</a>
                 <a href="https://dy.114.ae/dyuuid" target="_blank" class="special-link"><i class="fas fa-server"></i> 跨境客户临时代理使用</a>
-                <a href="https://iptv.114.ae" target="_blank" class="special-link"><i class="fas fa-tv"></i> 24小时佛教的电视台iptv订阅</a> 
-                <a href=" https://i.114.ae" target="_blank" class="special-link"><i class="fas fa-tv"></i>iptv订阅 各种电视台 26.4-10更新</a> 
-                <a href="https://tv.114.ae" target="_blank" class="special-link"><i class="fas fa-tv"></i> 在线看电视网页版</a>     
-                <a href="https://ex.114.ae" target="_blank" class="special-link"><i class="fas fa-tv"></i> 汇率实时换算</a> 
-                <a href="https://ym.114.ae" target="_blank" class="special-link"><i class="fas fa-tv"></i> .ae阿联酋域名实时查询线路1</a>  
-                <a href=" https://www.jingeng.cn/" target="_blank" class="special-link"><i class="fas fa-tv"></i> 金更个人网站</a>
-
-               
+                <a href="https://iptv.114.ae" target="_blank" class="special-link"><i class="fas fa-tv"></i> 24小时佛教的电视台iptv订阅</a>
+                <a href="https://i.114.ae" target="_blank" class="special-link"><i class="fas fa-tv"></i>iptv订阅 各种电视台 26.4-10更新</a>
+                <a href="https://tv.114.ae" target="_blank" class="special-link"><i class="fas fa-tv"></i> 在线看电视网页版</a>
+                <a href="https://ex.114.ae" target="_blank" class="special-link"><i class="fas fa-tv"></i> 汇率实时换算</a>
+                <a href="https://ym.114.ae" target="_blank" class="special-link"><i class="fas fa-tv"></i> .ae阿联酋域名实时查询线路1</a>
+                <a href="https://www.jingeng.cn/" target="_blank" class="special-link"><i class="fas fa-tv"></i> 金更个人网站</a>
             </div>
         </header>
-       <div class="bookmark">
-                <div class="bookmark-header" onclick="toggleBookmark(this)">
+
+        <!-- 三个板块：左右对称排列（桌面三栏并排） -->
+        <div class="bookmarks">
+            <!-- 代理工具合集 -->
+            <div class="bookmark">
+                <div class="bookmark-header collapsed" onclick="toggleBookmark(this)">
                     <div class="bookmark-title">代理工具软件合辑</div>
                     <div class="fold-indicator"></div>
-                    <div class="fold-status"></div>
                 </div>
-                <div class="bookmark-links hidden">
-                    <div class="link-row"><div class="link-item"><a href="http://dy.114.ae/dyuuid">跨境订阅测试</a></div></div>
-                    <div class="link-row"><div class="link-item"><a href="https://github.com/mihomo-party-org/clash-party/releases" target="_blank">clash-party下载地址</a></div></div>
-                    <div class="link-row"><div class="link-item"><a href="https://flclash.cc/download.html" target="_blank">FlClash下载地址</a></div></div>
-                    <div class="link-row"><div class="link-item"><a href="https://clashmi.app/download" target="_blank">ClashMi下载地址</a></div></div>
-                    <div class="link-row"><div class="link-item"><a href="https://clashverge.net/downloads">Clash Verge下载地址</a></div></div>
-                    <div class="link-row"><div class="link-item"><a href="https://github.com/MetaCubeX/ClashMetaForAndroid/releases" target="_blank">ClashMeta下载地址</a></div></div>
-                    <div class="link-row"><div class="link-item"><a href="https://github.com/xiaobaigroup/ClashBox/releases" target="_blank">ClashBox下载地址</a></div></div>
-                    <div class="link-row"><div class="link-item"><a href="https://clashmac.app" target="_blank">ClashMac下载地址</a></div></div>
-                    <div class="link-row"><div class="link-item"><a href="https://github.com/getsurfboard/surfboard/releases" target="_blank">surfboard下载地址</a></div></div>
-                    <div class="link-row"><div class="link-item"><a href="https://v2rayn.2dust.link" target="_blank">v2rayN下载地址</a></div></div>
-                    <div class="link-row"><div class="link-item"><a href="https://v2rayng.2dust.link" target="_blank">v2rayNG下载地址</a></div></div>
-                    <div class="link-row"><div class="link-item"><a href="https://github.com/SagerNet/sing-box/releases" target="_blank">singbox下载地址</a></div></div>
-                    <div class="link-row"><div class="link-item"><a href="https://karing.app/download" target="_blank">Karing下载地址</a></div></div>
-                    <div class="link-row"><div class="link-item"><a href="https://hiddify.com" target="_blank">Hiddify下载地址</a></div></div>
-                    <div class="link-row"><div class="link-item"><a href="https://github.com/MatsuriDayo/NekoBoxForAndroid/releases" target="_blank">NekoBox下载地址</a></div></div>
-                    <div class="link-row"><div class="link-item"><a href="https://github.com/appshubcc/Bettbox/releases" target="_blank">Bettbox下载地址</a></div></div>
-                    <div class="link-row"><div class="link-item"><a href="https://github.com/dyhkwong/Exclave/releases" target="_blank">Exclave下载地址</a></div></div>
+                <div class="bookmark-links collapsed">
+                    <div class="link-item"><a href="http://dy.114.ae/dyuuid" target="_blank">跨境订阅测试</a></div>
+                    <div class="link-item"><a href="https://github.com/mihomo-party-org/clash-party/releases" target="_blank">clash-party下载地址</a></div>
+                    <div class="link-item"><a href="https://flclash.cc/download.html" target="_blank">FlClash下载地址</a></div>
+                    <div class="link-item"><a href="https://clashmi.app/download" target="_blank">ClashMi下载地址</a></div>
+                    <div class="link-item"><a href="https://clashverge.net/downloads" target="_blank">Clash Verge下载地址</a></div>
+                    <div class="link-item"><a href="https://github.com/MetaCubeX/ClashMetaForAndroid/releases" target="_blank">ClashMeta下载地址</a></div>
+                    <div class="link-item"><a href="https://github.com/xiaobaigroup/ClashBox/releases" target="_blank">ClashBox下载地址</a></div>
+                    <div class="link-item"><a href="https://clashmac.app" target="_blank">ClashMac下载地址</a></div>
+                    <div class="link-item"><a href="https://github.com/getsurfboard/surfboard/releases" target="_blank">surfboard下载地址</a></div>
+                    <div class="link-item"><a href="https://v2rayn.2dust.link" target="_blank">v2rayN下载地址</a></div>
+                    <div class="link-item"><a href="https://v2rayng.2dust.link" target="_blank">v2rayNG下载地址</a></div>
+                    <div class="link-item"><a href="https://github.com/SagerNet/sing-box/releases" target="_blank">singbox下载地址</a></div>
+                    <div class="link-item"><a href="https://karing.app/download" target="_blank">Karing下载地址</a></div>
+                    <div class="link-item"><a href="https://hiddify.com" target="_blank">Hiddify下载地址</a></div>
+                    <div class="link-item"><a href="https://github.com/MatsuriDayo/NekoBoxForAndroid/releases" target="_blank">NekoBox下载地址</a></div>
+                    <div class="link-item"><a href="https://github.com/appshubcc/Bettbox/releases" target="_blank">Bettbox下载地址</a></div>
+                    <div class="link-item"><a href="https://github.com/dyhkwong/Exclave/releases" target="_blank">Exclave下载地址</a></div>
                 </div>
             </div>
 
-    <!-- 底部按钮 -->
- <div class="footer">
-    © 2026 立足海外. 服务于海外华人.止于知足常乐  广告 👉 微信： jingeng
-</div>
+            <!-- 设定A -->
+            <div class="bookmark">
+                <div class="bookmark-header collapsed" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">设定A</div>
+                    <div class="fold-indicator"></div>
+                </div>
+                <div class="bookmark-links collapsed">
+                    <div class="link-item"><a href="https://www.114.ae" target="_blank">设定A - 测试链接1（后期替换）</a></div>
+                </div>
+            </div>
+
+            <!-- 设定B -->
+            <div class="bookmark">
+                <div class="bookmark-header collapsed" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">设定B</div>
+                    <div class="fold-indicator"></div>
+                </div>
+                <div class="bookmark-links collapsed">
+                    <div class="link-item"><a href="https://www.114.ae" target="_blank">设定B - 测试链接1（后期替换）</a></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- footer：语言按钮 + 版权（左右对称、居中） -->
+        <div class="footer">
+            © 2026 立足海外. 服务于海外华人. 止于知足常乐<br>
+            广告 👉 微信：jingeng | TG：@at114ae | WhatsApp 联系<br>
+            
+            <!-- 语言切换按钮移到这里 -->
+            <div class="language-switcher">
+                <a href="#" onclick="switchLang('zh')" class="lang-btn"><i class="fas fa-language"></i> 中文</a>
+                <a href="#" onclick="switchLang('en')" class="lang-btn"><i class="fas fa-language"></i> English</a>
+                <a href="#" onclick="switchLang('ar')" class="lang-btn"><i class="fas fa-language"></i> العربية</a>
+            </div>
+
+            <div class="footer-multi">
+                <span>English: © 2026 Overseas-based. Serving overseas Chinese. Be content with what you have.<br>Ad 👉 WeChat: jingeng | TG: @at114ae | WhatsApp Contact</span>
+                <span>العربية: © 2026 مقرها في الخارج. خدمة الصينيين في الخارج. كن راضياً بما لديك.<br>إعلان 👉 وي تشات: jingeng | تي جي: @at114ae | واتساب اتصال</span>
+            </div>
+            <br>（不挨批评，知足常乐 😂）
+        </div>
+    </div>
+
     <script>
         window.addEventListener('scroll', function() {
-            if (window.scrollY > 50) {
-                document.body.classList.add('scrolled');
-            } else {
-                document.body.classList.remove('scrolled');
-            }
+            document.body.classList.toggle('scrolled', window.scrollY > 50);
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-            const musicToggle = document.getElementById('musicToggle');
-            const musicIcon = musicToggle.querySelector('i');
-            const bgMusic = document.getElementById('bgMusic');
-            
-            function tryAutoPlay() {
-                bgMusic.play().then(() => {
-                    musicIcon.classList.replace('fa-music', 'fa-volume-up');
-                    localStorage.setItem('music', 'on');
-                }).catch(e => {
-                    document.addEventListener('click', function firstInteraction() {
-                        bgMusic.play();
-                        musicIcon.classList.replace('fa-music', 'fa-volume-up');
-                        localStorage.setItem('music', 'on');
-                        document.removeEventListener('click', firstInteraction);
-                    }, { once: true });
-                });
-            }
-            
-            const savedMusic = localStorage.getItem('music');
-            if (savedMusic !== 'off') {
-                tryAutoPlay();
-            } else {
-                musicIcon.classList.replace('fa-volume-up', 'fa-music');
-            }
-            
-            musicToggle.addEventListener('click', function() {
-                if (bgMusic.paused) {
-                    bgMusic.play();
-                    musicIcon.classList.replace('fa-music', 'fa-volume-up');
-                    localStorage.setItem('music', 'on');
-                } else {
-                    bgMusic.pause();
-                    musicIcon.classList.replace('fa-volume-up', 'fa-music');
-                    localStorage.setItem('music', 'off');
-                }
-            });
-            
             const marquee = document.querySelector('.marquee');
-            const marqueeContent = document.querySelector('.marquee-content');
-            const clone = marqueeContent.cloneNode(true);
-            marquee.appendChild(clone);
-            
+            if (marquee) {
+                const content = document.querySelector('.marquee-content');
+                marquee.appendChild(content.cloneNode(true));
+            }
             initializeBookmarks();
         });
-        
-        function toggleBookmark(headerElement) {
-            const bookmark = headerElement.closest('.bookmark');
+
+        function toggleBookmark(header) {
+            const bookmark = header.closest('.bookmark');
             const links = bookmark.querySelector('.bookmark-links');
-            
-            headerElement.classList.toggle('collapsed');
-            links.classList.toggle('collapsed');
-            
-            const bookmarkId = Array.from(bookmark.parentElement.children).indexOf(bookmark);
-            const isCollapsed = headerElement.classList.contains('collapsed');
-            saveBookmarkState(bookmarkId, isCollapsed);
+            const isCollapsed = header.classList.toggle('collapsed');
+            links.classList.toggle('collapsed', isCollapsed);
+
+            const index = Array.from(document.querySelectorAll('.bookmark')).indexOf(bookmark);
+            localStorage.setItem(`bookmark_${index}`, isCollapsed);
         }
 
         function initializeBookmarks() {
-            const bookmarks = document.querySelectorAll('.bookmark');
-            
-            bookmarks.forEach((bookmark, index) => {
-                const isCollapsed = localStorage.getItem(`bookmark_${index}`) === 'true' || 
-                                   localStorage.getItem(`bookmark_${index}`) === null;
+            document.querySelectorAll('.bookmark').forEach((bookmark, i) => {
+                const key = `bookmark_${i}`;
+                const saved = localStorage.getItem(key);
+                const shouldCollapse = saved === null || saved === 'true';
                 
                 const header = bookmark.querySelector('.bookmark-header');
                 const links = bookmark.querySelector('.bookmark-links');
                 
-                if (isCollapsed) {
+                if (shouldCollapse) {
                     header.classList.add('collapsed');
                     links.classList.add('collapsed');
                 }
-                
-                if (localStorage.getItem(`bookmark_${index}`) === null) {
-                    localStorage.setItem(`bookmark_${index}`, 'true');
-                }
+                if (saved === null) localStorage.setItem(key, 'true');
             });
         }
-        
-        function saveBookmarkState(index, isCollapsed) {
-            localStorage.setItem(`bookmark_${index}`, isCollapsed);
+
+        function switchLang(lang) {
+            if (lang === 'zh') alert('当前已是中文版本 👍');
+            else if (lang === 'en') alert('English version coming soon! （英文版开发中）');
+            else if (lang === 'ar') alert('النسخة العربية قيد التطوير! （阿拉伯文版开发中）');
         }
     </script>
 </body>
