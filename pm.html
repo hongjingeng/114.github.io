@@ -1349,7 +1349,7 @@
                 }
                 out.innerHTML = "<div class='loading'>查询中...</div>";
                 try {
-                    const res = await fetch("https://ym.114.ae/api/domain-check", {
+                    const res = await fetch("/api/domain-check", {
                         method: "POST",
                         headers: {"Content-Type": "application/json"},
                         body: JSON.stringify({
