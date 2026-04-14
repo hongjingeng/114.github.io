@@ -144,10 +144,15 @@
         }
 
         .avatar {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
-            object-fit: cover;
+            font-size: 3.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1e3c72;
+            color: #60a5fa;
             border: 4px solid rgba(255,255,255,0.6);
             box-shadow: 0 4px 20px rgba(0,0,0,0.25);
             transition: transform 0.2s;
@@ -174,12 +179,11 @@
             font-size: 1rem;
         }
 
-        .service-selector {
+        .proxy-select {
             margin: 15px 0 20px;
             text-align: center;
         }
 
-        .service-selector select,
         .proxy-select select {
             padding: 10px 18px;
             border-radius: 50px;
@@ -257,6 +261,13 @@
             margin-bottom: 20px;
             padding-left: 10px;
             border-left: 4px solid var(--accent-color);
+        }
+
+        .source-stats {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
         }
 
         .results-grid {
@@ -497,6 +508,15 @@
             color: var(--text-primary);
         }
 
+        .modal-footer {
+            padding: 15px 25px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
         .close-btn {
             background: var(--tag-bg);
             color: var(--text-primary);
@@ -530,21 +550,6 @@
             transform: scale(1.05);
         }
 
-        .email-avatar {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            margin: 15px auto;
-            border: 4px solid rgba(255,255,255,0.6);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-            font-size: 3.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #1e3c72;
-            color: #60a5fa;
-        }
-
         @media (max-width: 640px) {
             .container { padding: 80px 16px 30px; }
             .search-header, .results-container { border-radius: 24px; padding: 24px 20px; }
@@ -553,7 +558,7 @@
             .search-btn { min-width: 100%; padding: 14px 20px; }
             .results-grid { grid-template-columns: 1fr; gap: 16px; }
             .theme-toggle { top: 65px; right: 15px; width: 40px; height: 40px; font-size: 20px; }
-            .avatar { width: 65px; height: 65px; }
+            .avatar { width: 75px; height: 75px; font-size: 3rem; }
             .tab { padding: 10px 24px; font-size: 1rem; }
         }
     </style>
@@ -584,20 +589,18 @@
         <!-- 全网盘搜 Tab -->
         <div id="search-content">
             <div class="search-header">
+                <!-- LOGO 与临时邮箱完全一致（使用相同 emoji 风格） -->
                 <div class="avatar-wrapper">
-                    <img src="https://mpimg.cn/view.php/f28da3eac8f392e9fa2ba91723b2bf4c.png" 
-                         alt="全网盘搜" 
-                         class="avatar"
-                         onerror="this.onerror=null; this.src='https://via.placeholder.com/80x80?text=🔍'">
+                    <div class="avatar">🛸</div>
                 </div>
                 <h1>全网盘搜</h1>
                 <p class="sub">🚀 114.ae跨境 · 多代理加速 · 智能缓存 · 瞬时响应</p>
 
-                <!-- 更多网盘代理选项（新增“无代理”） -->
-                <div class="proxy-select service-selector">
+                <!-- 代理选择（默认无代理） -->
+                <div class="proxy-select">
                     <select id="proxySelect" onchange="changeProxy()">
-                        <option value="none">🌐 无代理（直接访问 · 最快）</option>
-                        <option value="https://proxy.api.030101.xyz/" selected>🚀 推荐代理1（030101 · 最稳定）</option>
+                        <option value="none" selected>🌐 无代理（直接访问 · 最快）</option>
+                        <option value="https://proxy.api.030101.xyz/">🚀 推荐代理1（030101 · 最稳定）</option>
                         <option value="https://corsproxy.io/?">🌐 代理2（Corsproxy · 备用）</option>
                         <option value="https://thingproxy.freeboard.io/fetch/">⚡ 代理3（Freeboard · 极速）</option>
                     </select>
@@ -611,31 +614,26 @@
             </div>
 
             <div class="results-container">
-                <div class="results-title">📦 搜索结果（多代理加速 · 实时缓存）</div>
+                <div class="results-title">📦 搜索结果（按网盘来源自动分类统计）</div>
                 <div id="resultsContainer" class="results-grid">
                     <div class="empty-state">
                         🚀 114.ae跨境代理加速版搜索站已就绪<br><br>
-                        ✅ 多代理 + 无代理模式已启用<br><br>
-                        💡 试试搜索「死神来了」「短剧」「蜜语纪」等关键词
+                        ✅ 默认无代理 + 多代理可选<br><br>
+                        💡 试试搜索「死神来了」「短剧」「蜜语纪」「哥谭」等关键词
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 临时邮箱 Tab -->
+        <!-- 临时邮箱 Tab（仅保留 vmail.dev） -->
         <div id="email-content" style="display: none;">
             <div class="search-header">
-                <div class="email-avatar">🛸</div>
+                <div class="avatar-wrapper">
+                    <div class="avatar">🛸</div>
+                </div>
                 <h1 style="background: linear-gradient(135deg, #00b4ff, #00ff9d);">114.ae跨境</h1>
                 <p class="sub">临时邮箱 · 阅后即焚 · 支持验证码 · 防骚扰</p>
-
-                <div class="service-selector">
-                    <select id="serviceSelect" onchange="changeService()">
-                        <option value="vmail">vmail.dev（主推荐，可靠接收）</option>
-                        <option value="guerrilla">Guerrilla Mail（老牌稳定）</option>
-                        <option value="1secmail">1SecMail（快速接收）</option>
-                    </select>
-                </div>
+                <p style="color: var(--accent-color); font-weight: 600; margin: 10px 0 20px;">✅ vmail.dev（主推荐，可靠接收）</p>
 
                 <div id="addr" class="mail-display">正在自动生成邮箱...</div>
 
@@ -654,14 +652,18 @@
         </div>
     </div>
 
-    <!-- 邮件详情弹窗（全局） -->
+    <!-- 邮件详情弹窗 -->
     <div id="mailModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <span id="modalSubject" style="font-weight: bold; font-size: 1.1rem;">邮件详情</span>
                 <button class="close-btn" onclick="closeMail()">关闭</button>
             </div>
-            <div id="modalBody" class="modal-body">加载详情中...</div>
+            <div id="modalBody" class="modal-body"></div>
+            <div class="modal-footer">
+                <button onclick="copyEmailContent()" class="btn btn-s">📋 复制邮件全文</button>
+                <button onclick="forwardEmail()" class="btn btn-s">➡️ 转发此邮件</button>
+            </div>
         </div>
     </div>
 
@@ -674,40 +676,32 @@
     <script>
         (function() {
             // ==================== 全局配置 ====================
-            let currentTab = 0;                     // 0=网盘搜索  1=临时邮箱
-            let currentProxyBase = 'https://proxy.api.030101.xyz/';   // 默认代理
-            let currentProxyName = '🚀 推荐代理1（030101 · 最稳定）';
+            let currentTab = 0;
+            let currentProxyBase = 'none';
+            let currentProxyName = '🌐 无代理（直接访问 · 最快）';
 
             const ORIGIN_API = 'https://so.252035.xyz/api/search?kw=';
             const cache = new Map();
 
-            // ==================== 网盘搜索核心函数 ====================
+            // ==================== 网盘搜索核心 ====================
             function buildApiUrl(keyword) {
                 const encodedKw = encodeURIComponent(keyword);
                 const originFull = ORIGIN_API + encodedKw;
-
-                if (currentProxyBase === 'none') {
-                    return originFull;                              // 无代理模式
-                } else if (currentProxyBase.includes('corsproxy.io')) {
-                    return currentProxyBase + encodeURIComponent(originFull);
-                } else if (currentProxyBase.includes('thingproxy')) {
-                    return currentProxyBase + encodeURIComponent(originFull);
-                } else {
-                    return currentProxyBase + originFull;           // 030101 前缀模式
-                }
+                if (currentProxyBase === 'none') return originFull;
+                if (currentProxyBase.includes('corsproxy.io')) return currentProxyBase + encodeURIComponent(originFull);
+                if (currentProxyBase.includes('thingproxy')) return currentProxyBase + encodeURIComponent(originFull);
+                return currentProxyBase + originFull;
             }
 
-            function changeProxy() {
+            window.changeProxy = function() {
                 const select = document.getElementById('proxySelect');
                 currentProxyBase = select.value;
                 currentProxyName = select.options[select.selectedIndex].text;
-                
-                // 修复重复文字问题
                 const stats = document.getElementById('statsArea');
-                stats.innerHTML = `✨ 已切换至 <strong>${currentProxyName}</strong> · 代理加速`;
-            }
+                stats.innerHTML = `✨ 已切换至 <strong>${currentProxyName}</strong>`;
+            };
 
-            async function fetchWithTimeout(url, timeout = 8000, retries = 1) {
+            async function fetchWithTimeout(url, timeout = 8000, retries = 2) {
                 for (let i = 0; i <= retries; i++) {
                     try {
                         const controller = new AbortController();
@@ -721,38 +715,34 @@
                         return await response.json();
                     } catch (err) {
                         if (i === retries) throw err;
-                        await new Promise(r => setTimeout(r, 500));
+                        await new Promise(r => setTimeout(r, 600));
                     }
                 }
+            }
+
+            function getDiskType(url) {
+                if (!url) return '🔗 未知';
+                if (url.startsWith('magnet:')) return '🧲 磁力链接';
+                if (url.includes('115.com') || url.includes('115yun')) return '📦 115网盘';
+                if (url.includes('pan.baidu.com')) return '📀 百度网盘';
+                if (url.includes('aliyundrive.com')) return '☁️ 阿里云盘';
+                if (url.includes('quark.cn')) return '⚛️ 夸克网盘';
+                if (url.includes('xunlei.com')) return '⚡ 迅雷网盘';
+                return '🔗 其他网盘';
+            }
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
             }
 
             function formatDate(dateStr) {
                 if (!dateStr || dateStr.startsWith('0001-01-01')) return '时间未知';
                 try {
-                    const date = new Date(dateStr);
-                    if (isNaN(date.getTime())) return dateStr.split('T')[0];
-                    return `${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2,'0')}-${date.getDate().toString().padStart(2,'0')}`;
-                } catch(e) {
-                    return dateStr;
-                }
-            }
-
-            function escapeHtml(str) {
-                if (!str) return '';
-                return str.replace(/[&<>]/g, function(m) {
-                    if (m === '&') return '&amp;';
-                    if (m === '<') return '&lt;';
-                    if (m === '>') return '&gt;';
-                    return m;
-                });
-            }
-
-            function getDiskType(url) {
-                if (url.includes('pan.baidu.com')) return '📀 百度网盘';
-                if (url.includes('aliyundrive.com')) return '☁️ 阿里云盘';
-                if (url.includes('quark.cn')) return '⚛️ 夸克网盘';
-                if (url.includes('xunlei.com')) return '⚡ 迅雷网盘';
-                return '🔗 网盘链接';
+                    const d = new Date(dateStr);
+                    if (isNaN(d.getTime())) return dateStr.split('T')[0];
+                    return `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getDate().toString().padStart(2,'0')}`;
+                } catch(e) { return dateStr; }
             }
 
             function renderCard(item) {
@@ -791,22 +781,44 @@
 
             function showError(msg) {
                 const container = document.getElementById('resultsContainer');
-                container.innerHTML = `<div class="error-state">⚠️ 请求失败: ${escapeHtml(msg)}<br><br>💡 提示: 可切换其他代理或尝试“无代理”模式重试</div>`;
+                container.innerHTML = `<div class="error-state">⚠️ 请求失败: ${escapeHtml(msg)}<br><br>💡 提示: 可切换代理或使用“无代理”模式重试</div>`;
                 document.getElementById('statsArea').innerText = `❌ 请求失败: ${msg}`;
             }
 
             function showEmpty(keyword) {
                 const container = document.getElementById('resultsContainer');
-                container.innerHTML = `<div class="empty-state">😞 未找到关于 “${escapeHtml(keyword)}” 的资源<br>试试其他关键词 (例如: 蜜语纪、短剧、死神来了)</div>`;
+                container.innerHTML = `<div class="empty-state">😞 未找到关于 “${escapeHtml(keyword)}” 的资源<br>试试其他关键词</div>`;
                 document.getElementById('statsArea').innerText = `🔍 没有找到与 “${keyword}” 相关的结果`;
             }
 
             function renderResults(allResults, total, kw) {
                 const container = document.getElementById('resultsContainer');
                 container.innerHTML = '';
+
+                // 按网盘来源分类统计
+                const counts = {};
+                allResults.forEach(item => {
+                    const type = getDiskType(item.url || '#');
+                    counts[type] = (counts[type] || 0) + 1;
+                });
+
+                const statsDiv = document.createElement('div');
+                statsDiv.className = 'source-stats';
+                Object.entries(counts).forEach(([type, count]) => {
+                    const badge = document.createElement('span');
+                    badge.className = 'badge';
+                    badge.style.fontSize = '0.9rem';
+                    badge.style.padding = '6px 14px';
+                    badge.innerHTML = `${type} <strong>(${count})</strong>`;
+                    statsDiv.appendChild(badge);
+                });
+                container.appendChild(statsDiv);
+
+                // 渲染卡片
                 allResults.forEach(item => {
                     container.insertAdjacentHTML('beforeend', renderCard(item));
                 });
+
                 if (allResults.length > 30) {
                     const tip = document.createElement('div');
                     tip.className = 'stats';
@@ -820,8 +832,7 @@
             async function searchResources(keyword) {
                 if (!keyword || keyword.trim() === '') {
                     document.getElementById('statsArea').innerText = '⚠️ 请输入搜索关键词';
-                    const container = document.getElementById('resultsContainer');
-                    container.innerHTML = `<div class="empty-state">📌 请输入电影/剧集/资源名称</div>`;
+                    document.getElementById('resultsContainer').innerHTML = `<div class="empty-state">📌 请输入电影/剧集/资源名称</div>`;
                     return;
                 }
                 const kw = keyword.trim();
@@ -833,13 +844,12 @@
                     return;
                 }
                 
-                // 修复重复文字 & 清晰显示当前代理
                 document.getElementById('statsArea').innerHTML = `🚀 ${currentProxyName} 请求中 · 关键词: ${kw}`;
                 showLoading();
                 
                 try {
                     const apiUrl = buildApiUrl(kw);
-                    const data = await fetchWithTimeout(apiUrl, 8000, 2);   // 增加一次重试
+                    const data = await fetchWithTimeout(apiUrl, 8000, 2);
                     
                     if (data.code !== 0 || !data.data) {
                         throw new Error(data.message || '接口返回数据异常');
@@ -848,9 +858,7 @@
                     const mergedByType = data.data.merged_by_type || {};
                     let allResults = [];
                     for (let type in mergedByType) {
-                        if (Array.isArray(mergedByType[type])) {
-                            allResults = allResults.concat(mergedByType[type]);
-                        }
+                        if (Array.isArray(mergedByType[type])) allResults = allResults.concat(mergedByType[type]);
                     }
                     
                     if (allResults.length === 0) {
@@ -868,7 +876,7 @@
                 } catch (err) {
                     console.error('搜索出错:', err);
                     if (err.name === 'AbortError') {
-                        showError('请求超时 (8秒)，请切换代理或尝试“无代理”模式');
+                        showError('请求超时 (8秒)，请切换代理或使用“无代理”模式');
                     } else {
                         showError(err.message || '网络错误或代理不可用');
                     }
@@ -876,28 +884,20 @@
             }
 
             function preloadHotKeywords() {
-                const hotWords = ['短剧', '电影', '死神来了', '电视剧', '4K'];
+                const hotWords = ['短剧', '电影', '死神来了', '电视剧', '4K', '哥谭'];
                 hotWords.forEach(kw => {
-                    if (!cache.has(kw)) {
-                        fetchWithTimeout(buildApiUrl(kw), 12000, 0).catch(() => {});
-                    }
+                    if (!cache.has(kw)) fetchWithTimeout(buildApiUrl(kw), 12000, 0).catch(() => {});
                 });
             }
 
-            // ==================== 临时邮箱核心函数 ====================
-            let currentService = "vmail";
-            let currentEmailProxy = "https://proxy.api.030101.xyz/https://vmail.dev/api/v1";
-            const API_KEY = 'vmail_at6AmSu4dEkuJG4bafc8qhSqBctCMW9q';
+            // ==================== 临时邮箱（仅 vmail.dev） ====================
             let mid = null;
             let isInitializing = false;
             let emailRefreshInterval = null;
+            const currentEmailProxy = "https://proxy.api.030101.xyz/https://vmail.dev/api/v1";
+            const API_KEY = 'vmail_at6AmSu4dEkuJG4bafc8qhSqBctCMW9q';
 
-            function changeService() {
-                currentService = document.getElementById('serviceSelect').value;
-                initEmail();
-            }
-
-            async function initEmail(retries = 3) {
+            window.initEmail = async function(retries = 3) {
                 if (isInitializing && retries === 3) return;
                 isInitializing = true;
                 const btn = document.getElementById('refreshBtn');
@@ -906,73 +906,50 @@
                 btn.disabled = true;
 
                 try {
-                    if (currentService === "vmail") {
-                        const controller = new AbortController();
-                        const timeoutId = setTimeout(() => controller.abort(), 10000);
-                        const r = await fetch(currentEmailProxy + '/mailboxes', {
-                            method: 'POST',
-                            headers: {'X-API-Key': API_KEY, 'Content-Type': 'application/json'},
-                            signal: controller.signal
-                        });
-                        clearTimeout(timeoutId);
-                        if (!r.ok) throw new Error('Proxy API Error');
-                        const {data} = await r.json();
-                        mid = data.id;
-                        addrEl.innerText = data.address;
-                    } else if (currentService === "guerrilla") {
-                        const data = await (await fetch('https://api.guerrillamail.com/ajax.php?f=get_email_address')).json();
-                        addrEl.innerText = data.email_addr;
-                        mid = null;
-                    } else if (currentService === "1secmail") {
-                        const data = await (await fetch('https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1')).json();
-                        addrEl.innerText = data[0];
-                        mid = null;
-                    }
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 10000);
+                    const r = await fetch(currentEmailProxy + '/mailboxes', {
+                        method: 'POST',
+                        headers: {'X-API-Key': API_KEY, 'Content-Type': 'application/json'},
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+                    if (!r.ok) throw new Error('Proxy API Error');
+                    const {data} = await r.json();
+                    mid = data.id;
+                    addrEl.innerText = data.address;
                     document.getElementById('list').innerHTML = '<div style="text-align: center; padding: 60px; color: var(--text-secondary);">🚀 邮箱已就绪，正在监听新邮件...</div>';
                 } catch(e) {
                     if (retries > 0) {
-                        setTimeout(() => initEmail(retries - 1), 1000);
+                        setTimeout(() => window.initEmail(retries - 1), 1000);
                     } else {
                         addrEl.innerText = "⚠️ 生成失败，请点击更换地址重试";
                     }
                 } finally {
-                    if (mid || currentService !== "vmail") isInitializing = false;
+                    isInitializing = false;
                     btn.disabled = false;
                 }
-            }
+            };
 
-            async function refreshEmail() {
-                if (!mid && currentService === "vmail") return;
+            window.refreshEmail = async function() {
+                if (!mid) return;
                 try {
-                    let data = [];
+                    const r = await fetch(currentEmailProxy + `/mailboxes/${mid}/messages`, {headers:{'X-API-Key':API_KEY}});
+                    const res = await r.json();
+                    const data = res.data || [];
                     const listEl = document.getElementById('list');
-
-                    if (currentService === "vmail" && mid) {
-                        const r = await fetch(currentEmailProxy + `/mailboxes/${mid}/messages`, {headers:{'X-API-Key':API_KEY}});
-                        const res = await r.json();
-                        data = res.data || [];
-                    } else if (currentService === "1secmail") {
-                        const addr = document.getElementById('addr').innerText;
-                        if (addr.includes('@')) {
-                            const [login, domain] = addr.split('@');
-                            const res = await fetch(`https://www.1secmail.com/api/v1/?action=getMessages&login=${login}&domain=${domain}`);
-                            data = await res.json() || [];
-                        }
-                    }
-
                     if (data.length === 0) {
                         listEl.innerHTML = '<div style="text-align: center; padding: 60px; color: var(--text-secondary);">暂无新邮件...</div>';
                         return;
                     }
-
                     listEl.innerHTML = data.map(m => `
-                        <div class="msg-item" onclick="viewMail('${m.id || m.mail_id}', '${escapeHtml(m.subject || '无主题')}')">
+                        <div class="msg-item" onclick="viewMail('${m.id}', '${escapeHtml(m.subject || '无主题')}')">
                             <div class="msg-meta">来自: ${escapeHtml(m.from ? (m.from.address || m.from) : '未知')} | ${new Date(m.receivedAt || m.date).toLocaleTimeString('zh-CN')}</div>
                             <div class="msg-subject">${escapeHtml(m.subject || '（无主题）')}</div>
                         </div>
                     `).join('');
                 } catch(e) {}
-            }
+            };
 
             window.viewMail = async function(msgId, subject) {
                 const modal = document.getElementById('mailModal');
@@ -983,28 +960,33 @@
                 modal.style.display = 'flex';
 
                 try {
-                    if (currentService === "vmail" && mid) {
-                        const r = await fetch(currentEmailProxy + `/mailboxes/${mid}/messages/${msgId}`, {headers:{'X-API-Key':API_KEY}});
-                        const {data} = await r.json();
-                        mBody.innerHTML = data.html || `<pre style="white-space:pre-wrap;">${data.text || '无正文'}</pre>`;
-                    } else {
-                        mBody.innerHTML = '当前服务暂不支持查看详情';
-                    }
+                    const r = await fetch(currentEmailProxy + `/mailboxes/${mid}/messages/${msgId}`, {headers:{'X-API-Key':API_KEY}});
+                    const {data} = await r.json();
+                    mBody.innerHTML = data.html || `<pre style="white-space:pre-wrap; font-family: monospace;">${data.text || '无正文'}</pre>`;
                 } catch(e) {
                     mBody.innerHTML = '加载失败，请稍后重试';
                 }
             };
 
+            window.copyEmailContent = function() {
+                const content = document.getElementById('modalBody').innerText;
+                navigator.clipboard.writeText(content).then(() => alert('✅ 邮件全文已复制到剪贴板'));
+            };
+
+            window.forwardEmail = function() {
+                const content = document.getElementById('modalBody').innerText;
+                navigator.clipboard.writeText(content).then(() => alert('✅ 已复制，可直接粘贴转发'));
+            };
+
             window.closeMail = function() {
                 document.getElementById('mailModal').style.display = 'none';
+                window.refreshEmail();   // 关闭即刷新收件箱 = 阅后即焚效果
             };
 
             window.copyMail = function() {
                 const val = document.getElementById('addr').innerText;
                 if (val.includes('@')) {
-                    navigator.clipboard.writeText(val).then(() => {
-                        alert('✅ 复制成功！刷新页面后地址将失效');
-                    });
+                    navigator.clipboard.writeText(val).then(() => alert('✅ 复制成功！刷新页面后地址将失效'));
                 } else {
                     alert('地址尚未准备好，请稍等或重试');
                 }
@@ -1018,13 +1000,11 @@
                 document.getElementById('search-content').style.display = n === 0 ? 'block' : 'none';
                 document.getElementById('email-content').style.display = n === 1 ? 'block' : 'none';
 
-                // 首次切换到邮箱时初始化
                 if (n === 1 && !window.emailInitialized) {
                     window.emailInitialized = true;
-                    initEmail();
-                    // 启动每5秒刷新
+                    window.initEmail();
                     if (emailRefreshInterval) clearInterval(emailRefreshInterval);
-                    emailRefreshInterval = setInterval(refreshEmail, 5000);
+                    emailRefreshInterval = setInterval(window.refreshEmail, 5000);
                 }
             };
 
@@ -1046,28 +1026,22 @@
             const searchBtn = document.getElementById('searchBtn');
 
             searchBtn.addEventListener('click', () => searchResources(searchInput.value));
-            searchInput.addEventListener('keypress', (e) => {
+            searchInput.addEventListener('keypress', e => {
                 if (e.key === 'Enter') {
                     e.preventDefault();
                     searchResources(searchInput.value);
                 }
             });
 
-            // ==================== 页面加载初始化 ====================
+            // ==================== 页面加载 ====================
             window.addEventListener('load', () => {
                 preloadHotKeywords();
                 if (localStorage.getItem('theme') === 'dark') {
                     document.body.classList.add('dark');
                     themeToggle.textContent = '☀️';
                 }
-                // 邮箱初始化标记
                 window.emailInitialized = false;
             });
-
-            // 全局暴露邮箱需要的函数（供 onclick 使用）
-            window.initEmail = initEmail;
-            window.changeService = changeService;
-            window.refreshEmail = refreshEmail;
         })();
     </script>
 </body>
