@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>114.ae - 全网盘搜 & 临时邮箱 & 汇率查询</title>
+    <title>114.ae - 全网盘搜 & 临时邮箱 & 汇率 & 域名查询</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
@@ -99,14 +99,14 @@
 
         .tab-bar {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             justify-content: center;
             margin-bottom: 24px;
             flex-wrap: wrap;
         }
 
         .tab {
-            padding: 12px 28px;
+            padding: 12px 24px;
             border-radius: 60px;
             border: 2px solid var(--border-color);
             background: var(--card-bg);
@@ -506,6 +506,7 @@
             overflow-y: auto;
             padding: 25px;
             color: var(--text-primary);
+            line-height: 1.6;
         }
 
         .modal-footer {
@@ -550,7 +551,7 @@
             transform: scale(1.05);
         }
 
-        /* 汇率查询样式（已合并优化） */
+        /* 汇率查询样式 */
         .exchange-top-bar {
             width: 100%;
             max-width: 420px;
@@ -595,6 +596,7 @@
             border-radius: 14px;
             cursor: pointer;
             margin-bottom: 12px;
+            transition: transform 0.2s;
         }
         .exchange-card .btn-primary {
             background: linear-gradient(135deg, #3b82f6, #60a5fa);
@@ -624,6 +626,7 @@
             font-weight: bold;
             text-align: center;
             height: 50px;
+            transition: all 0.4s;
         }
         .exchange-card .source {
             margin-top: 10px;
@@ -631,18 +634,99 @@
             font-size: 12px;
             color: var(--text-secondary);
         }
-        .exchange-card canvas { margin-top: 20px; }
+        .exchange-card canvas { margin-top: 20px; max-height: 280px; }
+
+        /* 域名查询样式（已适配全局主题） */
+        .domain-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.1);
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .domain-container h1 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            background: none;
+            -webkit-text-fill-color: var(--text-primary);
+        }
+        .domain-container input {
+            width: 70%;
+            padding: 14px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-primary);
+        }
+        .domain-container button {
+            padding: 14px 22px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background: var(--accent-color);
+            color: white;
+            cursor: pointer;
+            margin: 6px;
+        }
+        .domain-container .lang-btn {
+            display: inline-block;
+            cursor: pointer;
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin: 4px;
+        }
+        .domain-container .lang-btn.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+        .domain-container table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .domain-container th, .domain-container td {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+        }
+        .domain-container .available { color: #ef4444; font-weight: bold; }
+        .domain-container .not-available { color: #10b981; font-weight: bold; }
+        .domain-container .marquee {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+        }
+        .domain-container .contact-links {
+            margin-top: 20px;
+            font-size: 15px;
+        }
+        .domain-container .contact-links a {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .domain-container .copyright {
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
 
         @media (max-width: 640px) {
             .container { padding: 80px 16px 30px; }
-            .search-header, .results-container { border-radius: 24px; padding: 24px 20px; }
+            .search-header, .results-container, .domain-container { border-radius: 24px; padding: 24px 20px; }
             h1 { font-size: 1.85rem; }
             .search-input { min-width: 100%; font-size: 1rem; padding: 14px 20px; }
             .search-btn { min-width: 100%; padding: 14px 20px; }
             .results-grid { grid-template-columns: 1fr; gap: 16px; }
             .theme-toggle { top: 65px; right: 15px; width: 40px; height: 40px; font-size: 20px; }
             .avatar { width: 75px; height: 75px; font-size: 3rem; }
-            .tab { padding: 10px 22px; font-size: 1rem; }
+            .tab { padding: 10px 20px; font-size: 0.95rem; }
+            .domain-container input { width: 90%; }
         }
     </style>
 </head>
@@ -651,10 +735,10 @@
     <div class="marquee-container">
         <div class="marquee">
             <a href="https://www.114.ae" target="_blank" rel="noopener noreferrer">
-                🚀 www.114.ae跨境 · 全网盘搜 + 临时邮箱 + 汇率查询 · 隐私保护 · 代理加速 · 阅后即焚
+                🚀 www.114.ae跨境 · 全网盘搜 + 临时邮箱 + 汇率查询 + 域名查询 · 隐私保护 · 代理加速 · 阅后即焚
             </a>
             <a href="https://www.114.ae" target="_blank" rel="noopener noreferrer">
-                🚀 www.114.ae跨境 · 全网盘搜 + 临时邮箱 + 汇率查询 · 隐私保护 · 代理加速 · 阅后即焚
+                🚀 www.114.ae跨境 · 全网盘搜 + 临时邮箱 + 汇率查询 + 域名查询 · 隐私保护 · 代理加速 · 阅后即焚
             </a>
         </div>
     </div>
@@ -668,65 +752,53 @@
             <button class="tab active" id="tab-search" onclick="switchTab(0)">🔍 全网盘搜</button>
             <button class="tab" id="tab-email" onclick="switchTab(1)">✉️ 临时邮箱</button>
             <button class="tab" id="tab-exchange" onclick="switchTab(2)">💱 汇率查询</button>
+            <button class="tab" id="tab-domain" onclick="switchTab(3)">🔍 域名查询</button>
         </div>
 
         <!-- 全网盘搜 Tab -->
         <div id="search-content">
             <div class="search-header">
-                <div class="avatar-wrapper">
-                    <div class="avatar">🛸</div>
-                </div>
+                <div class="avatar-wrapper"><div class="avatar">🛸</div></div>
                 <h1>全网盘搜</h1>
                 <p class="sub">🚀 114.ae跨境 · 多代理加速 · 智能缓存 · 瞬时响应</p>
-
-                <!-- 仅保留无代理 + 推荐代理1 -->
                 <div class="proxy-select">
                     <select id="proxySelect" onchange="changeProxy()">
                         <option value="none" selected>🌐 无代理（直接访问 · 最快）</option>
                         <option value="https://proxy.api.030101.xyz/">🚀 推荐代理1（030101 · 最稳定）</option>
                     </select>
                 </div>
-
                 <div class="search-box">
                     <input type="text" id="searchInput" class="search-input" placeholder="输入电影、剧集、短剧、书籍、音乐、软件、资料">
                     <button id="searchBtn" class="search-btn">🔍 极速搜索</button>
                 </div>
                 <div id="statsArea" class="stats">✨ 114.ae多代理加速已启用 · 点击按钮开始搜索</div>
             </div>
-
             <div class="results-container">
                 <div class="results-title" id="resultsTitle">📦 搜索结果（按网盘来源自动分类统计 · 点击分类直达）</div>
                 <div id="resultsContainer"></div>
             </div>
         </div>
 
-        <!-- 临时邮箱 Tab（仅保留 vmail.dev，无渐变背景） -->
+        <!-- 临时邮箱 Tab -->
         <div id="email-content" style="display: none;">
             <div class="search-header">
-                <div class="avatar-wrapper">
-                    <div class="avatar">🛸</div>
-                </div>
+                <div class="avatar-wrapper"><div class="avatar">🛸</div></div>
                 <h1>114.ae跨境</h1>
                 <p class="sub">临时邮箱 · 阅后即焚 · 支持验证码 · 防骚扰</p>
                 <p style="color: var(--accent-color); font-weight: 600; margin: 10px 0 20px;">✅ vmail.dev（主推荐，可靠接收）</p>
-
                 <div id="addr" class="mail-display">正在自动生成邮箱...</div>
-
                 <div class="btn-group">
                     <button onclick="copyMail()" class="btn btn-s">📋 复制地址</button>
                     <button id="refreshBtn" onclick="initEmail()" class="btn btn-p">🔄 更换地址</button>
                 </div>
             </div>
-
             <div class="results-container">
                 <div class="results-title">📥 实时收件箱（仅存留于当前页面）</div>
-                <div id="list">
-                    <div style="text-align: center; padding: 60px; color: var(--text-secondary);">正在等待新邮件推送...</div>
-                </div>
+                <div id="list"><div style="text-align: center; padding: 60px; color: var(--text-secondary);">正在等待新邮件推送...</div></div>
             </div>
         </div>
 
-        <!-- 汇率查询 Tab（完整集成原代码，已适配PC/移动端 + 全局主题） -->
+        <!-- 汇率查询 Tab -->
         <div id="exchange-content" style="display: none;">
             <div class="exchange-top-bar">
                 <select id="lang" onchange="setLang(this.value)">
@@ -735,7 +807,6 @@
                     <option value="ar">العربية</option>
                 </select>
                 <button onclick="location.href='https://www.114.ae/aed-cny.html'">AED ⇄ CNY</button>
-                <!-- 汇率自身的主题按钮已移除，使用全局主题切换 -->
             </div>
             <div class="exchange-card" id="exchangeCard">
                 <h2 data-i18n="title">💱114.ae汇率换算器</h2>
@@ -766,9 +837,38 @@
                 <canvas id="chart" style="max-height:280px;"></canvas>
             </div>
         </div>
+
+        <!-- 域名查询 Tab（完整集成 + API 已改为 https://ym.114.ae） -->
+        <div id="domain-content" style="display: none;">
+            <div class="domain-container">
+                <div class="marquee"><marquee>当前要出售的域名 →→→ uda.ae →→→ wemart.ae →→→ alipay.ae 需要买的带价格来谈 联系微信: jingeng</marquee></div>
+                <h1 id="domain-title">114.ae 域名查询</h1>
+                <div>
+                    <input id="domain-input" placeholder="输入域名(不带后缀)">
+                    <br><br>
+                    <button onclick="checkDomains()">查询</button>
+                </div>
+                <div style="margin-top:10px;">
+                    <span class="lang-btn active" onclick="switchDomainLang('zh',this)">中文</span>
+                    <span class="lang-btn" onclick="switchDomainLang('en',this)">English</span>
+                    <span class="lang-btn" onclick="switchDomainLang('ar',this)">عربي</span>
+                </div>
+                <div id="domain-deviceInfo" style="margin:15px 0; font-size:14px; color:var(--text-secondary);"></div>
+                <div id="domain-output" style="margin-top:20px; overflow-x:auto;"></div>
+                <div style="margin-top:15px;">
+                    <button onclick="copyDomainResults()">复制结果</button>
+                    <button onclick="shareDomainResults()">转发结果</button>
+                </div>
+                <div class="contact-links" style="margin-top:20px; font-size:15px;">
+                    💬 Telegram 查询格式 /check 114 回车等待结果：<a href="https://t.me/domainserchbot114aebot" target="_blank">@domainserchbot114aebot</a>｜
+                    📱 WhatsApp：<a href="https://api.whatsapp.com/message/VBL34SHP73GYH1" target="_blank">WhatApp点击联系</a>
+                </div>
+                <div id="domain-copyright" class="copyright">© 2026 www.114.ae 域名查询 · 广告 👉 微信：jingeng</div>
+            </div>
+        </div>
     </div>
 
-    <!-- 邮件详情弹窗 -->
+    <!-- 邮件详情弹窗（已优化转发功能） -->
     <div id="mailModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -778,15 +878,15 @@
             <div id="modalBody" class="modal-body"></div>
             <div class="modal-footer">
                 <button onclick="copyEmailContent()" class="btn btn-s">📋 复制邮件全文</button>
-                <button onclick="forwardEmail()" class="btn btn-s">➡️ 转发此邮件</button>
+                <button onclick="forwardEmail()" class="btn btn-s">➡️ 转发此邮件（支持WhatsApp / TG / 微信）</button>
             </div>
         </div>
     </div>
 
     <!-- 统一版权页脚 -->
     <footer style="text-align:center; padding:40px 20px; color:var(--text-secondary); font-size:0.9rem; margin-top:50px;">
-        © 114.ae跨境 | 全网盘搜 + 临时邮箱 + 汇率查询 | 多代理加速 · 隐私保护 · 阅后即焚 · 不存储任何数据<br>
-        仅供学习交流 · 所有资源/邮件/汇率来自第三方
+        © 114.ae跨境 | 全网盘搜 + 临时邮箱 + 汇率查询 + 域名查询 | 多代理加速 · 隐私保护 · 阅后即焚 · 不存储任何数据<br>
+        仅供学习交流 · 所有资源/邮件/汇率/域名来自第三方
     </footer>
 
     <script>
@@ -801,7 +901,7 @@
             const ORIGIN_API = 'https://so.252035.xyz/api/search?kw=';
             const cache = new Map();
 
-            // ==================== 网盘搜索核心 ====================
+            // ==================== 网盘搜索 ====================
             function buildApiUrl(keyword) {
                 const encodedKw = encodeURIComponent(keyword);
                 const originFull = ORIGIN_API + encodedKw;
@@ -810,7 +910,6 @@
             }
 
             function getProxiedUrl(targetUrl) {
-                // 始终提供代理打开链接（使用030101稳定代理）
                 const proxy = currentProxyBase === 'none' ? 'https://proxy.api.030101.xyz/' : currentProxyBase;
                 return proxy + targetUrl;
             }
@@ -925,10 +1024,7 @@
                     ? currentAllResults.filter(item => getDiskType(item.url || '#') === activeFilter) 
                     : currentAllResults;
 
-                toRender.forEach(item => {
-                    grid.insertAdjacentHTML('beforeend', renderCard(item));
-                });
-
+                toRender.forEach(item => grid.insertAdjacentHTML('beforeend', renderCard(item)));
                 container.appendChild(grid);
 
                 if (activeFilter) {
@@ -961,10 +1057,7 @@
                     badge.className = 'badge';
                     badge.style.cursor = 'pointer';
                     badge.innerHTML = `${type} <strong>(${count})</strong>`;
-                    badge.onclick = () => {
-                        activeFilter = type;
-                        renderCurrentResults();
-                    };
+                    badge.onclick = () => { activeFilter = type; renderCurrentResults(); };
                     statsDiv.appendChild(badge);
                 });
                 container.appendChild(statsDiv);
@@ -984,48 +1077,36 @@
                     return;
                 }
                 const kw = keyword.trim();
-                
                 if (cache.has(kw)) {
                     const cached = cache.get(kw);
                     document.getElementById('statsArea').innerHTML = `⚡ 缓存命中 · 瞬间展示 ${cached.total} 条结果 · ${currentProxyName}`;
                     renderResults(cached.allResults, cached.total, kw);
                     return;
                 }
-                
                 document.getElementById('statsArea').innerHTML = `🚀 ${currentProxyName} 请求中 · 关键词: ${kw}`;
                 showLoading();
-                
                 try {
                     const apiUrl = buildApiUrl(kw);
                     const data = await fetchWithTimeout(apiUrl, 8000, 2);
-                    
                     if (data.code !== 0 || !data.data) throw new Error(data.message || '接口返回数据异常');
-                    
                     const mergedByType = data.data.merged_by_type || {};
                     let allResults = [];
                     for (let type in mergedByType) {
                         if (Array.isArray(mergedByType[type])) allResults = allResults.concat(mergedByType[type]);
                     }
-                    
                     if (allResults.length === 0) {
                         showEmpty(kw);
                         return;
                     }
-                    
                     const total = data.data.total || allResults.length;
                     cache.set(kw, { allResults, total });
                     if (cache.size > 50) cache.delete(cache.keys().next().value);
-                    
                     document.getElementById('statsArea').innerHTML = `✅ 找到 ${total} 条资源 · ${currentProxyName} (已缓存，下次秒开)`;
                     renderResults(allResults, total, kw);
-                    
                 } catch (err) {
                     console.error('搜索出错:', err);
-                    if (err.name === 'AbortError') {
-                        showError('请求超时 (8秒)，请切换代理或使用“无代理”模式');
-                    } else {
-                        showError(err.message || '网络错误或代理不可用');
-                    }
+                    if (err.name === 'AbortError') showError('请求超时 (8秒)，请切换代理或使用“无代理”模式');
+                    else showError(err.message || '网络错误或代理不可用');
                 }
             }
 
@@ -1050,7 +1131,6 @@
                 const addrEl = document.getElementById('addr');
                 addrEl.innerText = "⚡ 正在生成随机邮箱...";
                 btn.disabled = true;
-
                 try {
                     const controller = new AbortController();
                     const timeoutId = setTimeout(() => controller.abort(), 10000);
@@ -1101,7 +1181,6 @@
                 mSub.innerText = subject;
                 mBody.innerHTML = '加载详情中...';
                 modal.style.display = 'flex';
-
                 try {
                     const r = await fetch(currentEmailProxy + `/mailboxes/${mid}/messages/${msgId}`, {headers:{'X-API-Key':API_KEY}});
                     const {data} = await r.json();
@@ -1116,15 +1195,26 @@
                 navigator.clipboard.writeText(content).then(() => alert('✅ 邮件全文已复制'));
             };
 
+            // 修复转发功能：支持直接分享到 WhatsApp / Telegram / 微信（通过 navigator.share）
             window.forwardEmail = function() {
                 const content = document.getElementById('modalBody').innerText;
-                const forwarded = `【114.ae 临时邮箱转发】\n\n${content}`;
-                navigator.clipboard.writeText(forwarded).then(() => alert('✅ 已复制转发内容（带转发标识）'));
+                const forwardedText = `【114.ae 临时邮箱转发】\n\n${content}\n\n来自：https://www.114.ae`;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: '114.ae 临时邮箱 - 邮件转发',
+                        text: forwardedText
+                    }).catch(() => {
+                        navigator.clipboard.writeText(forwardedText).then(() => alert('✅ 已复制，可直接粘贴到 WhatsApp / TG / 微信'));
+                    });
+                } else {
+                    navigator.clipboard.writeText(forwardedText).then(() => alert('✅ 已复制，可直接粘贴到 WhatsApp / TG / 微信'));
+                }
             };
 
             window.closeMail = function() {
                 document.getElementById('mailModal').style.display = 'none';
-                window.refreshEmail();   // 关闭即刷新 = 阅后即焚
+                window.refreshEmail();
             };
 
             window.copyMail = function() {
@@ -1133,7 +1223,7 @@
                 else alert('地址尚未准备好，请稍等或重试');
             };
 
-            // ==================== 汇率查询集成（原代码核心函数） ====================
+            // ==================== 汇率查询（已恢复数字动画特效） ====================
             const i18n = {
                 zh: { title:"114.ae汇率换算器", source:"选择汇率源", amount:"金额", currency:"从 / 到", calc:"立即换算", share:"分享结果" },
                 en: { title:"114.ae Currency Converter", source:"Select Source", amount:"Amount", currency:"From / To", calc:"Calculate", share:"Share Result" },
@@ -1151,6 +1241,18 @@
                 document.getElementById("amount").value = v;
                 window.calc();
             };
+
+            function animateValue(id, start, end, duration) {
+                let startTimestamp = null;
+                const el = document.getElementById(id);
+                const step = (ts) => {
+                    if (!startTimestamp) startTimestamp = ts;
+                    const p = Math.min((ts - startTimestamp) / duration, 1);
+                    el.innerText = (p * (end - start) + start).toFixed(2);
+                    if (p < 1) requestAnimationFrame(step);
+                };
+                requestAnimationFrame(step);
+            }
 
             window.copyResult = function() {
                 const text = window._lastResult || "暂无结果";
@@ -1170,7 +1272,7 @@
                 try {
                     const res = await fetch(`https://exapi.114.ae/convert?from=${from}&to=${to}&amount=${amount}&api=${api}`);
                     const d = await res.json();
-                    document.getElementById("result").innerText = d.result.toFixed(2);
+                    animateValue("result", 0, d.result, 800);   // 恢复动画特效
                     document.getElementById("source").innerText = `来源：${d.source}`;
                     window._lastResult = `${d.amount} ${d.from} = ${d.result} ${d.to}`;
                     loadChart(from, to, api);
@@ -1202,7 +1304,6 @@
                         options: { responsive: true, plugins: { legend: { display: false } } }
                     });
                 }
-                // 默认值
                 ["AED","CNY","USD","RUB"].forEach(c => {
                     const fromSel = document.getElementById("from");
                     const toSel = document.getElementById("to");
@@ -1213,9 +1314,78 @@
                 const toSel = document.getElementById("to");
                 if (fromSel) fromSel.value = "AED";
                 if (toSel) toSel.value = "CNY";
-                // 自动计算一次
                 setTimeout(() => { if (typeof window.calc === 'function') window.calc(); }, 300);
             }
+
+            // ==================== 域名查询（完整集成 + API 已修正） ====================
+            const domainTranslations = {
+                zh: { title:"114.ae 域名查询", placeholder:"输入域名(不带后缀)", btnCheck:"查询", btnCopy:"复制结果", btnShare:"转发结果", copyright:"© 2026 www.114.ae 域名查询 · 保留所有权利" },
+                en: { title:"114.ae Domain Search", placeholder:"Enter domain without suffix", btnCheck:"Search", btnCopy:"Copy Result", btnShare:"Share Result", copyright:"© 2026 114.ae Domain Search · All rights reserved" },
+                ar: { title:"بحث عن النطاق", placeholder:"أدخل النطاق بدون اللاحقة", btnCheck:"بحث", btnCopy:"نسخ النتيجة", btnShare:"مشاركة النتيجة", copyright:"© 2026 بحث النطاقات · جميع الحقوق محفوظة" }
+            };
+            let currentDomainLang = "zh";
+
+            window.switchDomainLang = function(lang, el) {
+                currentDomainLang = lang;
+                document.getElementById("domain-title").innerText = domainTranslations[lang].title;
+                document.getElementById("domain-input").placeholder = domainTranslations[lang].placeholder;
+                document.getElementById("domain-copyright").innerText = domainTranslations[lang].copyright;
+                document.querySelectorAll('#domain-content .lang-btn').forEach(b => b.classList.remove('active'));
+                el.classList.add('active');
+            };
+
+            function detectDomainDevice() {
+                const ua = navigator.userAgent;
+                const device = /Mobi|Android/i.test(ua) ? "移动设备" : "PC";
+                document.getElementById("domain-deviceInfo").innerText = "当前访问设备：" + device;
+            }
+
+            window.checkDomains = async function() {
+                const input = document.getElementById("domain-input").value.trim();
+                const out = document.getElementById("domain-output");
+                if (!input) {
+                    alert(domainTranslations[currentDomainLang].placeholder);
+                    return;
+                }
+                out.innerHTML = "<div class='loading'>查询中...</div>";
+                try {
+                    const res = await fetch("https://ym.114.ae/api/domain-check", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({
+                            domains: [input],
+                            tlds: [".ae", ".bh", ".qa", ".ac.ae", ".org.ae", ".sch.ae", ".co.ae"]
+                        })
+                    });
+                    const data = await res.json();
+                    if (data.error) {
+                        out.innerHTML = data.error;
+                        return;
+                    }
+                    let html = `<table><tr><th>域名Domain</th><th>状态Status</th><th>注册Reg/续费Renew价格(AED) /Year </th></tr>`;
+                    for (let d of data) {
+                        const statusText = d.isAvailable ? "未注册available，联系微信注册：jingeng" : "已注册not-available";
+                        html += `<tr><td>${d.domain}</td><td class="${d.isAvailable ? 'not-available' : 'available'}">${statusText}</td><td>${d.regPrice} / ${d.renewPrice}</td></tr>`;
+                    }
+                    html += `</table>`;
+                    out.innerHTML = html;
+                } catch(e) {
+                    out.innerHTML = "查询失败，请稍后再试";
+                }
+            };
+
+            window.copyDomainResults = function() {
+                navigator.clipboard.writeText(document.getElementById("domain-output").innerText).then(() => alert("复制成功"));
+            };
+
+            window.shareDomainResults = function() {
+                const text = document.getElementById("domain-output").innerText;
+                if (navigator.share) {
+                    navigator.share({title: "114.ae 域名查询结果", text: text});
+                } else {
+                    navigator.clipboard.writeText(text).then(() => alert("已复制，可粘贴到微信 / WhatsApp / TG"));
+                }
+            };
 
             // ==================== Tab 切换 ====================
             window.switchTab = function(n) {
@@ -1223,10 +1393,12 @@
                 document.getElementById('tab-search').classList.toggle('active', n === 0);
                 document.getElementById('tab-email').classList.toggle('active', n === 1);
                 document.getElementById('tab-exchange').classList.toggle('active', n === 2);
+                document.getElementById('tab-domain').classList.toggle('active', n === 3);
 
                 document.getElementById('search-content').style.display = n === 0 ? 'block' : 'none';
                 document.getElementById('email-content').style.display = n === 1 ? 'block' : 'none';
                 document.getElementById('exchange-content').style.display = n === 2 ? 'block' : 'none';
+                document.getElementById('domain-content').style.display = n === 3 ? 'block' : 'none';
 
                 if (n === 1 && !window.emailInitialized) {
                     window.emailInitialized = true;
@@ -1234,13 +1406,11 @@
                     if (emailRefreshInterval) clearInterval(emailRefreshInterval);
                     emailRefreshInterval = setInterval(window.refreshEmail, 5000);
                 }
-                if (n === 2) {
-                    // 汇率页面初始化
-                    initExchangeChart();
-                }
+                if (n === 2) initExchangeChart();
+                if (n === 3) detectDomainDevice();
             };
 
-            // ==================== 主题切换（同步汇率查询的 data-theme） ====================
+            // ==================== 主题切换 ====================
             const themeToggle = document.getElementById('themeToggle');
             if (localStorage.getItem('theme') === 'dark') {
                 document.body.classList.add('dark');
@@ -1258,7 +1428,6 @@
             // ==================== 网盘搜索事件绑定 ====================
             const searchInput = document.getElementById('searchInput');
             const searchBtn = document.getElementById('searchBtn');
-
             searchBtn.addEventListener('click', () => searchResources(searchInput.value));
             searchInput.addEventListener('keypress', e => {
                 if (e.key === 'Enter') {
@@ -1276,10 +1445,9 @@
                     themeToggle.textContent = '☀️';
                 }
                 window.emailInitialized = false;
-                // 汇率初始化已放在 switchTab 中
             });
 
-            // 全局暴露邮箱函数
+            // 全局暴露函数
             window.initEmail = window.initEmail;
             window.refreshEmail = window.refreshEmail;
             window.viewMail = window.viewMail;
@@ -1288,6 +1456,15 @@
             window.copyEmailContent = window.copyEmailContent;
             window.forwardEmail = window.forwardEmail;
             window.clearFilter = clearFilter;
+            window.setLang = window.setLang;
+            window.setAmount = window.setAmount;
+            window.calc = window.calc;
+            window.copyResult = window.copyResult;
+            window.share = window.share;
+            window.checkDomains = window.checkDomains;
+            window.copyDomainResults = window.copyDomainResults;
+            window.shareDomainResults = window.shareDomainResults;
+            window.switchDomainLang = window.switchDomainLang;
         })();
     </script>
 </body>
