@@ -20,7 +20,6 @@
             min-height: 100vh; overflow-x: hidden; position: relative; 
             transition: background 0.6s ease; 
         }
-        /* 花瓣雨 */
         .petals-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: hidden; }
         .petal { position: absolute; top: -30px; width: 7px; height: 10px; background: linear-gradient(135deg, #ff9ede, #c084fc, #a5b4fc, #67e8f9); border-radius: 40% 0 50% 20%; opacity: 0.55; animation: fall linear infinite; box-shadow: 0 0 4px rgba(255,158,222,0.4); }
         @keyframes fall { 0% { transform: translateY(-50px) rotate(0deg) translateX(0); } 100% { transform: translateY(110vh) rotate(520deg) translateX(25px); } }
@@ -99,10 +98,11 @@
             <h1>114.ae跨境</h1>
             <p style="color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 15px;">114.ae临时邮箱 阅后即焚</p>
 
-            <!-- 服务切换 -->
+            <!-- 四个服务选项 -->
             <div class="service-selector">
                 <select id="serviceSelect">
                     <option value="guerrilla">Guerrilla Mail（老牌稳定 - 推荐）</option>
+                    <option value="1secmail">1SecMail（快速推荐）</option>
                     <option value="temppostal">Temp Postal（现代推荐）</option>
                     <option value="freecustom">FreeCustom.Email（新兴稳定）</option>
                 </select>
@@ -133,7 +133,6 @@
     <div class="music-toggle" id="musicToggle">♪</div>
     <audio id="bgm" loop preload="auto" src="https://files.catbox.moe/0oluxu.flac"></audio>
 
-    <!-- 版权放在最下面 -->
     <footer style="text-align:center; padding:40px 20px; color:var(--text-secondary); font-size:0.9rem; margin-top:50px;">
         © 114.ae跨境临时邮箱 | TG: @your_tg | WhatsApp: +65 你的号码<br>
         隐私保护 · 阅后即焚 · 本站不永久存储任何邮件
@@ -164,7 +163,6 @@
             let fullUrl = url;
             if (!url.startsWith('http')) fullUrl = 'https://' + url;
             fullUrl = currentProxy + fullUrl.replace(/^https?:\/\//, '');
-            
             try {
                 const res = await fetch(fullUrl, {
                     headers: {
@@ -188,6 +186,9 @@
                     const data = await fetchWithHeaders("https://api.guerrillamail.com/ajax.php?f=get_email_address");
                     currentEmail = data ? data.email_addr : null;
                     sid = data ? (data.sid || data.session_id) : null;
+                } else if (currentService === "1secmail") {
+                    const data = await fetchWithHeaders("https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1");
+                    currentEmail = data ? data[0] : null;
                 } else if (currentService === "temppostal") {
                     currentEmail = "user" + Math.floor(Math.random() * 999999) + "@temppostal.com";
                 } else {
@@ -202,17 +203,38 @@
         async function refresh() {
             if (!currentEmail) return;
             listEl.innerHTML = `<div style="padding:40px;color:var(--text-secondary);">正在检查新邮件...</div>`;
+
             if (currentService === "guerrilla" && sid) {
                 try {
-                    const data = await fetchWithHeaders(`https://api.guerrillamail.com/ajax.php?f=check_email&sid_token=${sid}`);
+                    const data = await fetchWithHeaders(`https://api.guerrillamail.com/ajax.php?f=get_email_list&offset=0&sid_token=${sid}`);
                     const messages = data && data.list ? data.list : [];
                     if (messages.length > 0) {
-                        listEl.innerHTML = messages.map(m => ` 
+                        listEl.innerHTML = messages.map(m => `
                             <div style="background:rgba(0,180,255,0.08); padding:18px; margin:12px 0; border-radius:18px; border:1px solid var(--accent-color);">
-                                <div style="font-size:0.8rem; color:#00b4ff;">${new Date(m.date).toLocaleString('zh-CN')}</div>
+                                <div style="font-size:0.8rem; color:#00b4ff;">${new Date(m.date || m.mail_timestamp * 1000).toLocaleString('zh-CN')}</div>
+                                <div style="font-weight:600; margin:6px 0;">${m.subject || m.mail_subject || '无主题'}</div>
+                                <div style="font-size:0.85rem; color:#555;">来自: ${m.from || m.mail_from || '未知'}</div>
+                            </div>
+                        `).join('');
+                    } else {
+                        listEl.innerHTML = `<div style="padding:40px;color:var(--text-secondary);">暂无新邮件...</div>`;
+                    }
+                } catch(e) {
+                    listEl.innerHTML = `<div style="padding:40px;color:var(--text-secondary);">检查失败，请切换代理后重试</div>`;
+                }
+            } else if (currentService === "1secmail") {
+                try {
+                    const login = currentEmail.split('@')[0];
+                    const domain = currentEmail.split('@')[1];
+                    const data = await fetchWithHeaders(`https://www.1secmail.com/api/v1/?action=getMessages&login=${login}&domain=${domain}`);
+                    const messages = data || [];
+                    if (messages.length > 0) {
+                        listEl.innerHTML = messages.map(m => `
+                            <div style="background:rgba(0,180,255,0.08); padding:18px; margin:12px 0; border-radius:18px; border:1px solid var(--accent-color);">
+                                <div style="font-size:0.8rem; color:#00b4ff;">${m.date}</div>
                                 <div style="font-weight:600; margin:6px 0;">${m.subject || '无主题'}</div>
                                 <div style="font-size:0.85rem; color:#555;">来自: ${m.from}</div>
-                            </div> 
+                            </div>
                         `).join('');
                     } else {
                         listEl.innerHTML = `<div style="padding:40px;color:var(--text-secondary);">暂无新邮件...</div>`;
@@ -221,7 +243,7 @@
                     listEl.innerHTML = `<div style="padding:40px;color:var(--text-secondary);">检查失败，请切换代理后重试</div>`;
                 }
             } else {
-                listEl.innerHTML = `<div style="padding:40px;color:var(--text-secondary);">暂无新邮件...</div>`;
+                listEl.innerHTML = `<div style="padding:40px;color:var(--text-secondary);">暂无新邮件...（当前服务暂不支持实时拉取）</div>`;
             }
         }
 
