@@ -99,7 +99,7 @@
             <h1>114.ae跨境</h1>
             <p style="color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 15px;">114.ae临时邮箱 阅后即焚</p>
 
-            <!-- 服务切换（只剩三个） -->
+            <!-- 服务切换 -->
             <div class="service-selector">
                 <select id="serviceSelect">
                     <option value="guerrilla">Guerrilla Mail（老牌稳定 - 推荐）</option>
@@ -116,7 +116,7 @@
                 </select>
             </div>
 
-            <div id="addr" class="mail-display">点击“更换地址”生成随机邮箱...</div>
+            <div id="addr" class="mail-display">正在自动生成邮箱...</div>
             <div class="btn-group">
                 <button onclick="copyMail()" class="btn btn-s">📋 复制地址</button>
                 <button onclick="generateNewMail()" class="btn btn-p">🔄 更换地址</button>
@@ -143,7 +143,7 @@
         let currentService = "guerrilla";
         let currentEmail = "";
         let sid = null;
-        let currentProxy = "https://proxy.api.030101.xyz/";   // 默认专用代理
+        let currentProxy = "https://proxy.api.030101.xyz/";
 
         const addrEl = document.getElementById('addr');
         const listEl = document.getElementById('list');
@@ -183,4 +183,111 @@
         async function generateNewMail() {
             addrEl.textContent = "生成随机邮箱中...";
             listEl.innerHTML = `<div style="padding:40px;color:var(--text-secondary);">正在生成新邮箱...</div>`;
-           
+            try {
+                if (currentService === "guerrilla") {
+                    const data = await fetchWithHeaders("https://api.guerrillamail.com/ajax.php?f=get_email_address");
+                    currentEmail = data ? data.email_addr : null;
+                    sid = data ? (data.sid || data.session_id) : null;
+                } else if (currentService === "temppostal") {
+                    currentEmail = "user" + Math.floor(Math.random() * 999999) + "@temppostal.com";
+                } else {
+                    currentEmail = "eternity" + Math.floor(Math.random() * 999999) + "@freecustom.email";
+                }
+                addrEl.textContent = currentEmail || "生成失败，请点击更换地址重试";
+            } catch (e) {
+                addrEl.textContent = "生成失败，请点击更换地址重试（或切换代理）";
+            }
+        }
+
+        async function refresh() {
+            if (!currentEmail) return;
+            listEl.innerHTML = `<div style="padding:40px;color:var(--text-secondary);">正在检查新邮件...</div>`;
+            if (currentService === "guerrilla" && sid) {
+                try {
+                    const data = await fetchWithHeaders(`https://api.guerrillamail.com/ajax.php?f=check_email&sid_token=${sid}`);
+                    const messages = data && data.list ? data.list : [];
+                    if (messages.length > 0) {
+                        listEl.innerHTML = messages.map(m => ` 
+                            <div style="background:rgba(0,180,255,0.08); padding:18px; margin:12px 0; border-radius:18px; border:1px solid var(--accent-color);">
+                                <div style="font-size:0.8rem; color:#00b4ff;">${new Date(m.date).toLocaleString('zh-CN')}</div>
+                                <div style="font-weight:600; margin:6px 0;">${m.subject || '无主题'}</div>
+                                <div style="font-size:0.85rem; color:#555;">来自: ${m.from}</div>
+                            </div> 
+                        `).join('');
+                    } else {
+                        listEl.innerHTML = `<div style="padding:40px;color:var(--text-secondary);">暂无新邮件...</div>`;
+                    }
+                } catch(e) {
+                    listEl.innerHTML = `<div style="padding:40px;color:var(--text-secondary);">检查失败，请切换代理后重试</div>`;
+                }
+            } else {
+                listEl.innerHTML = `<div style="padding:40px;color:var(--text-secondary);">暂无新邮件...</div>`;
+            }
+        }
+
+        async function manualRefresh() {
+            const btn = document.querySelector('.refresh-inbox-btn');
+            const old = btn.textContent;
+            btn.textContent = "🔄 刷新中...";
+            await refresh();
+            setTimeout(() => btn.textContent = old, 800);
+        }
+
+        function copyMail() {
+            if (currentEmail) {
+                navigator.clipboard.writeText(currentEmail).then(() => {
+                    const original = addrEl.textContent;
+                    addrEl.classList.add('copied');
+                    addrEl.textContent = "✅ 已复制！";
+                    setTimeout(() => {
+                        addrEl.classList.remove('copied');
+                        addrEl.textContent = original;
+                    }, 1500);
+                });
+            }
+        }
+
+        function createPetalRain() {
+            const container = document.getElementById('petals');
+            const colors = ['#ff9ede', '#c084fc', '#a5b4fc', '#67e8f9', '#bae6fd'];
+            setInterval(() => {
+                const p = document.createElement('div');
+                p.classList.add('petal');
+                if (Math.random() > 0.65) p.classList.add('tiny');
+                const s = Math.random();
+                if (s > 0.7) p.classList.add('slow');
+                else if (s > 0.35) p.classList.add('medium');
+                else p.classList.add('fast');
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.background = `linear-gradient(135deg, ${colors[Math.floor(Math.random()*colors.length)]}, #ffffff33)`;
+                p.style.animationDuration = (12 + Math.random() * 15) + 's';
+                container.appendChild(p);
+                setTimeout(() => p.remove(), 40000);
+            }, 180);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            createPetalRain();
+            generateNewMail();   // 打开网页自动生成
+            setInterval(refresh, 4500);
+
+            const music = document.getElementById('bgm');
+            const mBtn = document.getElementById('musicToggle');
+            mBtn.onclick = () => {
+                if (music.paused) {
+                    music.play();
+                    mBtn.classList.add('playing');
+                } else {
+                    music.pause();
+                    mBtn.classList.remove('playing');
+                }
+            };
+            document.getElementById('themeToggle').addEventListener('click', () => {
+                document.body.classList.toggle('dark');
+                document.getElementById('themeToggle').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+            });
+            setTimeout(() => music.play().catch(() => {}), 1500);
+        });
+    </script>
+</body>
+</html>
