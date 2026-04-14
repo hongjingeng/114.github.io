@@ -1,137 +1,261 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>114.ae域名查询</title>
-<style>
-body { font-family: Arial, sans-serif; background:#f5f7fb; margin:0; padding:0; text-align:center; transition: background 0.3s, color 0.3s; }
-body.dark { background:#1e1e1e; color:#f5f5f5; }
-.container { max-width: 900px; margin:50px auto; padding:20px; background:#fff; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.1); transition: background 0.3s, color 0.3s; }
-body.dark .container { background:#2c2c2c; color:#f5f5f5; }
-h1 { margin-bottom:20px; }
-input { width:60%; padding:12px; font-size:16px; border-radius:6px; border:1px solid #ddd; margin-right:10px; }
-button { padding:12px 18px; font-size:16px; border:none; border-radius:6px; background:#007bff; color:#fff; cursor:pointer; margin:2px; }
-button:hover { background:#0056b3; }
-#output { margin-top:20px; text-align:center; overflow-x:auto; }
-table { width:100%; border-collapse:collapse; margin-top:10px; }
-th, td { padding:10px; border:1px solid #ddd; }
-.available { color:red; font-weight:bold; }
-.not-available { color:green; font-weight:bold; }
-.loading { font-weight:bold; margin-top:10px; }
-.lang-btn { cursor:pointer; margin:0 5px; padding:5px 10px; border-radius:4px; border:1px solid #ccc; }
-.lang-btn.active { background:#007bff; color:#fff; border-color:#007bff; }
-#marquee { font-size:16px; margin-bottom:10px; }
-#copyright { margin-top:20px; font-size:24px; color:#888; }
-@media(max-width:600px){ input { width:80%; } table { font-size:14px; } }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>114.ae 全能工具箱</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background:#f5f7fb; transition:0.3s; }
+        body.dark { background:#0f172a; color:#f1f5f9; }
+        .header { position:fixed; top:0; left:0; width:100%; background:#1e3c72; color:white; padding:15px 0; text-align:center; z-index:1000; font-size:1.4rem; font-weight:700; box-shadow:0 2px 10px rgba(0,0,0,0.2); }
+        .tab-bar { position:fixed; top:60px; left:0; width:100%; background:#fff; border-bottom:1px solid #ddd; z-index:999; display:flex; overflow-x:auto; }
+        body.dark .tab-bar { background:#1e293b; border-color:#334155; }
+        .tab { padding:15px 20px; white-space:nowrap; cursor:pointer; font-weight:600; }
+        .tab.active { border-bottom:4px solid #1e3c72; color:#1e3c72; }
+        body.dark .tab.active { border-color:#60a5fa; color:#60a5fa; }
+        .container { max-width:1100px; margin:130px auto 40px; padding:0 15px; }
+        .card { background:#fff; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.1); padding:25px; margin-bottom:30px; }
+        body.dark .card { background:#1e293b; }
+        h2 { margin-bottom:15px; color:#1e3c72; }
+        body.dark h2 { color:#60a5fa; }
+        input, select, button { padding:14px; margin:6px 4px; border-radius:10px; border:1px solid #ddd; font-size:16px; }
+        button { background:#1e3c72; color:white; cursor:pointer; font-weight:600; }
+        button:hover { background:#60a5fa; }
+        .result { margin-top:15px; padding:15px; background:#f0f8ff; border-radius:10px; line-height:1.6; }
+        body.dark .result { background:#334155; }
+        .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; justify-content:center; align-items:center; }
+        .qrcode-box { background:#fff; padding:20px; border-radius:16px; text-align:center; }
+        .marquee { background:#ffeb3b; color:#1e3c72; padding:8px; font-weight:bold; overflow:hidden; white-space:nowrap; }
+        @keyframes marquee { 0% { transform:translateX(0); } 100% { transform:translateX(-100%); } }
+    </style>
 </head>
 <body>
-<div class="container">
-  <div id="marquee"><marquee>当前要出售的域名 →→→ uda.ae →→→ wemart.ae →→→ alipay.ae 需要买的带价格来谈 联系微信: jingeng</marquee></div>
-  <h1 id="title">114.ae域名查询</h1>
-  <div>
-    <input type="text" id="domain" placeholder="输入域名(不带后缀)">
-    <button onclick="checkDomains()">查询</button>
-    <button id="themeBtn" onclick="toggleTheme()">切换暗黑/亮色</button>
-  </div>
-  <div style="margin-top:10px;">
-    <span class="lang-btn active" onclick="switchLang('zh', this)">中文</span>
-    <span class="lang-btn" onclick="switchLang('en', this)">English</span>
-    <span class="lang-btn" onclick="switchLang('ar', this)">عربي</span>
-  </div>
-  <div id="deviceInfo" style="margin-top:10px; font-weight:bold;"></div>
-  <div id="output"></div>
-  <div style="margin-top:10px;">
-    <button onclick="copyResults()">复制结果</button>
-    <button onclick="shareResults()">转发结果</button>
-  </div>
-  <div style="margin-top:10px;">
-    <button onclick="chatTG()">TG 聊天</button>
-    <button onclick="chatWA()">WhatsApp 聊天</button>
-  </div>
-  <div id="copyright">
-    &copy; 2026 www.114.ae 广告 微信👉 jingeng保留所有权利
-  </div>
-</div>
+    <div class="header">114.ae 全能工具箱</div>
+    <div class="marquee"><span>🔍 全网盘搜 ✉️ 临时邮箱 💱 汇率查询 🔍 域名查询 二维码生成 —— 114.ae 一站式工具</span></div>
 
-<script>
-document.addEventListener('contextmenu', e => e.preventDefault());
+    <!-- Tab 导航 -->
+    <div class="tab-bar" id="tabBar">
+        <div class="tab active" onclick="showTab(0)">✉️ 临时邮箱</div>
+        <div class="tab" onclick="showTab(1)">🔍 域名查询</div>
+        <div class="tab" onclick="showTab(2)">💱 汇率查询</div>
+        <div class="tab" onclick="showTab(3)">🔍 全网盘搜</div>
+        <div class="tab" onclick="showTab(4)">📱 二维码生成</div>
+    </div>
 
-const translations = {
-  zh: { title:"114.ae域名查询", checking:"查询中...", copy:"复制成功", alertNoDomain:"请输入域名", fetchError:"查询失败，请稍后再试" },
-  en: { title:"114.ae Domain Search", checking:"Checking...", copy:"Copied", alertNoDomain:"Please enter domain", fetchError:"Failed to fetch, try later" },
-  ar: { title:"114.ae بحث عن النطاق", checking:"جاري الفحص...", copy:"تم النسخ", alertNoDomain:"يرجى إدخال النطاق", fetchError:"فشل الفحص، حاول لاحقًا" }
-};
+    <div class="container">
 
-let currentLang = "zh";
+        <!-- Tab 0: 临时邮箱 -->
+        <div id="tab0" class="tab-content">
+            <div class="card">
+                <h2>✉️ 临时邮箱 阅后即焚</h2>
+                <select id="serviceSelect" onchange="changeService()" style="width:100%;padding:12px;margin-bottom:15px;">
+                    <option value="vmail">vmail.dev（主推荐）</option>
+                    <option value="guerrilla">Guerrilla Mail（老牌稳定）</option>
+                    <option value="1secmail">1SecMail（快速接收）</option>
+                </select>
+                <div id="addr" style="background:#e0f2ff;padding:20px;border-radius:12px;font-size:1.3rem;font-weight:600;text-align:center;margin-bottom:15px;"></div>
+                <div style="text-align:center;">
+                    <button onclick="copyMail()" style="padding:12px 25px;margin:5px;">📋 复制地址</button>
+                    <button onclick="init()" style="padding:12px 25px;margin:5px;">🔄 更换地址</button>
+                </div>
+                <div style="margin-top:25px;">
+                    <div style="font-weight:bold;margin-bottom:10px;">📥 实时收件箱</div>
+                    <div id="list" style="min-height:260px;background:#f8fafc;padding:15px;border-radius:12px;"></div>
+                </div>
+            </div>
+        </div>
 
-function toggleTheme(){
-  document.body.classList.toggle("dark");
-  localStorage.setItem("theme", document.body.classList.contains("dark")?"dark":"light");
-}
-if(localStorage.getItem("theme")==="dark") document.body.classList.add("dark");
+        <!-- Tab 1: 域名查询 -->
+        <div id="tab1" class="tab-content" style="display:none;">
+            <div class="card">
+                <h2>🔍 114.ae 域名查询</h2>
+                <input type="text" id="domain" placeholder="输入域名(不带后缀)" style="width:65%;">
+                <button onclick="checkDomains()">查询</button>
+                <div id="domain-output" style="margin-top:20px;"></div>
+            </div>
+        </div>
 
-function switchLang(lang, el){
-  currentLang = lang;
-  document.getElementById("title").innerText = translations[lang].title;
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-}
+        <!-- Tab 2: 汇率查询 -->
+        <div id="tab2" class="tab-content" style="display:none;">
+            <div class="card">
+                <h2>💱 实时汇率查询</h2>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <input type="number" id="amount" value="100" style="width:140px;">
+                    <select id="fromCurrency">
+                        <option value="USD">USD 美元</option>
+                        <option value="CNY">CNY 人民币</option>
+                        <option value="AED" selected>AED 阿联酋迪拉姆</option>
+                    </select>
+                    <span style="font-size:28px;padding-top:12px;">→</span>
+                    <select id="toCurrency">
+                        <option value="CNY" selected>CNY 人民币</option>
+                        <option value="AED">AED 阿联酋迪拉姆</option>
+                        <option value="USD">USD 美元</option>
+                    </select>
+                    <button onclick="getExchangeRate()">查询汇率</button>
+                </div>
+                <div id="exchangeResult" style="margin-top:20px;font-size:1.3rem;font-weight:600;"></div>
+            </div>
+        </div>
 
-function detectDevice(){
-  let ua = navigator.userAgent;
-  let device = /Mobi|Android/i.test(ua) ? "移动设备" : "PC";
-  document.getElementById("deviceInfo").innerText = "当前访问设备：" + device;
-}
-detectDevice();
+        <!-- Tab 3: 全网盘搜 -->
+        <div id="tab3" class="tab-content" style="display:none;">
+            <div class="card">
+                <h2>🔍 全网盘搜</h2>
+                <input type="text" id="searchKeyword" placeholder="输入资源关键词" style="width:75%;">
+                <button onclick="searchPan()">搜索</button>
+                <div id="panResult" style="margin-top:20px;"></div>
+            </div>
+        </div>
 
-async function checkDomains(){
-  const domainInput = document.getElementById("domain").value.trim();
-  const tlds = [".ae",".ac.ae",".org.ae",".sch.ae",".co.ae"];
-  if(!domainInput){ alert(translations[currentLang].alertNoDomain); return; }
-  
-  const output = document.getElementById("output");
-  output.innerHTML = "<div class='loading'>"+translations[currentLang].checking+"</div>";
+        <!-- Tab 4: 二维码生成 -->
+        <div id="tab4" class="tab-content" style="display:none;">
+            <div class="card">
+                <h2>📱 二维码生成工具</h2>
+                <input type="text" id="qrText" placeholder="输入文字或链接" style="width:100%;margin-bottom:15px;">
+                <button onclick="generateQR()">生成二维码</button>
+                <div id="qrContainer" style="margin-top:25px;text-align:center;"></div>
+                <button onclick="downloadQR()" style="margin-top:15px;">⬇️ 下载二维码</button>
+            </div>
+        </div>
+    </div>
 
-  try{
-    // ✅ 严格使用相对路径 /api/domain-check，不加任何 https 网址
-    const res = await fetch("/api/domain-check", {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({domains:[domainInput], tlds})
-    });
-    const data = await res.json();
-    
-    if(data.error){ output.innerHTML = data.error; return; }
-    
-    let html = "<table><tr><th>域名</th><th>状态</th><th>注册/续费价格(AED)</th></tr>";
-    for(let d of data){
-      let statusText = d.isAvailable ? "未注册，联系微信注册：jingeng" : "已注册";
-      html += `<tr><td>${d.domain}</td><td class="${d.isAvailable?'not-available':'available'}">${statusText}</td><td>${d.regPrice} / ${d.renewPrice}</td></tr>`;
-    }
-    html += "</table>";
-    output.innerHTML = html;
-  }catch(e){ 
-    console.error(e); 
-    output.innerHTML = translations[currentLang].fetchError; 
-  }
-}
+    <script>
+        // ==================== Tab 切换 ====================
+        function showTab(n) {
+            document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+            document.getElementById('tab' + n).style.display = 'block';
+            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab')[n].classList.add('active');
+        }
 
-function copyResults(){ 
-  navigator.clipboard.writeText(document.getElementById("output").innerText).then(()=>alert(translations[currentLang].copy)); 
-}
+        // ==================== 临时邮箱 ====================
+        let currentService = "vmail";
+        let currentProxy = "https://proxy.api.030101.xyz/https://vmail.dev/api/v1";
+        const API_KEY = 'vmail_at6AmSu4dEkuJG4bafc8qhSqBctCMW9q';
+        let mid = null;
 
-function shareResults(){ 
-  navigator.share?navigator.share({title:"域名查询结果",text:document.getElementById("output").innerText}).catch(e=>console.error(e)):alert("当前浏览器不支持分享，请手动复制结果"); 
-}
+        function changeService() {
+            currentService = document.getElementById('serviceSelect').value;
+            init();
+        }
 
-function chatTG(){ window.open("https://t.me/at114ae","_blank"); }
-function chatWA(){ window.open("https://api.whatsapp.com/message/VBL34SHP73GYH1","_blank"); }
+        async function init() {
+            const addrEl = document.getElementById('addr');
+            addrEl.innerHTML = "正在生成邮箱...";
+            try {
+                if (currentService === "vmail") {
+                    const r = await fetch(currentProxy + '/mailboxes', {method:'POST', headers:{'X-API-Key':API_KEY,'Content-Type':'application/json'}});
+                    const {data} = await r.json();
+                    mid = data.id;
+                    addrEl.innerHTML = data.address;
+                } else if (currentService === "guerrilla") {
+                    const data = await (await fetch('https://api.guerrillamail.com/ajax.php?f=get_email_address')).json();
+                    addrEl.innerHTML = data.email_addr;
+                } else if (currentService === "1secmail") {
+                    const data = await (await fetch('https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1')).json();
+                    addrEl.innerHTML = data[0];
+                }
+            } catch(e) { addrEl.innerHTML = "生成失败，请重试"; }
+        }
 
-window.addEventListener("DOMContentLoaded",()=>{
-  // 页面加载完成
-});
-</script>
+        function copyMail() {
+            const text = document.getElementById('addr').innerText;
+            if (text.includes('@')) navigator.clipboard.writeText(text).then(() => alert('✅ 已复制'));
+        }
+
+        // ==================== 域名查询 ====================
+        async function checkDomains() {
+            const domain = document.getElementById("domain").value.trim();
+            if (!domain) return alert("请输入域名");
+            const output = document.getElementById("domain-output");
+            output.innerHTML = "<p>查询中...</p>";
+            try {
+                const res = await fetch("/api/domain-check", {
+                    method:"POST",
+                    headers:{"Content-Type":"application/json"},
+                    body: JSON.stringify({domains:[domain], tlds:[".ae",".ac.ae",".org.ae",".sch.ae",".co.ae"]})
+                });
+                const data = await res.json();
+                let html = "<table><tr><th>域名</th><th>状态</th><th>价格(AED)</th></tr>";
+                data.forEach(d => {
+                    html += `<tr><td>${d.domain}</td><td>${d.isAvailable ? '✅ 未注册' : '❌ 已注册'}</td><td>${d.regPrice || '-'}</td></tr>`;
+                });
+                html += "</table>";
+                output.innerHTML = html;
+            } catch(e) {
+                output.innerHTML = "<p>查询失败，请稍后再试</p>";
+            }
+        }
+
+        // ==================== 汇率查询 ====================
+        async function getExchangeRate() {
+            const amount = document.getElementById('amount').value;
+            const from = document.getElementById('fromCurrency').value;
+            const to = document.getElementById('toCurrency').value;
+            const result = document.getElementById('exchangeResult');
+            try {
+                const res = await fetch(`https://open.er-api.com/v6/latest/${from}`);
+                const data = await res.json();
+                const rate = data.rates[to];
+                result.innerHTML = `${amount} ${from} = <b>${(amount * rate).toFixed(2)} ${to}</b>`;
+            } catch(e) {
+                result.innerHTML = "汇率获取失败";
+            }
+        }
+
+        // ==================== 全网盘搜 ====================
+        async function searchPan() {
+            const keyword = document.getElementById('searchKeyword').value.trim();
+            if (!keyword) return alert("请输入关键词");
+            const result = document.getElementById('panResult');
+            result.innerHTML = "<p>正在全网搜索...</p>";
+            try {
+                const res = await fetch(`https://api.sodazhao.com/search?q=${encodeURIComponent(keyword)}`);
+                const data = await res.json();
+                let html = "<h3>搜索结果：</h3>";
+                data.forEach(item => {
+                    html += `<div class="result"><a href="${item.url}" target="_blank">${item.title}</a></div>`;
+                });
+                result.innerHTML = html || "<p>暂无结果</p>";
+            } catch(e) {
+                result.innerHTML = `<p>可前往：<br><a href="https://pan.sodazhao.com/s?wd=${keyword}" target="_blank">搜豆子网盘</a></p>`;
+            }
+        }
+
+        // ==================== 二维码生成 ====================
+        function generateQR() {
+            const text = document.getElementById('qrText').value.trim();
+            if (!text) return alert("请输入内容");
+            const container = document.getElementById('qrContainer');
+            container.innerHTML = '';
+            new QRCode(container, {
+                text: text,
+                width: 256,
+                height: 256,
+                colorDark : "#1e3c72",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        }
+
+        function downloadQR() {
+            const canvas = document.querySelector('#qrContainer canvas');
+            if (canvas) {
+                const link = document.createElement('a');
+                link.download = 'qrcode.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }
+        }
+
+        // ==================== 初始化 ====================
+        window.onload = () => {
+            init();           // 临时邮箱自动生成
+            setInterval(() => { if (typeof refresh === 'function') refresh(); }, 8000);
+        };
+    </script>
 </body>
 </html>
