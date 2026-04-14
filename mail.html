@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>114.ae跨境 - 临时邮箱 阅后即焚</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap');
+        
+        :root {
+            --primary: #00ff9d;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1a0033);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* 跑马灯 */
+        .marquee {
+            background: linear-gradient(to right, #ff00aa, #00ffff);
+            color: #000;
+            padding: 8px 0;
+            font-weight: bold;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+        }
+        .marquee span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 15s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 10px;
+            background: rgba(0, 0, 0, 0.8);
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            color: var(--primary);
+        }
+        
+        .slogan {
+            font-size: 1.3rem;
+            margin: 10px 0;
+            opacity: 0.9;
+        }
+        
+        .copyright {
+            position: fixed;
+            top: 10px;
+            right: 15px;
+            font-size: 0.9rem;
+            background: rgba(0,0,0,0.7);
+            padding: 5px 12px;
+            border-radius: 20px;
+            z-index: 100;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+        
+        .email-box {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        #email {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: #000;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            word-break: break-all;
+            border: 1px solid #333;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            margin: 10px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: #000;
+        }
+        
+        .btn-secondary {
+            background: #333;
+            color: #fff;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .inbox {
+            background: rgba(0,0,0,0.6);
+            border-radius: 15px;
+            padding: 20px;
+            min-height: 400px;
+        }
+        
+        .mail-item {
+            background: #1a0033;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 5px solid var(--primary);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 跑马灯广告 -->
+    <div class="marquee">
+        <span>🚀 欢迎使用 114.ae跨境临时邮箱！隐私保护 · 阅后即焚 · 防骚扰 · 支持验证码接收 · 广告位招商欢迎联系 TG</span>
+    </div>
+
+    <!-- 版权联系 -->
+    <div class="copyright">
+        © 114.ae | TG: @your_tg | WhatsApp: +65 你的号码
+    </div>
+
+    <header>
+        <div class="logo">🛸</div>
+        <h1>114.ae跨境</h1>
+        <p class="slogan">114.ae临时邮箱 阅后即焚</p>
+    </header>
+
+    <div class="container">
+        <div class="email-box">
+            <h2>你的临时邮箱地址</h2>
+            <div id="email">点击“生成新地址”开始使用</div>
+            <button class="btn btn-primary" onclick="copyEmail()">📋 复制地址</button>
+            <button class="btn btn-secondary" onclick="generateEmail()">🔄 生成新地址</button>
+        </div>
+
+        <div class="inbox">
+            <h2>📥 实时收件箱</h2>
+            <p id="status" style="color: #0f0; margin: 10px 0;">等待新邮件推送中...</p>
+            <div id="mailList"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>114.ae跨境临时邮箱 | 阅后即焚 · 隐私优先 | 本站不存储任何邮件，自动5分钟后删除</p>
+        <p>Powered by open source temp mail tech • 外星人守护你的隐私 🛸</p>
+    </footer>
+
+    <script>
+        // ================== 配置区 ==================
+        // 这里替换成你实际使用的临时邮箱API
+        // 示例使用 1secmail（免费公开API），可能需要CORS代理
+        let currentEmail = '';
+        let currentLogin = '';
+        let currentDomain = '1secmail.com'; // 可换成其他域名如 1secmail.org 等
+        let proxy = 'https://corsproxy.io/?'; // 如遇CORS问题，可改成其他代理或你的后端
+
+        // 生成随机邮箱
+        async function generateEmail() {
+            const random = Math.random().toString(36).substring(2, 10);
+            currentLogin = random;
+            currentEmail = `${random}@${currentDomain}`;
+            
+            document.getElementById('email').textContent = currentEmail;
+            document.getElementById('mailList').innerHTML = '';
+            document.getElementById('status').textContent = '新邮箱已生成，等待邮件...';
+            
+            // 开始轮询收件箱
+            startPolling();
+        }
+
+        // 复制邮箱
+        function copyEmail() {
+            if (!currentEmail) return alert('请先生成邮箱地址');
+            navigator.clipboard.writeText(currentEmail).then(() => {
+                alert('邮箱地址已复制到剪贴板！');
+            });
+        }
+
+        // 拉取邮件（示例使用1secmail API）
+        async function fetchMail() {
+            if (!currentLogin) return;
+            
+            try {
+                const url = `${proxy}https://www.1secmail.com/api/v1/?action=getMessages&login=${currentLogin}&domain=${currentDomain}`;
+                const res = await fetch(url);
+                const data = await res.json();
+                
+                const mailList = document.getElementById('mailList');
+                mailList.innerHTML = '';
+                
+                if (data.length === 0) {
+                    document.getElementById('status').textContent = '暂无新邮件...';
+                    return;
+                }
+                
+                document.getElementById('status').textContent = `收到 ${data.length} 封新邮件`;
+                
+                for (let msg of data) {
+                    const item = document.createElement('div');
+                    item.className = 'mail-item';
+                    item.innerHTML = `
+                        <strong>📧 ${msg.from}</strong><br>
+                        <strong>主题：</strong>${msg.subject || '无主题'}<br>
+                        <small>时间：${msg.date}</small>
+                        <button onclick="viewMail(${msg.id})" style="margin-top:8px;">查看邮件</button>
+                    `;
+                    mailList.appendChild(item);
+                }
+            } catch (e) {
+                console.error(e);
+                document.getElementById('status').textContent = '拉取邮件失败（可能是跨域问题）';
+            }
+        }
+
+        // 查看单封邮件
+        async function viewMail(id) {
+            try {
+                const url = `${proxy}https://www.1secmail.com/api/v1/?action=readMessage&login=${currentLogin}&domain=${currentDomain}&id=${id}`;
+                const res = await fetch(url);
+                const mail = await res.json();
+                
+                alert(`发件人: ${mail.from}\n主题: ${mail.subject}\n\n正文:\n${mail.textBody || mail.htmlBody}`);
+            } catch (e) {
+                alert('查看失败：' + e.message);
+            }
+        }
+
+        // 轮询收件箱
+        let pollInterval;
+        function startPolling() {
+            if (pollInterval) clearInterval(pollInterval);
+            pollInterval = setInterval(fetchMail, 5000); // 每5秒检查一次
+            fetchMail();
+        }
+
+        // 初始化
+        window.onload = () => {
+            // 可选：自动生成第一个邮箱
+            // generateEmail();
+            console.log('%c114.ae跨境临时邮箱 已启动 🛸', 'color:#00ff9d; font-size:16px');
+        };
+    </script>
+</body>
+</html>
