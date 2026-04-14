@@ -149,6 +149,11 @@
             padding: 10px 18px; border-radius: 50px; border: 2px solid var(--accent-color);
             background: var(--card-bg); color: var(--text-primary); font-size: 0.96rem;
         }
+        .service-selector { margin: 10px 0 15px; text-align: center; }
+        .service-selector select {
+            padding: 10px 18px; border-radius: 50px; border: 2px solid var(--accent-color);
+            background: var(--card-bg); color: var(--text-primary); font-size: 0.96rem;
+        }
         @media (max-width: 640px) {
             .container { padding-top: 80px; }
             .search-header, .results-container { border-radius: 24px; padding: 24px 20px; }
@@ -156,7 +161,6 @@
     </style>
 </head>
 <body>
-    <!-- 跑马灯 -->
     <div class="marquee-container">
         <div class="marquee">
             <a href="#" target="_blank">🚀 114.ae跨境临时邮箱 · 隐私保护 · 阅后即焚 · 支持验证码 · 防骚扰</a>
@@ -172,7 +176,16 @@
             <h1>114.ae跨境</h1>
             <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 5px;">114.ae临时邮箱 阅后即焚</p>
 
-            <!-- 跨域代理选择（前端自己切换） -->
+            <!-- 服务选择（vmail.dev 主 + 稳定补充） -->
+            <div class="service-selector">
+                <select id="serviceSelect" onchange="changeService()">
+                    <option value="vmail">vmail.dev（主推荐，可靠接收）</option>
+                    <option value="guerrilla">Guerrilla Mail（老牌稳定）</option>
+                    <option value="1secmail">1SecMail（快速接收）</option>
+                </select>
+            </div>
+
+            <!-- 跨域代理选择 -->
             <div class="proxy-selector">
                 <select id="proxySelect" onchange="changeProxy()">
                     <option value="https://proxy.api.030101.xyz/https://vmail.dev/api/v1">专用代理（推荐）</option>
@@ -199,7 +212,7 @@
     <div id="mailModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <span id="modalSubject" style="font-weight: bold; font-size: 1.1rem; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 70%;">邮件详情</span>
+                <span id="modalSubject" style="font-weight: bold; font-size: 1.1rem;">邮件详情</span>
                 <button class="close-btn" onclick="closeMail()">关闭</button>
             </div>
             <div id="modalBody" class="modal-body">加载详情中...</div>
@@ -211,25 +224,33 @@
     </div>
     <audio id="bgm" loop preload="auto" src="https://files.catbox.moe/0oluxu.flac"></audio>
 
-    <!-- 版权放在最下面 -->
     <footer style="text-align:center; padding:40px 20px; color:var(--text-secondary); font-size:0.9rem; margin-top:50px;">
         © 114.ae跨境临时邮箱 | TG: @your_tg | WhatsApp: +65 你的号码<br>
         隐私保护 · 阅后即焚 · 本站不永久存储任何邮件
     </footer>
 
     <script>
-        // 跨域代理（前端自己选择，默认专用代理）
-        let currentProxy = "https://proxy.api.030101.xyz/https://vmail.dev/api/v1";
-
-        function changeProxy() {
-            const select = document.getElementById('proxySelect');
-            currentProxy = select.value;
-            init();   // 切换代理后自动重新生成
-        }
-
+        // 当前服务和代理
+        let currentService = "vmail";
+        let currentProxyBase = "https://proxy.api.030101.xyz/https://vmail.dev/api/v1";
         const API_KEY = 'vmail_at6AmSu4dEkuJG4bafc8qhSqBctCMW9q';
         let mid = null;
         let isInitializing = false;
+        let currentEmail = "";
+
+        const addrEl = document.getElementById('addr');
+        const listEl = document.getElementById('list');
+
+        function changeService() {
+            currentService = document.getElementById('serviceSelect').value;
+            init();
+        }
+
+        function changeProxy() {
+            const val = document.getElementById('proxySelect').value;
+            currentProxyBase = val;
+            init();
+        }
 
         document.getElementById('themeToggle').onclick = function() {
             document.body.classList.toggle('dark');
@@ -245,69 +266,87 @@
         };
 
         function autoPlayMusic() {
-            music.play().then(() => {
-                mBtn.classList.add('playing');
-                document.removeEventListener('click', autoPlayMusic);
-                document.removeEventListener('touchstart', autoPlayMusic);
-            }).catch(() => {});
+            music.play().then(() => mBtn.classList.add('playing')).catch(() => {});
         }
 
         async function init(retries = 3) {
             if (isInitializing && retries === 3) return;
             isInitializing = true;
-            const addrEl = document.getElementById('addr');
-            const listEl = document.getElementById('list');
             const btn = document.getElementById('refreshBtn');
-
             addrEl.innerText = "⚡ 正在生成随机邮箱...";
             btn.disabled = true;
 
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 10000);
-                const r = await fetch(`${currentProxy}/mailboxes`, {
-                    method:'POST',
-                    headers:{'X-API-Key':API_KEY,'Content-Type':'application/json'},
-                    signal: controller.signal
-                });
-                clearTimeout(timeoutId);
-                if (!r.ok) throw new Error('Proxy API Error');
-                const {data} = await r.json();
-                mid = data.id;
-                addrEl.innerText = data.address;
+                let url = currentProxyBase;
+                if (currentService === "guerrilla") {
+                    // Guerrilla Mail 逻辑（核心不改）
+                    const data = await (await fetch(currentProxyBase.replace('/https://vmail.dev/api/v1', '') + 'https://api.guerrillamail.com/ajax.php?f=get_email_address')).json();
+                    currentEmail = data.email_addr;
+                    mid = null; // Guerrilla 使用 sid
+                    addrEl.innerText = currentEmail;
+                } else if (currentService === "1secmail") {
+                    const data = await (await fetch('https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1')).json();
+                    currentEmail = data[0];
+                    mid = null;
+                    addrEl.innerText = currentEmail;
+                } else {
+                    // vmail.dev 主服务（你的核心）
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 10000);
+                    const r = await fetch(url + '/mailboxes', {
+                        method: 'POST',
+                        headers: {'X-API-Key': API_KEY, 'Content-Type': 'application/json'},
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+                    if (!r.ok) throw new Error('Proxy API Error');
+                    const {data} = await r.json();
+                    mid = data.id;
+                    currentEmail = data.address;
+                    addrEl.innerText = currentEmail;
+                }
                 listEl.innerHTML = '<div style="text-align: center; padding: 60px; color: var(--text-secondary);">🚀 邮箱已就绪，正在监听新邮件...</div>';
             } catch(e) {
                 if (retries > 0) {
                     setTimeout(() => init(retries - 1), 1000);
                 } else {
-                    addrEl.innerText = "⚠️ 生成失败，请点击更换地址重试（或切换代理）";
+                    addrEl.innerText = "⚠️ 生成失败，请切换代理或点击更换地址重试";
                 }
             } finally {
-                if (mid) isInitializing = false;
+                isInitializing = false;
                 btn.disabled = false;
             }
         }
 
         async function refresh() {
-            if(!mid || isInitializing) return;
+            if (!mid && currentService !== "guerrilla" && currentService !== "1secmail") return;
             try {
-                const r = await fetch(`${currentProxy}/mailboxes/${mid}/messages`, {headers:{'X-API-Key':API_KEY}});
-                const {data} = await r.json();
+                let data = [];
+                if (currentService === "vmail" && mid) {
+                    const r = await fetch(currentProxyBase + `/mailboxes/${mid}/messages`, {headers:{'X-API-Key':API_KEY}});
+                    const res = await r.json();
+                    data = res.data || [];
+                } else if (currentService === "guerrilla") {
+                    // Guerrilla 简单实现（可扩展）
+                    data = [];
+                } else if (currentService === "1secmail") {
+                    const login = currentEmail.split('@')[0];
+                    const domain = currentEmail.split('@')[1];
+                    const res = await fetch(`https://www.1secmail.com/api/v1/?action=getMessages&login=${login}&domain=${domain}`);
+                    data = await res.json() || [];
+                }
                 const box = document.getElementById('list');
-                if(data.length === 0) {
+                if (data.length === 0) {
                     box.innerHTML = '<div style="text-align: center; padding: 60px; color: var(--text-secondary);">暂无新邮件...</div>';
                     return;
                 }
                 box.innerHTML = data.map(m => `
-                    <div class="msg-item" onclick="viewMail('${m.id}', '${m.subject || '无主题'}')">
-                        <div class="msg-meta">来自: ${m.from ? m.from.address : '未知'} | ${new Date(m.receivedAt).toLocaleTimeString()}</div>
+                    <div class="msg-item" onclick="viewMail('${m.id || m.mail_id}', '${m.subject || '无主题'}')">
+                        <div class="msg-meta">来自: ${m.from ? (m.from.address || m.from) : '未知'} | ${new Date(m.receivedAt || m.date).toLocaleTimeString()}</div>
                         <div class="msg-subject">${m.subject || '（无主题）'}</div>
-                        <div style="font-size:0.85rem; color:var(--text-secondary); margin-top:8px;">${m.preview || '点击查看详情'}...</div>
                     </div>
                 `).join('');
-            } catch(e) {
-                console.error(e);
-            }
+            } catch(e) {}
         }
 
         async function viewMail(msgId, subject) {
@@ -315,14 +354,18 @@
             const mBody = document.getElementById('modalBody');
             const mSub = document.getElementById('modalSubject');
             mSub.innerText = subject;
-            mBody.innerHTML = '<div style="text-align:center;padding:50px;color:#5b6e8c;">⚡ 正在加载详情正文...</div>';
+            mBody.innerHTML = '加载详情中...';
             modal.style.display = 'flex';
             try {
-                const r = await fetch(`${currentProxy}/mailboxes/${mid}/messages/${msgId}`, {headers:{'X-API-Key':API_KEY}});
-                const {data} = await r.json();
-                mBody.innerHTML = data.html || `<div style="white-space:pre-wrap">${data.text || data.body || '无正文内容'}</div>`;
+                if (currentService === "vmail" && mid) {
+                    const r = await fetch(currentProxyBase + `/mailboxes/${mid}/messages/${msgId}`, {headers:{'X-API-Key':API_KEY}});
+                    const {data} = await r.json();
+                    mBody.innerHTML = data.html || `<pre>${data.text || '无正文'}</pre>`;
+                } else {
+                    mBody.innerHTML = '当前服务详情查看暂不支持';
+                }
             } catch(e) {
-                mBody.innerHTML = '❌ 加载详情失败，请稍后重试。';
+                mBody.innerHTML = '加载失败，请稍后重试';
             }
         }
 
@@ -341,11 +384,10 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            init();                    // 打开网页自动生成
+            init();  // 自动生成
             setInterval(refresh, 5000);
             autoPlayMusic();
-            document.addEventListener('click', autoPlayMusic);
-            document.addEventListener('touchstart', autoPlayMusic);
+            document.addEventListener('click', autoPlayMusic, {once: true});
         });
     </script>
 </body>
