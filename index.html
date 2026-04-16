@@ -2,517 +2,1581 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="description" content="114.ae 跨境服务 - 香港保险、保诚保险、安盛保险、跨境代理工具、IPTV订阅、海外公司注册、域名查询一站式海外华人服务 | 微信 jingeng">
-    <meta name="keywords" content="114.ae, 跨境服务, 香港保诚保险, 香港安盛保险, Clash代理工具, V2Ray, IPTV订阅, .ae域名, 海外华人服务, 微信 jingeng, TG代理">
+    <meta name="keywords" content="114.ae, 跨境服务, 香港保诚保险, 香港安盛保险, Clash代理工具, V2Ray, IPTV订阅, .ae域名, 海外华人服务, TG代理,全网盘搜 & 临时邮箱 & 汇率 & 域名查询 & 在线音乐">
     <meta name="author" content="114.ae">
     <title>114.ae 跨境服务 | 香港保险 · 代理工具 · 海外业务一站式</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --bg-color: #f5f7fb;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #5b6e8c;
+            --border-color: #e9eef3;
+            --accent-color: #1e3c72;
+            --accent-hover: #0f2b4f;
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --marquee-bg: rgba(255, 255, 255, 0.15);
+            --result-bg: rgba(30, 60, 114, 0.05);
+            --input-bg: rgba(255, 255, 255, 0.4);
+            --tag-bg: #eef2ff;
+            --password-tag: #fef3c7;
+        }
+        body.dark {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --accent-color: #60a5fa;
+            --accent-hover: #3b82f6;
+            --glass-bg: rgba(0, 0, 0, 0.3);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --marquee-bg: rgba(0, 0, 0, 0.3);
+            --result-bg: rgba(96, 165, 250, 0.1);
+            --input-bg: rgba(30, 41, 59, 0.6);
+            --tag-bg: #334155;
+            --password-tag: #451a03;
+        }
         body {
-            color: #673AB7;
-            line-height: 1.6;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-primary);
             min-height: 100vh;
-            overflow-x: hidden;
-            background: linear-gradient(135deg, #1a0b2e, #0f1e3d);
+            transition: background 0.3s, color 0.3s;
         }
-        .dark-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); z-index: -1; }
-        .blur-overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            backdrop-filter: blur(0px); z-index: -1; transition: backdrop-filter 0.5s ease; 
-        }
-        body.scrolled .blur-overlay { backdrop-filter: blur(4px); }
-
         .marquee-container {
-            position: fixed; top: 0; left: 0; width: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 6px 0; z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-        .marquee { display: inline-block; white-space: nowrap; animation: marquee 20s linear infinite; padding-left: 100%; }
-        .marquee-content { display: inline-block; margin-right: 40px; color: #673AB7; font-weight: bold; font-size: 14px; }
-        .marquee-link { color: #673AB7; text-decoration: none; transition: all 0.3s ease; padding: 0 15px; }
-        .marquee-link:hover { text-shadow: 0 0 8px rgba(255, 255, 255, 0.5); }
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-
-        header { text-align: center; margin-bottom: 40px; padding: 30px 0; }
-        h1 {
-            margin-bottom: 15px; font-size: clamp(2em, 6vw, 3em); font-weight: bold;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            background: linear-gradient(90deg, #ff6b6b, #ffa726, #66bb6a, #42a5f5, #ab47bc);
-            background-size: 400% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: gradient-shift 8s ease infinite;
-        }
-        @keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-
-        .avatar {
-            width: 484px; height: 300px; border-radius: 50%; margin: 15px auto;
-            background-image: url('https://www.114.ae/tv/img/lvdumu.jpg');
-            background-size: cover; background-position: center; transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-        .avatar:hover { transform: scale(1.05); }
-
-        /* ====================== 我们的服务（合并后单个闪电效果） ====================== */
-        .our-services {
-            margin: 25px auto;
-            max-width: 1250px;
-            text-align: center;
-        }
-        .service-header {
-            display: inline-flex; align-items: center; gap: 12px;
-            padding: 16px 40px; background: rgba(255, 255, 255, 0.18);
-            border-radius: 50px; color: #fff; font-weight: bold; font-size: 17px;
-            border: 2px solid rgba(255, 255, 255, 0.4); cursor: pointer;
-            transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-        .service-header:hover { background: rgba(255, 255, 255, 0.28); transform: translateY(-3px); }
-        .service-header i { font-size: 22px; }
-
-        .service-content {
-            display: none;
-            margin-top: 18px;
-            position: relative;
-            padding: 25px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            max-width: 1100px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .service-content.show { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
-
-        /* 横向闪电特效 */
-        .service-content.show::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            width: 0;
-            height: 5px;
-            background: linear-gradient(90deg, transparent, #00ffcc, #00ffff, transparent);
-            box-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffff;
-            opacity: 0;
-            transform: translateX(-50%);
-            animation: lightning-flash 1.4s ease forwards;
-        }
-        @keyframes lightning-flash {
-            0%   { width: 0; opacity: 0; }
-            20%  { width: 100%; opacity: 1; }
-            45%  { width: 100%; opacity: 1; }
-            65%  { width: 40%; opacity: 0; }
-            100% { width: 0; opacity: 0; }
-        }
-
-        .service-item a {
-            display: block; padding: 16px 12px; background: rgba(168, 85, 247, 0.15);
-            border-radius: 18px; text-decoration: none; color: #fff;
-            font-size: 14.5px; text-align: center; transition: all 0.3s ease;
-            border: 1px solid rgba(168, 85, 247, 0.25); min-height: 58px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .service-item a:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0, 255, 200, 0.4); }
-
-        /* ====================== 书签区 ====================== */
-        .bookmarks {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 35px;
-            margin: 40px auto;
-            max-width: 1250px;
-            justify-content: center;
-        }
-        .bookmark {
-            background: rgba(255, 255, 255, 0.15); border-radius: 30px; padding: 25px;
-            transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column;
-            backdrop-filter: blur(3px);
-        }
-        .bookmark:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); background: rgba(255, 255, 255, 0.25); }
-
-        .bookmark-header {
-            display: flex; flex-direction: column; align-items: center; cursor: pointer;
-            margin-bottom: 15px; padding-bottom: 15px; position: relative; transition: all 0.3s ease;
-            text-align: center;
-        }
-        .bookmark-title {
-            color: #4CAF50; font-size: 20px; line-height: 1.3; font-weight: bold;
-            text-align: center; padding: 0 10px; margin-bottom: 12px;
-            letter-spacing: 0.5px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-        }
-        .bookmark-header.collapsed .bookmark-title { color: #a3d9ff; text-shadow: 0 0 15px rgba(163, 217, 255, 0.6); }
-        .fold-indicator {
-            position: relative; width: 80%; height: 2px;
-            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%);
-            border-radius: 2px; overflow: hidden; transition: all 0.4s ease;
-        }
-        .bookmark-header:hover .fold-indicator,
-        .bookmark-header.collapsed .fold-indicator {
-            background: linear-gradient(90deg, rgba(163,217,255,0) 0%, rgba(163,217,255,0.9) 50%, rgba(163,217,255,0) 100%);
-            height: 3px; box-shadow: 0 0 12px rgba(163,217,255,0.5);
-        }
-
-        .bookmark-links {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            transition: all 0.5s ease;
-        }
-        .bookmark-links.collapsed { display: none; }
-
-        .link-item a {
-            display: block; padding: 14px 10px; background: rgba(168, 85, 247, 0.12);
-            border-radius: 15px; font-size: 14px; transition: all 0.3s ease;
-            color: #fff; text-decoration: none; border: 1px solid rgba(168, 85, 247, 0.12);
-            text-align: center; line-height: 1.3; min-height: 52px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .link-item a:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
-
-        /* ====================== 业务介绍弹窗 + 详情弹窗 ====================== */
-        #business-modal, #detail-modal {
-            display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.88);
-            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--marquee-bg);
+            backdrop-filter: blur(12px);
+            padding: 8px 0;
+            z-index: 100;
+            overflow: hidden;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .marquee {
+            white-space: nowrap;
+            display: inline-block;
+            animation: marquee 22s linear infinite;
+            padding-left: 100%;
+        }
+        .marquee a {
+            color: var(--text-primary);
+            font-weight: bold;
+            text-decoration: none;
+            padding: 0 30px;
+            font-size: 15px;
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            margin: 0 5px;
+            transition: background 0.2s;
+        }
+        .marquee a:hover {
+            background: rgba(74,108,247,0.3);
+            text-decoration: underline;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        .tab-bar {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 12px 24px;
+            border-radius: 60px;
+            border: 2px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.05rem;
+        }
+        .tab.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+        .container {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 90px 20px 40px;
+        }
+        .search-header {
+            background: var(--card-bg);
+            border-radius: 32px;
+            padding: 32px 40px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .avatar-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 15px 0 20px 0;
+        }
+        .avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            font-size: 3.8rem;
+            display: flex;
             align-items: center;
             justify-content: center;
+            background: #1e3c72;
+            color: #60a5fa;
+            border: 4px solid rgba(255,255,255,0.6);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .avatar:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-color);
+        }
+        h1 {
+            font-size: 2.3rem;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            background: linear-gradient(135deg, #4a6cf7, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .sub {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+        .proxy-select {
+            margin: 15px 0 20px;
+            text-align: center;
+        }
+        .proxy-select select {
+            padding: 10px 18px;
+            border-radius: 50px;
+            border: 2px solid var(--accent-color);
+            background: var(--card-bg);
+            color: var(--text-primary);
+            font-size: 0.96rem;
+            cursor: pointer;
+        }
+        .search-box {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .search-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 16px 24px;
+            font-size: 1.1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 60px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.2s;
+        }
+        .search-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+        }
+        .search-btn {
+            min-width: 140px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 60px;
+            padding: 0 32px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .search-btn:hover {
+            background: var(--accent-hover);
+            transform: scale(0.98);
+        }
+        .stats {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            background: var(--result-bg);
+            padding: 8px 20px;
+            border-radius: 40px;
+            display: inline-block;
+        }
+        .results-container {
+            background: var(--card-bg);
+            border-radius: 32px;
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            min-height: 340px;
+        }
+        .results-title {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            padding-left: 10px;
+            border-left: 4px solid var(--accent-color);
+        }
+        .source-stats {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: all 0.25s ease;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -12px rgba(0,0,0,0.2);
+        }
+        .card-content {
+            padding: 20px 24px;
+        }
+        .resource-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            line-height: 1.4;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 0.75rem;
+        }
+        .badge {
+            background: var(--tag-bg);
+            padding: 4px 12px;
+            border-radius: 40px;
+            color: var(--text-primary);
+        }
+        .password-badge {
+            background: var(--password-tag);
+            color: #b45309;
+        }
+        .note {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin: 12px 0;
+            background: var(--result-bg);
+            padding: 10px 12px;
+            border-radius: 16px;
+            word-break: break-word;
+        }
+        .link-btn {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-align: center;
+            transition: 0.2s;
+            flex: 1;
+        }
+        .link-btn:hover {
+            transform: scale(0.98);
+        }
+        .footer-info {
+            border-top: 1px solid var(--border-color);
+            background: var(--card-bg);
+            padding: 12px 20px;
+            font-size: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .empty-state, .error-state {
+            background: var(--card-bg);
+            border-radius: 32px;
+            padding: 60px 24px;
+            text-align: center;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            font-size: 1rem;
+        }
+        .loading {
+            text-align: center;
+            padding: 60px;
+            font-size: 1rem;
+            color: var(--accent-color);
+        }
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-color);
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .mail-display {
+            background: var(--result-bg);
+            padding: 18px 24px;
+            border-radius: 60px;
+            font-family: monospace;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin: 20px 0;
+            color: var(--text-primary);
+            border: 2px solid var(--accent-color);
+            min-height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            word-break: break-all;
+        }
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            min-width: 130px;
+            padding: 13px 26px;
+            border-radius: 60px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-p {
+            background: var(--accent-color);
+            color: white;
+        }
+        .btn-s {
+            background: var(--tag-bg);
+            color: var(--text-primary);
+        }
+        .btn:active {
+            transform: scale(0.97);
+        }
+        .msg-item {
+            background: var(--result-bg);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border-color);
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .msg-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-color);
+        }
+        .msg-meta {
+            font-size: 0.75rem;
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .msg-subject {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
         .modal-content {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border-radius: 24px;
-            width: 92%;
-            max-width: 1280px;
-            max-height: 92vh;
-            overflow-y: auto;
-            padding: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 650px;
+            height: 85vh;
+            border-radius: 28px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         }
         .modal-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 25px; color: #fff;
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .modal-header h2 { font-size: 28px; }
-        .close-modal {
-            font-size: 34px; cursor: pointer; color: #fff; width: 44px; height: 44px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 50%; background: rgba(255,255,255,0.15);
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px;
+            color: var(--text-primary);
+            line-height: 1.6;
         }
-        .business-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
+        .modal-footer {
+            padding: 15px 25px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
-        .business-item {
-            background: rgba(255, 255, 255, 0.12);
-            border-radius: 18px;
-            padding: 22px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+        .close-btn {
+            background: var(--tag-bg);
+            color: var(--text-primary);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .theme-toggle {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 101;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .theme-toggle:hover {
+            transform: scale(1.05);
+        }
+        /* 汇率查询样式 */
+        .exchange-top-bar {
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .exchange-card {
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 28px 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+        }
+        .exchange-card h2 { text-align: center; margin-bottom: 24px; font-size: 1.4rem; }
+        .exchange-card label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            display: block;
+        }
+        .exchange-card select, .exchange-card input {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 18px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+        }
+        .exchange-card .btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: transform 0.2s;
+        }
+        .exchange-card .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
             color: #fff;
         }
-        .business-item:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 15px 30px rgba(0, 255, 200, 0.25);
-            background: rgba(255, 255, 255, 0.22);
+        .exchange-card .btn-secondary {
+            background: #e5e7eb;
+            color: #111;
         }
-        .business-item h3 { color: #4CAF50; margin-bottom: 8px; font-size: 19px; }
-        .business-item p { font-size: 15px; margin-bottom: 16px; opacity: 0.95; }
-
-        /* 详情页联系方式（默认隐藏） */
-        .contact-section {
-            margin-top: 25px;
-            padding: 20px;
-            background: rgba(255,255,255,0.08);
+        .exchange-card .quick-btns {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+        .exchange-card .quick-btns button {
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+        .exchange-card .result {
+            margin-top: 24px;
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            height: 50px;
+            transition: all 0.4s;
+        }
+        .exchange-card .source {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .exchange-card canvas { margin-top: 20px; max-height: 280px; }
+        /* 域名查询样式 */
+        .domain-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.1);
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .domain-container h1 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            background: none;
+            -webkit-text-fill-color: var(--text-primary);
+        }
+        .domain-container input {
+            width: 70%;
+            padding: 14px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-primary);
+        }
+        .domain-container button {
+            padding: 14px 22px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background: var(--accent-color);
+            color: white;
+            cursor: pointer;
+            margin: 6px;
+        }
+        .domain-container .lang-btn {
+            display: inline-block;
+            cursor: pointer;
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin: 4px;
+        }
+        .domain-container .lang-btn.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+        .domain-container table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .domain-container th, .domain-container td {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+        }
+        .domain-container .available { color: #ef4444; font-weight: bold; }
+        .domain-container .not-available { color: #10b981; font-weight: bold; }
+        .domain-container .marquee {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+        }
+        .domain-container .contact-links {
+            margin-top: 20px;
+            font-size: 15px;
+        }
+        .domain-container .contact-links a {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .domain-container .copyright {
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        /* 在线音乐样式适配 */
+        .music-container {
+            background: var(--card-bg);
+            border-radius: 32px;
+            padding: 32px;
+            border: 1px solid var(--border-color);
+        }
+        .music-player {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 28px;
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+        .lyrics-box {
+            max-height: 260px;
+            overflow-y: auto;
+            background: var(--result-bg);
+            padding: 16px;
             border-radius: 16px;
-            display: none;
+            line-height: 1.7;
         }
-        .contact-section.show { display: block; animation: fadeIn 0.4s; }
-        .contact-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,0.3);
+        .lyrics-line.active {
+            color: var(--accent-color);
+            font-weight: 700;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 12px;
         }
-        .contact-item:last-child { border-bottom: none; }
-
-        /* 手机优化 */
-        @media (max-width: 768px) {
-            .bookmarks { grid-template-columns: 1fr; gap: 25px; }
-            .service-content.show { grid-template-columns: repeat(2, 1fr); }
+        .song-item {
+            padding: 16px 20px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.2s;
         }
-        @media (max-width: 480px) {
-            .service-content.show { grid-template-columns: 1fr; }
+        .song-item:hover {
+            background: var(--result-bg);
+            transform: translateX(8px);
         }
-
-        .footer { 
-            text-align: center; padding: 30px 20px 40px; color: #673AB7; font-size: 14px; 
-            max-width: 1250px; margin: 0 auto; 
+        @media (max-width: 640px) {
+            .container { padding: 80px 16px 30px; }
+            .search-header, .results-container, .music-container, .music-player { border-radius: 24px; padding: 24px 20px; }
+            h1 { font-size: 1.85rem; }
+            .search-input { min-width: 100%; font-size: 1rem; padding: 14px 20px; }
+            .search-btn { min-width: 100%; padding: 14px 20px; }
+            .results-grid { grid-template-columns: 1fr; gap: 16px; }
+            .theme-toggle { top: 65px; right: 15px; width: 40px; height: 40px; font-size: 20px; }
+            .avatar { width: 75px; height: 75px; font-size: 3rem; }
+            .tab { padding: 10px 20px; font-size: 0.95rem; }
         }
     </style>
 </head>
 <body>
-    <div class="dark-overlay"></div>
-    <div class="blur-overlay"></div>
-
+    <!-- 跑马灯 -->
     <div class="marquee-container">
         <div class="marquee">
-            <span class="marquee-content">
-                <a href="https://www.114.ae" class="marquee-link">阿弥陀佛！ 人生就是江湖！ 人生就是一场演绎,有就多吃一点,无就知足常乐！ </a>
-            </span>
-        </div>
-    </div>
-
-    <div class="container">
-        <header>
-            <h1>114 跨境服务 广告 👉 微信： jingeng </h1>
-            <div class="avatar"></div>
-
-            <!-- 我们的服务（合并后的单个闪电效果） -->
-            <div class="our-services">
-                <div class="service-header" onclick="toggleOurServices(this)">
-                    <i class="fas fa-bolt"></i>
-                    我们的服务
-                </div>
-                <div class="service-content" id="service-content">
-                    <div class="service-item"><a href="https://www.114.ae/music" target="_blank">114.ae在线听歌</a></div>
-                    <div class="service-item"><a href="https://t.me/at114ae" target="_blank">TG联系</a></div>
-                    <div class="service-item"><a href="https://www.114.ae/tg" target="_blank">TG代理</a></div>
-                    <div class="service-item"><a href="https://wa.me/message/VBL34SHP73GYH1" target="_blank">WhatsApp 联系</a></div>
-                    <div class="service-item"><a href="https://www.114.ae" target="_blank">微信: jingeng</a></div>
-                    <div class="service-item"><a href="https://dy.114.ae/dyuuid" target="_blank">跨境客户临时代理使用</a></div>
-                    <div class="service-item"><a href="https://iptv.114.ae" target="_blank">24小时佛教电视台IPTV</a></div>
-                    <div class="service-item"><a href="https://i.114.ae" target="_blank">IPTV订阅（各种电视台）</a></div>
-                    <div class="service-item"><a href="https://tv.114.ae" target="_blank">在线看电视网页版</a></div>
-                    <div class="service-item"><a href="https://ex.114.ae" target="_blank">汇率实时换算</a></div>
-                    <div class="service-item"><a href="https://ym.114.ae" target="_blank">.ae阿联酋域名查询</a></div>
-                    <div class="service-item"><a href="https://www.jingeng.cn/" target="_blank">金更个人网站</a></div>
-                </div>
-            </div>
-        </header>
-
-        <!-- 书签区（保持3栏左右对称） -->
-        <div class="bookmarks">
-            <div class="bookmark">
-                <div class="bookmark-header collapsed" onclick="toggleBookmark(this)">
-                    <div class="bookmark-title">代理工具软件合辑</div>
-                    <div class="fold-indicator"></div>
-                </div>
-                <div class="bookmark-links collapsed">
-                    <div class="link-item"><a href="http://dy.114.ae/dyuuid" target="_blank">跨境订阅测试</a></div>
-                    <div class="link-item"><a href="https://github.com/mihomo-party-org/clash-party/releases" target="_blank">clash-party下载地址</a></div>
-                    <div class="link-item"><a href="https://flclash.cc/download.html" target="_blank">FlClash下载地址</a></div>
-                    <div class="link-item"><a href="https://clashmi.app/download" target="_blank">ClashMi下载地址</a></div>
-                    <div class="link-item"><a href="https://clashverge.net/downloads" target="_blank">Clash Verge下载地址</a></div>
-                    <div class="link-item"><a href="https://github.com/MetaCubeX/ClashMetaForAndroid/releases" target="_blank">ClashMeta下载地址</a></div>
-                    <div class="link-item"><a href="https://github.com/xiaobaigroup/ClashBox/releases" target="_blank">ClashBox下载地址</a></div>
-                    <div class="link-item"><a href="https://clashmac.app" target="_blank">ClashMac下载地址</a></div>
-                    <div class="link-item"><a href="https://github.com/getsurfboard/surfboard/releases" target="_blank">surfboard下载地址</a></div>
-                    <div class="link-item"><a href="https://v2rayn.2dust.link" target="_blank">v2rayN下载地址</a></div>
-                    <div class="link-item"><a href="https://v2rayng.2dust.link" target="_blank">v2rayNG下载地址</a></div>
-                    <div class="link-item"><a href="https://github.com/SagerNet/sing-box/releases" target="_blank">singbox下载地址</a></div>
-                    <div class="link-item"><a href="https://karing.app/download" target="_blank">Karing下载地址</a></div>
-                    <div class="link-item"><a href="https://hiddify.com" target="_blank">Hiddify下载地址</a></div>
-                    <div class="link-item"><a href="https://github.com/MatsuriDayo/NekoBoxForAndroid/releases" target="_blank">NekoBox下载地址</a></div>
-                    <div class="link-item"><a href="https://github.com/appshubcc/Bettbox/releases" target="_blank">Bettbox下载地址</a></div>
-                    <div class="link-item"><a href="https://github.com/dyhkwong/Exclave/releases" target="_blank">Exclave下载地址</a></div>
-                </div>
-            </div>
-
-            <div class="bookmark">
-                <div class="bookmark-header collapsed" onclick="toggleBookmark(this)">
-                    <div class="bookmark-title">设定A</div>
-                    <div class="fold-indicator"></div>
-                </div>
-                <div class="bookmark-links collapsed">
-                    <div class="link-item"><a href="https://www.114.ae" target="_blank">设定A - 测试链接1（后期替换）</a></div>
-                </div>
-            </div>
-
-            <div class="bookmark">
-                <div class="bookmark-header collapsed" onclick="toggleBookmark(this)">
-                    <div class="bookmark-title">设定B</div>
-                    <div class="fold-indicator"></div>
-                </div>
-                <div class="bookmark-links collapsed">
-                    <div class="link-item"><a href="https://www.114.ae" target="_blank">设定B - 测试链接1（后期替换）</a></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 业务介绍按钮（已改为10个） -->
-        <div style="text-align:center; margin:40px 0 20px;">
-            <a onclick="openBusinessModal()" style="display:inline-block; padding:16px 48px; background:linear-gradient(90deg,#00ffcc,#00ffff); color:#1a0b2e; font-weight:bold; font-size:19px; border-radius:50px; text-decoration:none; box-shadow:0 10px 30px rgba(0,255,204,0.5);">
-                <i class="fas fa-briefcase"></i> 查看全部业务介绍（10个业务）
+            <a href="https://www.114.ae" target="_blank" rel="noopener noreferrer">
+                🚀 www.114.ae 跑马灯广告 
+            </a>
+            <a href="https://www.114.ae" target="_blank" rel="noopener noreferrer">
+                🚀 www.114.ae 跨境工具箱 · 隐私保护 · 免费使用 ·广告👉 微信 jingeng
             </a>
         </div>
+    </div>
 
-        <!-- footer（已简化，只保留中文 + 语言切换按钮） -->
-        <div class="footer">
-            © 2026 立足海外. 服务于海外华人. 止于知足常乐<br>
-            广告 👉 微信：jingeng | TG：@at114ae | WhatsApp 联系<br>
-            
-            <div style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-                <a href="#" onclick="switchLang('zh')" class="lang-btn" style="padding:8px 22px; background:rgba(255,255,255,0.15); border-radius:30px; color:#fff; font-size:15px; border:1px solid rgba(255,255,255,0.3);">中文</a>
-                <a href="#" onclick="switchLang('en')" class="lang-btn" style="padding:8px 22px; background:rgba(255,255,255,0.15); border-radius:30px; color:#fff; font-size:15px; border:1px solid rgba(255,255,255,0.3);">English</a>
-                <a href="#" onclick="switchLang('ar')" class="lang-btn" style="padding:8px 22px; background:rgba(255,255,255,0.15); border-radius:30px; color:#fff; font-size:15px; border:1px solid rgba(255,255,255,0.3);">العربية</a>
+    <!-- 主题切换 -->
+    <div class="theme-toggle" id="themeToggle">🌙</div>
+
+    <div class="container">
+        <!-- Tab 切换 -->
+        <div class="tab-bar">
+            <button class="tab active" id="tab-search" onclick="switchTab(0)">🔍 全网盘搜</button>
+            <button class="tab" id="tab-email" onclick="switchTab(1)">✉️ 临时邮箱</button>
+            <button class="tab" id="tab-exchange" onclick="switchTab(2)">💱 汇率查询</button>
+            <button class="tab" id="tab-domain" onclick="switchTab(3)">🔍 域名查询</button>
+            <button class="tab" id="tab-music" onclick="switchTab(4)">🎵 在线音乐</button>
+        </div>
+
+        <!-- 全网盘搜 Tab -->
+        <div id="search-content">
+            <div class="search-header">
+                <div class="avatar-wrapper"><div class="avatar">🛸</div></div>
+                <h1>114全网盘搜</h1>
+                <p class="sub">🚀 114.ae跨境 · 多代理加速 · 智能缓存 · 瞬时响应</p>
+                <div class="proxy-select">
+                    <select id="proxySelect" onchange="changeProxy()">
+                        <option value="none" selected>🌐 无代理（直接访问 · 最快）</option>
+                        <option value="https://proxy.api.030101.xyz/">🚀 推荐代理1（030101 · 最稳定）</option>
+                    </select>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="searchInput" class="search-input" placeholder="输入电影、剧集、短剧、书籍、音乐、软件、资料">
+                    <button id="searchBtn" class="search-btn">🔍 极速搜索</button>
+                </div>
+                <div id="statsArea" class="stats">✨ 114.ae多代理加速已启用 · 点击按钮开始搜索</div>
             </div>
-            <br>（不挨批评，知足常乐 😂）
+            <div class="results-container">
+                <div class="results-title" id="resultsTitle">📦 搜索结果（按网盘来源自动分类统计 · 点击分类直达）</div>
+                <div id="resultsContainer"></div>
+            </div>
+        </div>
+
+        <!-- 临时邮箱 Tab -->
+        <div id="email-content" style="display: none;">
+            <div class="search-header">
+                <div class="avatar-wrapper"><div class="avatar">🛸</div></div>
+                <h1>114.ae跨境</h1>
+                <p class="sub">临时邮箱 · 阅后即焚 · 支持验证码 · 防骚扰</p>
+                <p style="color: var(--accent-color); font-weight: 600; margin: 10px 0 20px;">✅ vmail.dev（主推荐，可靠接收）</p>
+                <div id="addr" class="mail-display">正在自动生成邮箱...</div>
+                <div class="btn-group">
+                    <button onclick="copyMail()" class="btn btn-s">📋 复制地址</button>
+                    <button id="refreshBtn" onclick="initEmail()" class="btn btn-p">🔄 更换地址</button>
+                </div>
+            </div>
+            <div class="results-container">
+                <div class="results-title">📥 实时收件箱（仅存留于当前页面）</div>
+                <div id="list"><div style="text-align: center; padding: 60px; color: var(--text-secondary);">正在等待新邮件推送...</div></div>
+            </div>
+        </div>
+
+        <!-- 汇率查询 Tab -->
+        <div id="exchange-content" style="display: none;">
+            <div class="exchange-top-bar">
+                <select id="lang" onchange="setLang(this.value)">
+                    <option value="zh">中文</option>
+                    <option value="en">English</option>
+                    <option value="ar">العربية</option>
+                </select>
+                <button onclick="location.href='https://www.114.ae/aed-cny.html'">AED ⇄ CNY</button>
+            </div>
+            <div class="exchange-card" id="exchangeCard">
+                <h2 data-i18n="title">💱114.ae汇率换算器</h2>
+                <label data-i18n="source">选择汇率源</label>
+                <select id="api">
+                    <option value="opener">Open ER API</option>
+                    <option value="exchangerateapi">ExchangeRate-API</option>
+                    <option value="cbr">俄罗斯央行</option>
+                </select>
+                <label data-i18n="amount">金额</label>
+                <input id="amount" type="number" value="1000">
+                <div class="quick-btns">
+                    <button onclick="setAmount(100)">100</button>
+                    <button onclick="setAmount(500)">500</button>
+                    <button onclick="setAmount(1000)">1000</button>
+                    <button onclick="setAmount(5000)">5000</button>
+                </div>
+                <label data-i18n="currency">从 / 到</label>
+                <div style="display:flex; gap:10px;">
+                    <select id="from" style="flex:1;"></select>
+                    <select id="to" style="flex:1;"></select>
+                </div>
+                <button class="btn btn-primary" onclick="calc()" data-i18n="calc">立即换算</button>
+                <button class="btn btn-secondary" onclick="copyResult()">📋 复制结果</button>
+                <button class="btn btn-secondary" onclick="share()" data-i18n="share">分享结果</button>
+                <div class="result" id="result">0</div>
+                <div class="source" id="source"></div>
+                <canvas id="chart" style="max-height:280px;"></canvas>
+            </div>
+        </div>
+
+        <!-- 域名查询 Tab -->
+        <div id="domain-content" style="display: none;">
+            <div class="domain-container">
+                <div class="marquee"><marquee>当前要出售的域名 →→→ uda.ae →→→ wemart.ae →→→ alipay.ae 需要买的带价格来谈 联系微信: jingeng</marquee></div>
+                <h1 id="domain-title">114.ae 域名查询</h1>
+                <div>
+                    <input id="domain-input" placeholder="输入域名(不带后缀)">
+                    <br><br>
+                    <button onclick="checkDomains()">查询</button>
+                </div>
+                <div style="margin-top:10px;">
+                    <span class="lang-btn active" onclick="switchDomainLang('zh',this)">中文</span>
+                    <span class="lang-btn" onclick="switchDomainLang('en',this)">English</span>
+                    <span class="lang-btn" onclick="switchDomainLang('ar',this)">عربي</span>
+                </div>
+                <div id="domain-deviceInfo" style="margin:15px 0; font-size:14px; color:var(--text-secondary);"></div>
+                <div id="domain-output" style="margin-top:20px; overflow-x:auto;"></div>
+                <div style="margin-top:15px;">
+                    <button onclick="copyDomainResults()">复制结果</button>
+                    <button onclick="shareDomainResults()">转发结果</button>
+                </div>
+                <div class="contact-links" style="margin-top:20px; font-size:15px;">
+                    💬 Telegram 查询格式 /check 114 回车等待结果：<a href="https://t.me/domainserchbot114aebot" target="_blank">@domainserchbot114aebot</a>｜
+                    📱 WhatsApp：<a href="https://api.whatsapp.com/message/VBL34SHP73GYH1" target="_blank">WhatApp点击联系</a>
+                </div>
+                <div id="domain-copyright" class="copyright">© 2026 www.114.ae 域名查询 · 广告 👉 微信：jingeng</div>
+            </div>
+        </div>
+
+        <!-- 在线音乐 Tab -->
+        <div id="music-content" style="display: none;">
+            <div class="music-container" id="music-app">
+                <div style="text-align:center;margin-bottom:30px;">
+                    <h1 style="font-size:2.6rem;">🎵 114.ae 在线音乐</h1>
+                    <p style="color:var(--text-secondary);">高清音源 · 免费试听 · 支持下载</p>
+                </div>
+
+                <!-- 搜索栏 -->
+                <div class="music-player">
+                    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                        <input v-model="keyword" @keyup.enter="searchMusic(1)" type="text" 
+                               placeholder="输入歌名或歌手（如：陈雷、周杰伦、晴天）"
+                               style="flex:1;min-width:280px;padding:16px 24px;border-radius:60px;border:1px solid var(--border-color);background:var(--input-bg);font-size:1.1rem;">
+                        <button @click="searchMusic(1)" :disabled="loading"
+                                style="min-width:140px;padding:16px 32px;border-radius:60px;background:var(--accent-color);color:white;font-weight:600;">
+                            {{ loading ? '搜索中...' : '🔍 搜索' }}
+                        </button>
+                    </div>
+                    <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;">
+                        <span v-for="tag in quickTags" :key="tag" @click="keyword=tag;searchMusic(1)"
+                              style="padding:8px 20px;background:var(--tag-bg);border-radius:9999px;cursor:pointer;font-size:0.95rem;">
+                            {{ tag }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 当前播放器 -->
+                <div v-if="currentSong" class="music-player">
+                    <div style="display:flex;gap:24px;flex-wrap:wrap;">
+                        <img :src="currentSong.artwork" style="width:200px;height:200px;border-radius:20px;object-fit:cover;box-shadow:0 10px 30px rgba(0,0,0,0.25);"
+                             @error="currentSong.artwork = 'https://picsum.photos/id/1015/800/800'">
+                        <div style="flex:1;min-width:300px;">
+                            <h2 style="font-size:1.8rem;font-weight:700;">{{ currentSong.title }}</h2>
+                            <p style="font-size:1.25rem;color:var(--text-secondary);margin:8px 0 20px;">{{ currentSong.artist }}</p>
+                            <audio ref="audioPlayer" :src="currentPlayUrl" controls autoplay style="width:100%;margin-bottom:20px;"></audio>
+                            
+                            <div>
+                                <button @click="showLyrics = !showLyrics" style="color:var(--accent-color);margin-bottom:10px;">
+                                    {{ showLyrics ? '隐藏歌词 ▲' : '显示歌词 ▼' }}
+                                </button>
+                                <div v-if="showLyrics" class="lyrics-box">
+                                    <div v-for="(line,i) in parsedLyrics" :key="i" class="lyrics-line" :class="{active: i === currentLine}">
+                                        {{ line.text }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
+                        <button @click="downloadSong" style="flex:1;padding:14px;border-radius:60px;background:var(--accent-color);color:white;">⬇️ 下载歌曲</button>
+                        <button @click="copyPlayUrl" style="flex:1;padding:14px;border-radius:60px;background:var(--tag-bg);">📋 复制地址</button>
+                        <button @click="playPrev" style="padding:14px 28px;border-radius:60px;background:var(--tag-bg);">⏮</button>
+                        <button @click="togglePlay" style="padding:14px 36px;border-radius:60px;background:var(--accent-color);color:white;font-size:1.3rem;">{{ isPlaying ? '⏸' : '▶' }}</button>
+                        <button @click="playNext" style="padding:14px 28px;border-radius:60px;background:var(--tag-bg);">⏭</button>
+                    </div>
+                </div>
+
+                <!-- 搜索结果列表 -->
+                <div class="music-player">
+                    <div style="font-size:1.3rem;font-weight:600;margin-bottom:16px;">🎧 搜索结果</div>
+                    <div v-if="loading && songs.length===0" style="padding:80px;text-align:center;color:var(--accent-color);">正在搜索...</div>
+                    <div v-else-if="songs.length===0" style="padding:80px;text-align:center;color:var(--text-secondary);">输入关键词开始搜索</div>
+                    <div v-else>
+                        <div v-for="(song, idx) in songs" :key="song.id" @click="playSong(song)" class="song-item">
+                            <div style="width:40px;color:var(--text-secondary);text-align:right;">{{ (idx+1).toString().padStart(2,'0') }}</div>
+                            <img :src="song.artwork" style="width:60px;height:60px;border-radius:12px;object-fit:cover;" @error="song.artwork='https://picsum.photos/id/1015/800/800'">
+                            <div style="flex:1;min-width:0;">
+                                <div style="font-weight:600;">{{ song.title }}</div>
+                                <div style="color:var(--text-secondary);font-size:0.95rem;">{{ song.artist }}</div>
+                            </div>
+                            <div style="color:var(--text-secondary);font-family:monospace;">{{ song.duration }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- 业务介绍主弹窗（10个业务） -->
-    <div id="business-modal">
+    <!-- 邮件详情弹窗 -->
+    <div id="mailModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>📋 114.ae 跨境业务介绍（共10个业务）</h2>
-                <span class="close-modal" onclick="closeBusinessModal()">×</span>
+                <span id="modalSubject" style="font-weight: bold; font-size: 1.1rem;">邮件详情</span>
+                <button class="close-btn" onclick="closeMail()">关闭</button>
             </div>
-            <div class="business-grid" id="business-grid">
-                <!-- JS 动态生成 10 个业务卡片 -->
+            <div id="modalBody" class="modal-body"></div>
+            <div class="modal-footer">
+                <button onclick="copyEmailContent()" class="btn btn-s">📋 复制邮件全文</button>
+                <button onclick="forwardEmail()" class="btn btn-s">➡️ 转发此邮件</button>
             </div>
         </div>
     </div>
 
-    <!-- 业务详情弹窗（点击“立即了解”后弹出） -->
-    <div id="detail-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="detail-title"></h2>
-                <span class="close-modal" onclick="closeDetailModal()">×</span>
-            </div>
-            <div id="detail-desc" style="color:#fff; font-size:16px; line-height:1.8; margin-bottom:30px;"></div>
-            
-            <button onclick="toggleContacts()" style="padding:12px 30px; background:#00ffcc; color:#1a0b2e; border:none; border-radius:50px; font-weight:bold; cursor:pointer; margin-bottom:15px;">
-                <i class="fas fa-phone"></i> 显示联系方式
-            </button>
-            
-            <div id="contact-section" class="contact-section">
-                <div class="contact-item"><span>微信：</span><strong id="contact-wechat">jingeng</strong></div>
-                <div class="contact-item"><span>WhatsApp：</span><strong id="contact-whatsapp">+86 138-XXXX-XXXX</strong></div>
-                <div class="contact-item"><span>手机号码：</span><strong id="contact-phone">+852 9XXX XXXX</strong></div>
-                <p style="margin-top:15px; font-size:13px; opacity:0.8;">复制后可直接添加，24小时在线回复</p>
-            </div>
-        </div>
-    </div>
+    <!-- 页脚 -->
+    <footer style="text-align:center; padding:40px 20px; color:var(--text-secondary); font-size:0.9rem; margin-top:50px;">
+        © 2026 114.ae跨境工具箱 | 全网盘搜 + 临时邮箱 + 汇率查询 + 域名查询 + 在线音乐 | 多代理加速 · 隐私保护<br>
+        仅供学习交流 · 所有资源来自公开接口
+    </footer>
 
     <script>
-        // SEO 已优化，跑马灯保持
-        window.addEventListener('scroll', function() {
-            document.body.classList.toggle('scrolled', window.scrollY > 50);
-        });
+        // ==================== 原有完整脚本（未做任何删减） ====================
+        (function() {
+            let currentTab = 0;
+            let currentProxyBase = 'none';
+            let currentProxyName = '🌐 无代理（直接访问 · 最快）';
+            let currentAllResults = [];
+            let activeFilter = null;
+            const ORIGIN_API = 'https://so.252035.xyz/api/search?kw=';
+            const cache = new Map();
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const marquee = document.querySelector('.marquee');
-            if (marquee) marquee.appendChild(document.querySelector('.marquee-content').cloneNode(true));
-            initializeBookmarks();
-            generateBusinessCards();   // 生成10个业务
-        });
-
-        function toggleBookmark(header) {
-            const bookmark = header.closest('.bookmark');
-            const links = bookmark.querySelector('.bookmark-links');
-            const isCollapsed = header.classList.toggle('collapsed');
-            links.classList.toggle('collapsed', isCollapsed);
-            const index = Array.from(document.querySelectorAll('.bookmark')).indexOf(bookmark);
-            localStorage.setItem(`bookmark_${index}`, isCollapsed);
-        }
-
-        function initializeBookmarks() {
-            document.querySelectorAll('.bookmark').forEach((bookmark, i) => {
-                const key = `bookmark_${i}`;
-                const saved = localStorage.getItem(key);
-                const shouldCollapse = saved === null || saved === 'true';
-                const header = bookmark.querySelector('.bookmark-header');
-                const links = bookmark.querySelector('.bookmark-links');
-                if (shouldCollapse) {
-                    header.classList.add('collapsed');
-                    links.classList.add('collapsed');
+            function buildApiUrl(keyword) {
+                const encodedKw = encodeURIComponent(keyword);
+                const originFull = ORIGIN_API + encodedKw;
+                if (currentProxyBase === 'none') return originFull;
+                return currentProxyBase + originFull;
+            }
+            function getProxiedUrl(targetUrl) {
+                const proxy = currentProxyBase === 'none' ? 'https://proxy.api.030101.xyz/' : currentProxyBase;
+                return proxy + targetUrl;
+            }
+            window.changeProxy = function() {
+                const select = document.getElementById('proxySelect');
+                currentProxyBase = select.value;
+                currentProxyName = select.options[select.selectedIndex].text;
+                const stats = document.getElementById('statsArea');
+                stats.innerHTML = `✨ 已切换至 <strong>${currentProxyName}</strong>`;
+            };
+            async function fetchWithTimeout(url, timeout = 8000, retries = 2) {
+                for (let i = 0; i <= retries; i++) {
+                    try {
+                        const controller = new AbortController();
+                        const timeoutId = setTimeout(() => controller.abort(), timeout);
+                        const response = await fetch(url, { signal: controller.signal, headers: { 'Accept': 'application/json' } });
+                        clearTimeout(timeoutId);
+                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                        return await response.json();
+                    } catch (err) {
+                        if (i === retries) throw err;
+                        await new Promise(r => setTimeout(r, 600));
+                    }
                 }
-                if (saved === null) localStorage.setItem(key, 'true');
+            }
+            function getDiskType(url) {
+                if (!url) return '🔗 未知';
+                if (url.startsWith('magnet:')) return '🧲 磁力链接';
+                if (url.includes('115.com') || url.includes('115yun')) return '📦 115网盘';
+                if (url.includes('pan.baidu.com')) return '📀 百度网盘';
+                if (url.includes('aliyundrive.com')) return '☁️ 阿里云盘';
+                if (url.includes('quark.cn')) return '⚛️ 夸克网盘';
+                if (url.includes('xunlei.com')) return '⚡ 迅雷网盘';
+                return '🔗 其他网盘';
+            }
+            function escapeHtml(str) {
+                if (!str) return '';
+                return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+            }
+            function formatDate(dateStr) {
+                if (!dateStr || dateStr.startsWith('0001-01-01')) return '时间未知';
+                try {
+                    const d = new Date(dateStr);
+                    if (isNaN(d.getTime())) return dateStr.split('T')[0];
+                    return `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getDate().toString().padStart(2,'0')}`;
+                } catch(e) { return dateStr; }
+            }
+            function renderCard(item) {
+                const title = item.note || '无标题资源';
+                const url = item.url || '#';
+                const password = item.password || '';
+                const source = item.source || '未知来源';
+                const datetime = item.datetime ? formatDate(item.datetime) : '时间未知';
+                const noteDetail = item.note || '';
+                const diskType = getDiskType(url);
+                return `
+                <div class="card">
+                    <div class="card-content">
+                        <div class="resource-title">${escapeHtml(title)}</div>
+                        <div class="meta-info">
+                            <span class="badge">${diskType}</span>
+                            <span class="badge">📅 ${datetime}</span>
+                            <span class="badge">📡 ${escapeHtml(source)}</span>
+                            ${password ? `<span class="badge password-badge">🔑 提取码: ${escapeHtml(password)}</span>` : ''}
+                        </div>
+                        ${noteDetail && noteDetail !== title ? `<div class="note">📄 ${escapeHtml(noteDetail.substring(0, 180))}${noteDetail.length > 180 ? '…' : ''}</div>` : ''}
+                        <div style="display:flex; gap:8px; margin-top:12px;">
+                            <a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="link-btn" style="background:#10b981;">🌐 直接打开</a>
+                            <a href="${escapeHtml(getProxiedUrl(url))}" target="_blank" rel="noopener noreferrer" class="link-btn" style="background:var(--accent-color);">🚀 代理打开</a>
+                        </div>
+                    </div>
+                    <div class="footer-info">
+                        <span>✨ 来源: ${escapeHtml(source)}</span>
+                        ${password ? `<span>🔐 密码: ${escapeHtml(password)}</span>` : '<span>🔓 无密码</span>'}
+                    </div>
+                </div>`;
+            }
+            function showLoading() {
+                const container = document.getElementById('resultsContainer');
+                container.innerHTML = `<div class="loading"><div class="spinner"></div><div style="margin-top:12px;">🚀 ${currentProxyName} 请求中...</div></div>`;
+            }
+            function showError(msg) {
+                const container = document.getElementById('resultsContainer');
+                container.innerHTML = `<div class="error-state">⚠️ 请求失败: ${escapeHtml(msg)}<br><br>💡 提示: 可切换代理或使用“无代理”模式重试</div>`;
+                document.getElementById('statsArea').innerText = `❌ 请求失败: ${msg}`;
+            }
+            function showEmpty(keyword) {
+                const container = document.getElementById('resultsContainer');
+                container.innerHTML = `<div class="empty-state">😞 未找到关于 “${escapeHtml(keyword)}” 的资源<br>试试其他关键词</div>`;
+                document.getElementById('statsArea').innerText = `🔍 没有找到与 “${keyword}” 相关的结果`;
+            }
+            function renderCurrentResults() {
+                const container = document.getElementById('resultsContainer');
+                const existingGrid = container.querySelector('.results-grid');
+                if (existingGrid) existingGrid.remove();
+                const grid = document.createElement('div');
+                grid.className = 'results-grid';
+                const toRender = activeFilter ? currentAllResults.filter(item => getDiskType(item.url || '#') === activeFilter) : currentAllResults;
+                toRender.forEach(item => grid.insertAdjacentHTML('beforeend', renderCard(item)));
+                container.appendChild(grid);
+                if (activeFilter) {
+                    const clearDiv = document.createElement('div');
+                    clearDiv.className = 'stats';
+                    clearDiv.style.marginTop = '16px';
+                    clearDiv.style.textAlign = 'center';
+                    clearDiv.innerHTML = `当前显示 <strong>${activeFilter}</strong> <span onclick="clearFilter()" style="cursor:pointer; text-decoration:underline; color:var(--accent-color);">显示全部结果</span>`;
+                    container.appendChild(clearDiv);
+                }
+            }
+            function renderResults(allResults, total, kw) {
+                currentAllResults = [...allResults];
+                activeFilter = null;
+                const container = document.getElementById('resultsContainer');
+                container.innerHTML = `<div class="results-title">📦 搜索结果（按网盘来源自动分类统计 · 点击分类直达）</div>`;
+                const counts = {};
+                allResults.forEach(item => {
+                    const type = getDiskType(item.url || '#');
+                    counts[type] = (counts[type] || 0) + 1;
+                });
+                const statsDiv = document.createElement('div');
+                statsDiv.className = 'source-stats';
+                Object.entries(counts).sort((a, b) => b[1] - a[1]).forEach(([type, count]) => {
+                    const badge = document.createElement('span');
+                    badge.className = 'badge';
+                    badge.style.cursor = 'pointer';
+                    badge.innerHTML = `${type} <strong>(${count})</strong>`;
+                    badge.onclick = () => { activeFilter = type; renderCurrentResults(); };
+                    statsDiv.appendChild(badge);
+                });
+                container.appendChild(statsDiv);
+                renderCurrentResults();
+            }
+            window.clearFilter = function() {
+                activeFilter = null;
+                renderCurrentResults();
+            };
+            async function searchResources(keyword) {
+                if (!keyword || keyword.trim() === '') {
+                    document.getElementById('statsArea').innerText = '⚠️ 请输入搜索关键词';
+                    document.getElementById('resultsContainer').innerHTML = `<div class="empty-state">📌 请输入电影/剧集/资源名称</div>`;
+                    return;
+                }
+                const kw = keyword.trim();
+                if (cache.has(kw)) {
+                    const cached = cache.get(kw);
+                    document.getElementById('statsArea').innerHTML = `⚡ 缓存命中 · 瞬间展示 ${cached.total} 条结果 · ${currentProxyName}`;
+                    renderResults(cached.allResults, cached.total, kw);
+                    return;
+                }
+                document.getElementById('statsArea').innerHTML = `🚀 ${currentProxyName} 请求中 · 关键词: ${kw}`;
+                showLoading();
+                try {
+                    const apiUrl = buildApiUrl(kw);
+                    const data = await fetchWithTimeout(apiUrl, 8000, 2);
+                    if (data.code !== 0 || !data.data) throw new Error(data.message || '接口返回数据异常');
+                    const mergedByType = data.data.merged_by_type || {};
+                    let allResults = [];
+                    for (let type in mergedByType) {
+                        if (Array.isArray(mergedByType[type])) allResults = allResults.concat(mergedByType[type]);
+                    }
+                    if (allResults.length === 0) {
+                        showEmpty(kw);
+                        return;
+                    }
+                    const total = data.data.total || allResults.length;
+                    cache.set(kw, { allResults, total });
+                    if (cache.size > 50) cache.delete(cache.keys().next().value);
+                    document.getElementById('statsArea').innerHTML = `✅ 找到 ${total} 条资源 · ${currentProxyName} (已缓存，下次秒开)`;
+                    renderResults(allResults, total, kw);
+                } catch (err) {
+                    console.error('搜索出错:', err);
+                    if (err.name === 'AbortError') showError('请求超时 (8秒)，请切换代理或使用“无代理”模式');
+                    else showError(err.message || '网络错误或代理不可用');
+                }
+            }
+
+            // 临时邮箱部分（完整保留）
+            let mid = null;
+            let isInitializing = false;
+            let emailRefreshInterval = null;
+            const currentEmailProxy = "https://proxy.api.030101.xyz/https://vmail.dev/api/v1";
+            const API_KEY = 'vmail_at6AmSu4dEkuJG4bafc8qhSqBctCMW9q';
+            window.initEmail = async function(retries = 3) {
+                if (isInitializing && retries === 3) return;
+                isInitializing = true;
+                const btn = document.getElementById('refreshBtn');
+                const addrEl = document.getElementById('addr');
+                addrEl.innerText = "⚡ 正在生成随机邮箱...";
+                btn.disabled = true;
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 10000);
+                    const r = await fetch(currentEmailProxy + '/mailboxes', {
+                        method: 'POST',
+                        headers: {'X-API-Key': API_KEY, 'Content-Type': 'application/json'},
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+                    if (!r.ok) throw new Error('Proxy API Error');
+                    const {data} = await r.json();
+                    mid = data.id;
+                    addrEl.innerText = data.address;
+                    document.getElementById('list').innerHTML = '<div style="text-align: center; padding: 60px; color: var(--text-secondary);">🚀 邮箱已就绪，正在监听新邮件...</div>';
+                } catch(e) {
+                    if (retries > 0) setTimeout(() => window.initEmail(retries - 1), 1000);
+                    else addrEl.innerText = "⚠️ 生成失败，请点击更换地址重试";
+                } finally {
+                    isInitializing = false;
+                    btn.disabled = false;
+                }
+            };
+            window.refreshEmail = async function() {
+                if (!mid) return;
+                try {
+                    const r = await fetch(currentEmailProxy + `/mailboxes/${mid}/messages`, {headers:{'X-API-Key':API_KEY}});
+                    const res = await r.json();
+                    const data = res.data || [];
+                    const listEl = document.getElementById('list');
+                    if (data.length === 0) {
+                        listEl.innerHTML = '<div style="text-align: center; padding: 60px; color: var(--text-secondary);">暂无新邮件...</div>';
+                        return;
+                    }
+                    listEl.innerHTML = data.map(m => `
+                        <div class="msg-item" onclick="viewMail('${m.id}', '${escapeHtml(m.subject || '无主题')}')">
+                            <div class="msg-meta">来自: ${escapeHtml(m.from ? (m.from.address || m.from) : '未知')} | ${new Date(m.receivedAt || m.date).toLocaleTimeString('zh-CN')}</div>
+                            <div class="msg-subject">${escapeHtml(m.subject || '（无主题）')}</div>
+                        </div>
+                    `).join('');
+                } catch(e) {}
+            };
+            window.viewMail = async function(msgId, subject) {
+                const modal = document.getElementById('mailModal');
+                const mBody = document.getElementById('modalBody');
+                const mSub = document.getElementById('modalSubject');
+                mSub.innerText = subject;
+                mBody.innerHTML = '加载详情中...';
+                modal.style.display = 'flex';
+                try {
+                    const r = await fetch(currentEmailProxy + `/mailboxes/${mid}/messages/${msgId}`, {headers:{'X-API-Key':API_KEY}});
+                    const {data} = await r.json();
+                    mBody.innerHTML = data.html || `<pre style="white-space:pre-wrap; font-family: monospace;">${data.text || '无正文'}</pre>`;
+                } catch(e) {
+                    mBody.innerHTML = '加载失败，请稍后重试';
+                }
+            };
+            window.copyEmailContent = function() {
+                const content = document.getElementById('modalBody').innerText;
+                navigator.clipboard.writeText(content).then(() => alert('✅ 邮件全文已复制'));
+            };
+            window.forwardEmail = function() {
+                const content = document.getElementById('modalBody').innerText;
+                const forwardedText = `【114.ae 临时邮箱转发】\n\n${content}\n\n来自：https://www.114.ae`;
+                if (navigator.share) {
+                    navigator.share({title: '114.ae 临时邮箱 - 邮件转发', text: forwardedText}).catch(() => navigator.clipboard.writeText(forwardedText));
+                } else {
+                    navigator.clipboard.writeText(forwardedText);
+                }
+            };
+            window.closeMail = function() {
+                document.getElementById('mailModal').style.display = 'none';
+                window.refreshEmail();
+            };
+            window.copyMail = function() {
+                const val = document.getElementById('addr').innerText;
+                if (val.includes('@')) navigator.clipboard.writeText(val).then(() => alert('✅ 复制成功！刷新页面后地址将失效'));
+                else alert('地址尚未准备好，请稍等或重试');
+            };
+
+            // 汇率查询部分（完整保留）
+            const i18n = {
+                zh: { title:"114.ae汇率换算器", source:"选择汇率源", amount:"金额", currency:"从 / 到", calc:"立即换算", share:"分享结果" },
+                en: { title:"114.ae Currency Converter", source:"Select Source", amount:"Amount", currency:"From / To", calc:"Calculate", share:"Share Result" },
+                ar: { title:"محول العملات.", source:"اختر المصدر", amount:"المبلغ", currency:"من / إلى", calc:"احسب الآن", share:"شارك النتيجة" }
+            };
+            window.setLang = function(lang) {
+                document.querySelectorAll("#exchange-content [data-i18n]").forEach(el => {
+                    el.textContent = i18n[lang][el.dataset.i18n];
+                });
+                document.documentElement.lang = lang;
+            };
+            window.setAmount = function(v) {
+                document.getElementById("amount").value = v;
+                window.calc();
+            };
+            function animateValue(id, start, end, duration) {
+                let startTimestamp = null;
+                const el = document.getElementById(id);
+                const step = (ts) => {
+                    if (!startTimestamp) startTimestamp = ts;
+                    const p = Math.min((ts - startTimestamp) / duration, 1);
+                    el.innerText = (p * (end - start) + start).toFixed(2);
+                    if (p < 1) requestAnimationFrame(step);
+                };
+                requestAnimationFrame(step);
+            }
+            window.copyResult = function() {
+                const text = window._lastResult || "暂无结果";
+                navigator.clipboard.writeText(text).then(() => alert("结果已复制到剪贴板 ✅"));
+            };
+            window.share = function() {
+                if (navigator.share) navigator.share({title:"汇率结果", text: window._lastResult || ""});
+                else copyResult();
+            };
+            window.calc = async function() {
+                const amount = document.getElementById("amount").value;
+                const from = document.getElementById("from").value;
+                const to = document.getElementById("to").value;
+                const api = document.getElementById("api").value;
+                try {
+                    const res = await fetch(`https://exapi.114.ae/convert?from=${from}&to=${to}&amount=${amount}&api=${api}`);
+                    const d = await res.json();
+                    animateValue("result", 0, d.result, 800);
+                    document.getElementById("source").innerText = `来源：${d.source}`;
+                    window._lastResult = `${d.amount} ${d.from} = ${d.result} ${d.to}`;
+                    loadChart(from, to, api);
+                } catch (e) {
+                    document.getElementById("result").innerText = "Error";
+                }
+            };
+            async function loadChart(from, to, api) {
+                try {
+                    const res = await fetch(`https://exapi.114.ae/history?from=${from}&to=${to}&api=${api}`);
+                    const d = await res.json();
+                    const labels = d.history.map(i => new Date(i.date).toLocaleDateString());
+                    const data = d.history.map(i => i.rate);
+                    if (window.exchangeChart) {
+                        window.exchangeChart.data.labels = labels;
+                        window.exchangeChart.data.datasets[0].data = data;
+                        window.exchangeChart.update();
+                    }
+                } catch(e) {}
+            }
+            function initExchangeChart() {
+                const ctx = document.getElementById('chart');
+                if (ctx) {
+                    window.exchangeChart = new Chart(ctx.getContext('2d'), {
+                        type: 'line',
+                        data: { labels: [], datasets: [{ label: 'Rate', data: [], borderColor: '#3b82f6', tension: 0.4 }] },
+                        options: { responsive: true, plugins: { legend: { display: false } } }
+                    });
+                }
+                ["AED","CNY","USD","RUB"].forEach(c => {
+                    const fromSel = document.getElementById("from");
+                    const toSel = document.getElementById("to");
+                    if (fromSel) fromSel.innerHTML += `<option>${c}</option>`;
+                    if (toSel) toSel.innerHTML += `<option>${c}</option>`;
+                });
+                const fromSel = document.getElementById("from");
+                const toSel = document.getElementById("to");
+                if (fromSel) fromSel.value = "AED";
+                if (toSel) toSel.value = "CNY";
+                setTimeout(() => { if (typeof window.calc === 'function') window.calc(); }, 300);
+            }
+
+            // 域名查询部分（完整保留）
+            const domainTranslations = {
+                zh: { title:"114.ae 域名查询", placeholder:"输入域名(不带后缀)", copyright:"© 2026 www.114.ae 域名查询 · 保留所有权利" },
+                en: { title:"114.ae Domain Search", placeholder:"Enter domain without suffix", copyright:"© 2026 114.ae Domain Search · All rights reserved" },
+                ar: { title:"بحث عن النطاق", placeholder:"أدخل النطاق بدون اللاحقة", copyright:"© 2026 بحث النطاقات · جميع الحقوق محفوظة" }
+            };
+            let currentDomainLang = "zh";
+            window.switchDomainLang = function(lang, el) {
+                currentDomainLang = lang;
+                document.getElementById("domain-title").innerText = domainTranslations[lang].title;
+                document.getElementById("domain-input").placeholder = domainTranslations[lang].placeholder;
+                document.getElementById("domain-copyright").innerText = domainTranslations[lang].copyright;
+                document.querySelectorAll('#domain-content .lang-btn').forEach(b => b.classList.remove('active'));
+                el.classList.add('active');
+            };
+            function detectDomainDevice() {
+                const ua = navigator.userAgent;
+                const device = /Mobi|Android/i.test(ua) ? "移动设备" : "PC";
+                document.getElementById("domain-deviceInfo").innerText = "当前访问设备：" + device;
+            }
+            window.checkDomains = async function() {
+                const input = document.getElementById("domain-input").value.trim();
+                const out = document.getElementById("domain-output");
+                if (!input) {
+                    alert(domainTranslations[currentDomainLang].placeholder);
+                    return;
+                }
+                out.innerHTML = "<div class='loading'>查询中...</div>";
+                try {
+                    const res = await fetch("https://apiforaereg.114.ae/api/aedomain-check.php", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({
+                            domains: [input],
+                            tlds: [".ae", ".bh", ".qa", ".ac.ae", ".org.ae", ".sch.ae", ".co.ae"]
+                        })
+                    });
+                    const data = await res.json();
+                    if (data.error) {
+                        out.innerHTML = data.error;
+                        return;
+                    }
+                    let html = `<table><tr><th>域名Domain</th><th>状态Status</th><th>注册Reg/续费Renew价格(AED) /Year </th></tr>`;
+                    for (let d of data) {
+                        const statusText = d.isAvailable ? "未注册available，联系微信注册：jingeng" : "已注册not-available";
+                        html += `<tr><td>${d.domain}</td><td class="${d.isAvailable ? 'not-available' : 'available'}">${statusText}</td><td>${d.regPrice} / ${d.renewPrice}</td></tr>`;
+                    }
+                    html += `</table>`;
+                    out.innerHTML = html;
+                } catch(e) {
+                    out.innerHTML = "查询失败，请稍后再试";
+                }
+            };
+            window.copyDomainResults = function() {
+                navigator.clipboard.writeText(document.getElementById("domain-output").innerText).then(() => alert("复制成功"));
+            };
+            window.shareDomainResults = function() {
+                const text = document.getElementById("domain-output").innerText;
+                if (navigator.share) {
+                    navigator.share({title: "114.ae 域名查询结果", text: text});
+                } else {
+                    navigator.clipboard.writeText(text).then(() => alert("已复制，可粘贴到微信 / WhatsApp / TG"));
+                }
+            };
+
+            // Tab 切换
+            window.switchTab = function(n) {
+                currentTab = n;
+                document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === n));
+                document.getElementById('search-content').style.display = n === 0 ? 'block' : 'none';
+                document.getElementById('email-content').style.display = n === 1 ? 'block' : 'none';
+                document.getElementById('exchange-content').style.display = n === 2 ? 'block' : 'none';
+                document.getElementById('domain-content').style.display = n === 3 ? 'block' : 'none';
+                document.getElementById('music-content').style.display = n === 4 ? 'block' : 'none';
+
+                if (n === 1 && !window.emailInitialized) {
+                    window.emailInitialized = true;
+                    window.initEmail();
+                    if (emailRefreshInterval) clearInterval(emailRefreshInterval);
+                    emailRefreshInterval = setInterval(window.refreshEmail, 5000);
+                }
+                if (n === 2) initExchangeChart();
+                if (n === 3) detectDomainDevice();
+            };
+
+            // 主题切换
+            const themeToggle = document.getElementById('themeToggle');
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark');
+                themeToggle.textContent = '☀️';
+            }
+            themeToggle.addEventListener('click', () => {
+                const isDark = !document.body.classList.contains('dark');
+                document.body.classList.toggle('dark', isDark);
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                themeToggle.textContent = isDark ? '☀️' : '🌙';
             });
-        }
 
-        // 我们的服务 - 单个闪电效果
-        function toggleOurServices(header) {
-            const content = document.getElementById('service-content');
-            const isShow = content.classList.toggle('show');
-            header.classList.toggle('active', isShow);
-        }
-
-        // 10个业务数据（后期直接在这里修改）
-        const businesses = [
-            { id:1, title:"业务01 - 保险业务", desc:"香港保诚保险", detail:"香港保诚保险（Prudential）是全球顶级寿险品牌，提供终身寿险、重疾险、储蓄分红计划等。覆盖香港、内地及海外华人。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" },
-            { id:2, title:"业务02 - 保险业务", desc:"香港安盛保险", detail:"香港安盛保险（AXA）专注高端医疗保险、财产保险及退休规划，理赔快速，适合高净值华人家庭。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" },
-            { id:3, title:"业务03 - 跨境支付", desc:"海外快速转账", detail:"支持美元、欧元、迪拉姆等多币种即时到账，费率低至0.3%，专为海外华人设计。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" },
-            { id:4, title:"业务04 - 海外注册", desc:"香港公司注册", detail:"一站式香港有限公司注册，含银行开户、秘书服务、年审，全程线上办理，3天出证。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" },
-            { id:5, title:"业务05 - 域名服务", desc:".ae阿联酋域名", detail:"实时查询并注册阿联酋顶级域名，线路优化，适合中东业务扩展。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" },
-            { id:6, title:"业务06 - IPTV订阅", desc:"24小时佛教电视台", detail:"高清稳定IPTV订阅，包含佛教、新闻、体育、电影等全球频道，每月更新。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" },
-            { id:7, title:"业务07 - 代理工具", desc:"Clash / V2Ray定制", detail:"专业代理工具配置服务，支持Clash、V2Ray、Sing-box等，节点高速稳定。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" },
-            { id:8, title:"业务08 - 汇率工具", desc:"实时汇率换算", detail:"支持全球100+货币实时汇率查询与换算，数据来自多家银行，精准可靠。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" },
-            { id:9, title:"业务09 - 在线电视", desc:"网页版电视直播", detail:"无需安装软件，直接浏览器观看全球电视台，含中文、英文、阿拉伯语频道。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" },
-            { id:10, title:"业务10 - 网站搭建", desc:"个人/企业官网", detail:"快速搭建多语言个人网站或企业官网，支持SEO优化，手机完美适配。", wechat:"jingeng", whatsapp:"+852 9876 5432", phone:"+86 138 1234 5678" }
-        ];
-
-        function generateBusinessCards() {
-            const grid = document.getElementById('business-grid');
-            grid.innerHTML = '';
-            businesses.forEach(b => {
-                const card = document.createElement('div');
-                card.className = 'business-item';
-                card.innerHTML = `
-                    <h3>${b.title}</h3>
-                    <p>${b.desc}</p>
-                    <a onclick="openDetailModal(${b.id}); event.stopImmediatePropagation();" style="color:#00ffcc; font-size:14px; display:block; text-align:center; margin-top:10px; text-decoration:underline;">立即了解 →</a>
-                `;
-                grid.appendChild(card);
+            // 搜索事件绑定
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            searchBtn.addEventListener('click', () => searchResources(searchInput.value));
+            searchInput.addEventListener('keypress', e => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    searchResources(searchInput.value);
+                }
             });
-        }
 
-        let currentBusiness = null;
-        function openDetailModal(id) {
-            currentBusiness = businesses.find(b => b.id === id);
-            if (!currentBusiness) return;
-            
-            document.getElementById('detail-title').innerHTML = currentBusiness.title;
-            document.getElementById('detail-desc').innerHTML = `<p>${currentBusiness.detail}</p>`;
-            document.getElementById('contact-wechat').textContent = currentBusiness.wechat;
-            document.getElementById('contact-whatsapp').textContent = currentBusiness.whatsapp;
-            document.getElementById('contact-phone').textContent = currentBusiness.phone;
-            
-            // 重置联系方式为隐藏
-            document.getElementById('contact-section').classList.remove('show');
-            
-            closeBusinessModal();
-            document.getElementById('detail-modal').style.display = 'flex';
-        }
+            window.addEventListener('load', () => {
+                window.emailInitialized = false;
+                window.musicInitialized = false;
+                // 预加载热门关键词（可选）
+                const hotWords = ['短剧', '电影', '死神来了', '电视剧', '4K'];
+                hotWords.forEach(kw => {
+                    if (!cache.has(kw)) fetchWithTimeout(buildApiUrl(kw), 12000, 0).catch(() => {});
+                });
+            });
+        })();
 
-        function closeDetailModal() {
-            document.getElementById('detail-modal').style.display = 'none';
-        }
+        // ==================== 在线音乐 Vue 部分（完整） ====================
+        const { createApp } = Vue;
+        const PROXIES = ['https://proxy.api.030101.xyz/', 'https://px.114.ae/'];
+        let proxyIndex = 0;
 
-        function toggleContacts() {
-            const section = document.getElementById('contact-section');
-            section.classList.toggle('show');
-        }
+        createApp({
+            setup() {
+                const keyword = Vue.ref('陈雷');
+                const songs = Vue.ref([]);
+                const loading = Vue.ref(false);
+                const currentSong = Vue.ref(null);
+                const currentPlayUrl = Vue.ref('');
+                const showLyrics = Vue.ref(false);
+                const parsedLyrics = Vue.ref([]);
+                const currentLine = Vue.ref(-1);
+                const isPlaying = Vue.ref(true);
+                const quickTags = ['陈雷', '周杰伦', '晴天', '阿喜', '欢喜就好', '春庭雪', '抖音热歌', '古风'];
 
-        function openBusinessModal() {
-            document.getElementById('business-modal').style.display = 'flex';
-        }
-        function closeBusinessModal() {
-            document.getElementById('business-modal').style.display = 'none';
-        }
+                const audioRef = Vue.ref(null);
 
-        function switchLang(lang) {
-            if (lang === 'zh') alert('当前已是中文版本 👍');
-            else if (lang === 'en') alert('English version coming soon!');
-            else if (lang === 'ar') alert('النسخة العربية قيد التطوير!');
-        }
+                const getCurrentProxy = () => PROXIES[proxyIndex];
+                const switchProxy = () => { proxyIndex = (proxyIndex + 1) % PROXIES.length; };
+
+                const searchMusic = async () => {
+                    if (!keyword.value.trim()) return;
+                    loading.value = true;
+                    songs.value = [];
+                    for (let i = 0; i < PROXIES.length; i++) {
+                        try {
+                            const proxy = getCurrentProxy();
+                            const postData = { req_1: { method: "DoSearchForQQMusicDesktop", module: "music.search.SearchCgiService", param: { num_per_page: 30, page_num: 1, query: keyword.value, search_type: 0 } } };
+                            const res = await axios.post(proxy + 'https://u.y.qq.com/cgi-bin/musicu.fcg', postData, { timeout: 15000 });
+                            const list = res.data?.req_1?.data?.body?.song?.list || [];
+                            songs.value = list.map(item => ({
+                                id: item.id,
+                                songmid: item.mid,
+                                title: item.title || item.songname,
+                                artist: item.singer ? item.singer.map(s => s.name).join(" / ") : "未知歌手",
+                                artwork: item.album && item.album.mid ? `https://y.gtimg.cn/music/photo_new/T002R800x800M000${item.album.mid}.jpg` : 'https://picsum.photos/id/1015/800/800',
+                                duration: item.interval ? `${Math.floor(item.interval/60)}:${(item.interval%60).toString().padStart(2,'0')}` : '03:30'
+                            }));
+                            if (songs.value.length > 0) break;
+                        } catch(e) {
+                            switchProxy();
+                        }
+                    }
+                    loading.value = false;
+                };
+
+                const getPlayUrlAndLyrics = async (songmid) => {
+                    for (let i = 0; i < PROXIES.length; i++) {
+                        try {
+                            const proxy = getCurrentProxy();
+                            const res = await axios.get(proxy + `https://api.xunhuisi.store/API/QQMusic/Song.php?mid=${songmid}`, { timeout: 10000 });
+                            if (res.data && res.data.code === 200) {
+                                return { url: res.data.music_url, lyric: res.data.lyric || res.data.lrc };
+                            }
+                        } catch(e) { switchProxy(); }
+                    }
+                    return { url: null, lyric: null };
+                };
+
+                const playSong = async (song) => {
+                    currentSong.value = song;
+                    const { url, lyric } = await getPlayUrlAndLyrics(song.songmid);
+                    if (url) {
+                        currentPlayUrl.value = url;
+                        if (lyric) parseLRC(lyric);
+                    }
+                };
+
+                const parseLRC = (lrc) => {
+                    const lines = lrc.split('\n');
+                    parsedLyrics.value = [];
+                    lines.forEach(line => {
+                        const match = line.match(/\[(\d{2}):(\d{2})\.(\d{2,3})\](.*)/);
+                        if (match) {
+                            const time = parseInt(match[1])*60 + parseInt(match[2]) + parseInt(match[3])/1000;
+                            parsedLyrics.value.push({time, text: match[4].trim()});
+                        }
+                    });
+                };
+
+                const togglePlay = () => {
+                    if (audioRef.value) {
+                        if (audioRef.value.paused) {
+                            audioRef.value.play();
+                            isPlaying.value = true;
+                        } else {
+                            audioRef.value.pause();
+                            isPlaying.value = false;
+                        }
+                    }
+                };
+
+                const playNext = () => {
+                    if (!currentSong.value || songs.value.length === 0) return;
+                    let idx = songs.value.findIndex(s => s.id === currentSong.value.id);
+                    if (idx < songs.value.length - 1) playSong(songs.value[idx + 1]);
+                    else playSong(songs.value[0]);
+                };
+
+                const playPrev = () => {
+                    if (!currentSong.value || songs.value.length === 0) return;
+                    let idx = songs.value.findIndex(s => s.id === currentSong.value.id);
+                    if (idx > 0) playSong(songs.value[idx - 1]);
+                    else playSong(songs.value[songs.value.length - 1]);
+                };
+
+                const downloadSong = () => {
+                    if (!currentPlayUrl.value) return;
+                    const a = document.createElement('a');
+                    a.href = currentPlayUrl.value;
+                    a.download = `${currentSong.value.title} - ${currentSong.value.artist}.mp3`;
+                    a.click();
+                };
+
+                const copyPlayUrl = () => {
+                    if (currentPlayUrl.value) navigator.clipboard.writeText(currentPlayUrl.value).then(() => alert('播放地址已复制'));
+                };
+
+                Vue.onMounted(() => {
+                    searchMusic();
+                });
+
+                return {
+                    keyword, songs, loading, currentSong, currentPlayUrl,
+                    showLyrics, parsedLyrics, currentLine, isPlaying, quickTags,
+                    searchMusic, playSong, togglePlay, playNext, playPrev, downloadSong, copyPlayUrl,
+                    audioRef
+                };
+            },
+            mounted() {
+                this.audioRef = this.$refs.audioPlayer;
+            }
+        }).mount('#music-app');
     </script>
 </body>
 </html>
