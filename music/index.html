@@ -28,8 +28,8 @@
 <body>
     <div class="marquee-container">
         <div class="marquee">
-            <a href="https://www.114.ae/music" target="_blank">114.ae 在线听歌 · 高清音源 · 支持下载</a>
-            <a href="https://www.114.ae/music" target="_blank">招广告，有要做广告的 联系 微信  jingeng</a>
+            <a href="https://www.114.ae/music" target="_blank">114.ae 音乐试听 · 高清音源 · 支持下载</a>
+            <a href="https://www.114.ae/music" target="_blank">114.ae 音乐试听 · 高清音源 · 支持下载</a>
         </div>
     </div>
 
@@ -73,7 +73,7 @@
             </div>
         </div>
 
-        <!-- 播放器 -->
+        <!-- 播放器（专业风格） -->
         <div v-if="currentSong" class="player-glass p-10 md:p-12 mb-10">
             <div class="flex flex-col md:flex-row gap-12 items-center">
                 <div class="relative flex-shrink-0">
@@ -81,10 +81,10 @@
                          @error="currentSong.artwork = 'https://picsum.photos/id/1015/800/800'">
                 </div>
                 <div class="flex-1 w-full">
-                    <h2 class="text-4xl font-semibold mb-3 text-black">{{ currentSong.title }}</h2>
+                    <h2 class="text-4xl font-semibold mb-2 text-black">{{ currentSong.title }}</h2>
                     <p class="text-2xl text-gray-700">{{ currentSong.artist }}</p>
 
-                    <audio ref="audioPlayer" :src="currentPlayUrl" controls autoplay class="w-full mt-10" 
+                    <audio ref="audioPlayer" :src="currentPlayUrl" controls autoplay class="w-full mt-8" 
                            @error="onPlayError" @ended="playNext" @timeupdate="syncLyrics"></audio>
 
                     <!-- 歌词区域 -->
@@ -102,7 +102,14 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-wrap gap-4 mt-8">
+                    <!-- 控制栏 -->
+                    <div class="flex justify-center gap-10 mt-10 text-4xl text-gray-700">
+                        <button @click="playPrev" class="hover:text-black transition">⏮</button>
+                        <button @click="togglePlay" class="hover:text-black transition text-5xl">{{ isPlaying ? '⏸' : '▶' }}</button>
+                        <button @click="playNext" class="hover:text-black transition">⏭</button>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 mt-10">
                         <button @click="downloadSong" class="flex-1 min-w-[140px] bg-black hover:bg-gray-800 text-white py-5 rounded-3xl font-semibold text-xl flex items-center justify-center gap-3 transition-all">⬇️ 下载歌曲</button>
                         <button @click="copyPlayUrl" class="flex-1 min-w-[140px] bg-white border border-gray-300 hover:border-black py-5 rounded-3xl font-semibold text-xl flex items-center justify-center gap-3 transition-all text-black">📋 复制地址</button>
                         <button @click="shareSong" class="flex-1 min-w-[140px] bg-white border border-gray-300 hover:border-black py-5 rounded-3xl font-semibold text-xl flex items-center justify-center gap-3 transition-all text-black">🔗 分享歌曲</button>
@@ -197,6 +204,7 @@
                 const showLyrics = ref(false);
                 const parsedLyrics = ref([]);   // [{time: number, text: string}]
                 const currentLine = ref(-1);
+                const isPlaying = ref(true);
                 const audioRef = ref(null);
 
                 const quickTags = ['欢喜就好', '阿喜', '春庭雪', '山尘', '抖音最新', '最新排行榜', '古风榜单', '道教音乐', '佛教音乐', '流行榜', '经典老歌', '民谣', '电子音乐'];
@@ -229,24 +237,28 @@
                     loading.value = false;
                 };
 
-                const getPlayUrl = async (songmid) => {
-                    if (!songmid) return null;
-                    if (urlCache.has(songmid)) return urlCache.get(songmid);
+                const getPlayUrlAndLyrics = async (songmid, title, artist) => {
+                    if (!songmid) return { url: null, lyric: null };
+
+                    let musicUrl = null;
+                    let lyricText = null;
+
                     for (let i = 0; i < PROXIES.length; i++) {
                         const proxy = getCurrentProxy();
                         try {
                             const url = `https://api.xunhuisi.store/API/QQMusic/Song.php?mid=${songmid}`;
-                            const response = await axios.get(proxy + url, { headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://y.qq.com' }, timeout: 10000 });
-                            if (response.data?.code === 200 && response.data.music_url) {
-                                urlCache.set(songmid, response.data.music_url);
-                                return response.data.music_url;
+                            const response = await axios.get(proxy + url, { timeout: 10000 });
+                            if (response.data && response.data.code === 200) {
+                                musicUrl = response.data.music_url;
+                                lyricText = response.data.lyric || response.data.lrc;   // 优先使用 Xunhuisi 返回的 lyric 字段
+                                if (musicUrl) urlCache.set(songmid, musicUrl);
+                                break;
                             }
                         } catch (e) { switchProxy(); }
                     }
-                    return null;
-                };
 
-                const preloadNextSong = (songmid) => { if (songmid) getPlayUrl(songmid); };
+                    return { url: musicUrl, lyric: lyricText };
+                };
 
                 const playSong = async (song) => {
                     currentSong.value = song;
@@ -255,24 +267,28 @@
                     parsedLyrics.value = [];
                     currentLine.value = -1;
 
-                    const url = await getPlayUrl(song.songmid);
+                    const { url, lyric } = await getPlayUrlAndLyrics(song.songmid, song.title, song.artist);
+
                     if (url) {
                         currentPlayUrl.value = url;
                         const idx = songs.value.findIndex(s => s.id === song.id);
-                        if (idx > -1 && songs.value[idx + 1]) preloadNextSong(songs.value[idx + 1].songmid);
+                        if (idx > -1 && songs.value[idx + 1]) getPlayUrlAndLyrics(songs.value[idx + 1].songmid);
+
                         showMsg(`正在播放：${song.title}`);
-                        fetchLyrics(song.title, song.artist);
+
+                        if (lyric) {
+                            parseLRC(lyric);
+                        } else {
+                            // 备用多源获取
+                            fetchLyricsFallback(song.title, song.artist);
+                        }
                     } else {
                         playError.value = '音源加载失败';
                     }
                 };
 
-                // 多源歌词获取 + LRC解析（网易云、QQ、酷狗、酷我、Lyrics.ovh、LRCLIB）
-                const fetchLyrics = async (title, artist) => {
-                    parsedLyrics.value = [];
-                    currentLyrics = '正在加载歌词...';
-
-                    // 1. Lyrics.ovh
+                const fetchLyricsFallback = async (title, artist) => {
+                    // 备用源：Lyrics.ovh + LRCLIB
                     try {
                         const res = await axios.get(`https://api.lyrics.ovh/v1/${encodeURIComponent(artist)}/${encodeURIComponent(title)}`);
                         if (res.data && res.data.lyrics) {
@@ -280,48 +296,7 @@
                             return;
                         }
                     } catch (e) {}
-
-                    // 2. LRCLIB
-                    try {
-                        const res = await axios.get(`https://lrclib.net/api/search?q=${encodeURIComponent(title + ' ' + artist)}`);
-                        if (res.data && res.data.length > 0) {
-                            if (res.data[0].syncedLyrics) {
-                                parseLRC(res.data[0].syncedLyrics);
-                                return;
-                            } else if (res.data[0].plainLyrics) {
-                                parsePlainLyrics(res.data[0].plainLyrics);
-                                return;
-                            }
-                        }
-                    } catch (e) {}
-
-                    // 3. 网易云音乐歌词（公开接口）
-                    try {
-                        // 简化版，实际可先搜索歌曲ID再取歌词，这里用备用方式
-                        const res = await axios.get(`https://music.163.com/api/song/lyric?id=0&lv=1&tv=-1`); // 实际项目需先获取songid
-                        // 这里简化，实际可扩展
-                    } catch (e) {}
-
-                    // 4. QQ音乐歌词（公开接口）
-                    try {
-                        // 示例公开接口（实际项目可使用jsososo/QQMusicApi等开源封装）
-                    } catch (e) {}
-
-                    // 5. 酷狗音乐歌词（公开搜索）
-                    try {
-                        // 示例：https://lyrics.kugou.com/search?ver=1&man=yes&client=pc&keyword=...
-                    } catch (e) {}
-
-                    // 6. 酷我音乐歌词（公开接口）
-                    try {
-                        // 示例：https://player.kuwo.cn/webmusic/st/getNewMuiseByRid?rid=...
-                    } catch (e) {}
-
-                    parsedLyrics.value = [{time: 0, text: '暂无歌词（多个源均未找到）'}];
-                };
-
-                const parsePlainLyrics = (text) => {
-                    parsedLyrics.value = text.split('\n').map(line => ({ time: 0, text: line.trim() })).filter(l => l.text);
+                    parsedLyrics.value = [{time: 0, text: '暂无歌词'}];
                 };
 
                 const parseLRC = (lrcText) => {
@@ -340,7 +315,10 @@
                     });
                 };
 
-                // 实时歌词同步（基于LRC时间戳）
+                const parsePlainLyrics = (text) => {
+                    parsedLyrics.value = text.split('\n').map(line => ({ time: 0, text: line.trim() })).filter(l => l.text);
+                };
+
                 const syncLyrics = () => {
                     if (!showLyrics.value || parsedLyrics.value.length === 0 || !audioRef.value) return;
                     const currentTime = audioRef.value.currentTime;
@@ -350,6 +328,25 @@
                             break;
                         }
                     }
+                };
+
+                const togglePlay = () => {
+                    if (audioRef.value) {
+                        if (audioRef.value.paused) {
+                            audioRef.value.play();
+                            isPlaying.value = true;
+                        } else {
+                            audioRef.value.pause();
+                            isPlaying.value = false;
+                        }
+                    }
+                };
+
+                const playPrev = () => {
+                    if (!currentSong.value || songs.value.length === 0) return;
+                    const idx = songs.value.findIndex(s => s.id === currentSong.value.id);
+                    if (idx > 0) playSong(songs.value[idx - 1]);
+                    else if (songs.value.length > 0) playSong(songs.value[songs.value.length - 1]);
                 };
 
                 const playNext = () => {
@@ -382,7 +379,7 @@
                 const shareSong = () => {
                     if (!currentSong.value) return;
                     const text = `${currentSong.value.title} - ${currentSong.value.artist}\n来自 114.ae 音乐试听\nhttps://www.114.ae/music`;
-                    navigator.clipboard.writeText(text).then(() => showMsg('歌曲信息已复制，可直接转发到微信/QQ/朋友圈'));
+                    navigator.clipboard.writeText(text).then(() => showMsg('歌曲信息已复制，可直接转发'));
                 };
 
                 const shareWebsite = () => {
@@ -403,8 +400,8 @@
 
                 return {
                     keyword, songs, loading, currentSong, currentPlayUrl, playError, message,
-                    useProxy, quickTags, hasNextPage, currentPage, showLyrics, parsedLyrics, currentLine,
-                    searchMusic, playSong, playNext, downloadSong, copyPlayUrl, 
+                    useProxy, quickTags, hasNextPage, currentPage, showLyrics, parsedLyrics, currentLine, isPlaying,
+                    searchMusic, playSong, playNext, playPrev, togglePlay, downloadSong, copyPlayUrl, 
                     shareSong, shareWebsite, clearPlaylist, onPlayError, toggleProxy,
                     audioRef: null, syncLyrics
                 };
