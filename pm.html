@@ -1347,7 +1347,7 @@
                 }
                 out.innerHTML = "<div class='loading'>查询中...</div>";
                 try {
-                    const res = await fetch("https://dm.114.ae/api/domain-check", {
+                    const res = await fetch("https://apiforaereg.114.ae/api/aedomain-check.php", {
                         method: "POST",
                         headers: {"Content-Type": "application/json"},
                         body: JSON.stringify({
@@ -1445,7 +1445,7 @@
 
         createApp({
             setup() {
-                const keyword = Vue.ref('陈雷');
+                const keyword = Vue.ref('');
                 const songs = Vue.ref([]);
                 const loading = Vue.ref(false);
                 const currentSong = Vue.ref(null);
@@ -1454,7 +1454,7 @@
                 const parsedLyrics = Vue.ref([]);
                 const currentLine = Vue.ref(-1);
                 const isPlaying = Vue.ref(true);
-                const quickTags = ['陈雷', '周杰伦', '晴天', '阿喜', '欢喜就好', '春庭雪', '抖音热歌', '古风'];
+                const quickTags = ['欢喜就好', '阿喜', '春庭雪', '山尘', '抖音最新', '最新排行榜', '古风榜单', '道教音乐', '佛教音乐', '流行榜', '经典老歌];
 
                 const audioRef = Vue.ref(null);
 
