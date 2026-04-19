@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>114.ae 工业级条码/二维码工具箱</title>
+
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://unpkg.com/@ericblade/quagga2@1.8.4/dist/quagga.min.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #0056b3; /* Industrial Blue */
+            --bg-color: #e9ecef;
+            --card-bg: #ffffff;
+            --border-color: #adb5bd;
+            --success-color: #198754;
+            --danger-color: #dc3545;
+        }
+        body {
+            font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+            margin: 0;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 15px; }
+        header {
+            background: linear-gradient(135deg, #343a40 0%, #495057 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 { margin: 0; font-size: 1.5em; }
+        .main-layout { display: grid; grid-template-columns: 280px 1fr; gap: 15px; margin-top: 15px; }
+        @media (max-width: 900px) { .main-layout { grid-template-columns: 1fr; } }
+
+        .sidebar { background: var(--card-bg); border-radius: 8px; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .sidebar button {
+            display: block; width: 100%; padding: 15px; margin-bottom: 8px;
+            border: 1px solid var(--border-color); background: #f8f9fa;
+            text-align: left; cursor: pointer; border-radius: 6px;
+            font-size: 16px; font-weight: bold; transition: all 0.2s;
+        }
+        .sidebar button:hover { background: #e9ecef; }
+        .sidebar button.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+
+        .content-area { background: var(--card-bg); border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #495057; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 12px; border: 1px solid var(--border-color);
+            border-radius: 4px; box-sizing: border-box; font-size: 16px; /* Larger font for PDA */
+        }
+        .form-group textarea { min-height: 120px; resize: vertical; }
+        
+        .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        
+        .btn {
+            padding: 12px 20px; border: none; border-radius: 4px;
+            cursor: pointer; font-size: 16px; font-weight: bold;
+            transition: opacity 0.2s; margin-right: 10px; margin-bottom: 10px;
+        }
+        .btn-primary { background: var(--primary-color); color: white; }
+        .btn-success { background: var(--success-color); color: white; }
+        .btn-danger { background: var(--danger-color); color: white; }
+        .btn-warning { background: #ffc107; color: #333; }
+        .btn:hover { opacity: 0.85; }
+
+        .result-section { margin-top: 20px; border-top: 2px dashed var(--border-color); padding-top: 20px; }
+        #code-output-container { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; align-items: flex-start; min-height: 200px; background: #f8f9fa; padding: 15px; border-radius: 4px; }
+        #code-output-container canvas, #code-output-container svg { max-width: 100%; height: auto; border: 1px solid #ddd; background: white; }
+        
+        .batch-item { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 4px; background: #f9f9f9; }
+        .batch-item img { max-width: 150px; display: block; margin-top: 10px; }
+        
+        /* Print Mode Specifics */
+        .print-label { width: 4in; height: 2in; border: 1px solid black; padding: 0.1in; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 10px auto; background: white; }
+        .print-label svg, .print-label canvas { max-width: 90%; max-height: 70%; }
+
+        footer { text-align: center; margin-top: 30px; color: #6c757d; font-size: 14px; }
+
+        /* Scanner Viewfinder */
+        #scanner-view { width: 100%; max-width: 500px; margin: 0 auto; border: 3px solid var(--danger-color); position: relative; }
+        #scanner-view video { width: 100%; display: block; }
+        #scanner-result { font-size: 1.2em; color: var(--success-color); text-align: center; margin-top: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>工业级条码/二维码工具</h1>
+        <span>PDA / 标签打印 / 批量处理</span>
+    </header>
+
+    <div class="main-layout">
+        <aside class="sidebar">
+            <button class="nav-btn active" data-tab="generator">1. 统一生成器</button>
+            <button class="nav-btn" data-tab="scanner">2. 统一扫码器</button>
+            <button class="nav-btn" data-tab="batch-gen">3. 批量生成</button>
+            <button class="nav-btn" data-tab="batch-decode">4. 批量解码</button>
+            <button class="nav-btn" data-tab="print-mode">5. 打印标签模式</button>
+        </aside>
+
+        <main class="content-area">
+            <!-- Unified Generator -->
+            <div id="generator" class="tab-content active">
+                <h3>统一生成器</h3>
+                <p>选择码制，输入内容，一键生成。</p>
+                <div class="form-group">
+                    <label>码制类型</label>
+                    <select id="gen-type">
+                        <option value="qrcode">二维码 (QR Code)</option>
+                        <option value="ean13">条形码 (EAN-13)</option>
+                        <option value="code128">条形码 (CODE-128)</option>
+                        <option value="code39">条形码 (CODE-39)</option>
+                        <option value="datamatrix">二维码 (DataMatrix)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>输入内容</label>
+                    <textarea id="gen-content" placeholder="输入文本、网址或编号"></textarea>
+                </div>
+                <div class="options-grid">
+                    <div class="form-group"><label>尺寸 (px)</label><input type="number" id="gen-size" value="300"></div>
+                    <div class="form-group"><label>容错/H级别</label><select id="gen-level"><option>H</option><option>Q</option><option>M</option><option>L</option></select></div>
+                </div>
+                <button class="btn btn-primary" onclick="generateSingle()">生成</button>
+            </div>
+
+            <!-- Unified Scanner -->
+            <div id="scanner" class="tab-content">
+                <h3>统一扫码器 (相机)</h3>
+                <p>支持手机/PDA 后置摄像头识别二维码和条形码。</p>
+                <div id="scanner-view"><video id="scanner-video"></video></div>
+                <div id="scanner-result">等待扫描...</div>
+                <button class="btn btn-success" onclick="startScanner()">启动相机</button>
+                <button class="btn btn-danger" onclick="stopScanner()">停止</button>
+                <hr>
+                <h4>或上传图片解码</h4>
+                <input type="file" id="scanner-file" accept="image/*" multiple onchange="decodeImages(this.files)">
+                <div id="file-decode-results"></div>
+            </div>
+            
+            <!-- Batch Generate -->
+            <div id="batch-gen" class="tab-content">
+                <h3>批量生成</h3>
+                <p>每行一个内容，自动生成并打包下载（ZIP）。</p>
+                <div class="form-group">
+                    <label>码制类型</label>
+                    <select id="batch-gen-type"><option value="qrcode">QR Code</option><option value="code128">CODE-128</option></select>
+                </div>
+                <div class="form-group">
+                    <label>批量内容 (每行一个)</label>
+                    <textarea id="batch-gen-content" placeholder="SN001&#10;SN002&#10;SN003"></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="generateBatch()">开始批量生成</button>
+                <div id="batch-gen-output" class="result-section"></div>
+            </div>
+
+            <!-- Batch Decode -->
+            <div id="batch-decode" class="tab-content">
+                <h3>批量解码</h3>
+                <p>上传多张包含条码/二维码的图片，自动识别。</p>
+                <input type="file" id="batch-decode-input" accept="image/*" multiple onchange="handleBatchDecode(this.files)">
+                <div id="batch-decode-output" class="result-section"></div>
+            </div>
+
+            <!-- Print Mode -->
+            <div id="print-mode" class="tab-content">
+                <h3>打印标签模式</h3>
+                <p>专为 4x2 inch 标签设计。调整参数后点击“打印”。</p>
+                <div class="options-grid">
+                    <div class="form-group"><label>标签宽度 (inch)</label><input type="number" id="label-width" value="4" step="0.1"></div>
+                    <div class="form-group"><label>标签高度 (inch)</label><input type="number" id="label-height" value="2" step="0.1"></div>
+                    <div class="form-group"><label>DPI</label><input type="number" id="label-dpi" value="203" readonly></div> <!-- Common Zebra DPI -->
+                </div>
+                <div class="form-group">
+                    <label>标签内容</label>
+                    <input type="text" id="label-content" value="TEST-001">
+                </div>
+                <button class="btn btn-primary" onclick="renderLabelPreview()">预览标签</button>
+                <button class="btn btn-success" onclick="window.print()">打印 (Ctrl+P)</button>
+                <div id="label-preview-container" style="margin-top:20px; border:1px dashed #ccc; padding:10px;"></div>
+            </div>
+
+            <!-- Shared Output -->
+            <div class="result-section">
+                <h4>当前输出</h4>
+                <div id="code-output-container">
+                    <p>请选择功能并生成</p>
+                </div>
+                <a href="#" id="download-link" class="btn btn-success" style="display:none;">下载当前图片</a>
+            </div>
+
+        </main>
+    </div>
+    <footer><p>Industrial Barcode & QR Tool | Single HTML File</p></footer>
+</div>
+
+<script>
+    // Navigation
+    document.querySelectorAll('.sidebar .nav-btn').forEach(btn => {
+        btn.onclick = () => {
+            document.querySelectorAll('.sidebar .nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(btn.dataset.tab).classList.add('active');
+        };
+    });
+
+    const outputContainer = document.getElementById('code-output-container');
+    let currentStream = null;
+
+    // --- Single Generator ---
+    function generateSingle() {
+        outputContainer.innerHTML = '';
+        const type = document.getElementById('gen-type').value;
+        const content = document.getElementById('gen-content').value;
+        const size = parseInt(document.getElementById('gen-size').value) || 300;
+        const level = document.getElementById('gen-level').value;
+
+        if (!content) return alert("请输入内容");
+
+        if (type === 'qrcode' || type === 'datamatrix') {
+            new QRCode(outputContainer, { text: content, width: size, height: size, correctLevel: QRCode.CorrectLevel[level] });
+        } else { // Barcodes
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            outputContainer.appendChild(svg);
+            JsBarcode(svg, content, { format: type.toUpperCase(), width: 2, height: size * 0.6, displayValue: true });
+        }
+        updateDownloadLink();
+    }
+    
+    // --- Unified Scanner (Quagga) ---
+    function startScanner() {
+        Quagga.init({
+            inputStream: { name: "Live", type: "LiveStream", target: document.querySelector('#scanner-video'), constraints: { facingMode: "environment" } },
+            decoder: { readers: ["code_128_reader", "ean_reader", "code_39_reader", "upc_reader", "datamatrix_reader", "qr_code_reader"] }
+        }, err => { if (err) return console.error(err); Quagga.start(); });
+        Quagga.onDetected(result => {
+            document.getElementById('scanner-result').innerText = `识别成功: ${result.codeResult.code}`;
+        });
+    }
+    function stopScanner() { Quagga.stop(); if(currentStream) currentStream.getTracks().forEach(t=>t.stop()); }
+
+    // --- File Decoder ---
+    function decodeImages(files) {
+        const resultsDiv = document.getElementById('file-decode-results');
+        resultsDiv.innerHTML = '';
+        Array.from(files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = e => {
+                Quagga.decodeSingle({ src: e.target.result, numOfWorkers: 0, inputStream: { size: 800 }, decoder: { readers: ["code_128_reader", "ean_reader", "qr_code_reader"] } }, function(result) {
+                    const item = document.createElement('div');
+                    item.className = 'batch-item';
+                    item.innerHTML = `<strong>文件:</strong> ${file.name}<br><strong>结果:</strong> ${result?.codeResult?.code || '未识别'}`;
+                    resultsDiv.appendChild(item);
+                });
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // --- Batch Generate (Simple version without ZIP, shows previews) ---
+    async function generateBatch() {
+        const output = document.getElementById('batch-gen-output');
+        output.innerHTML = '';
+        const type = document.getElementById('batch-gen-type').value;
+        const contents = document.getElementById('batch-gen-content').value.split('\n').filter(l=>l.trim());
+        for(const content of contents) {
+            const div = document.createElement('div');
+            div.className = 'batch-item';
+            div.innerHTML = `<strong>${content}</strong>`;
+            output.appendChild(div);
+            if(type === 'qrcode') new QRCode(div, { text: content, width: 150, height: 150 });
+            else JsBarcode(div, content, { format: 'CODE128', width: 2, height: 80 });
+        }
+    }
+    
+    // --- Print Label Mode ---
+    function renderLabelPreview() {
+        const container = document.getElementById('label-preview-container');
+        container.innerHTML = '';
+        const width = document.getElementById('label-width').value;
+        const height = document.getElementById('label-height').value;
+        const content = document.getElementById('label-content').value;
+        
+        const labelDiv = document.createElement('div');
+        labelDiv.className = 'print-label';
+        labelDiv.style.width = `${width}in`;
+        labelDiv.style.height = `${height}in`;
+        container.appendChild(labelDiv);
+
+        // In print mode, we usually want high density barcodes
+        JsBarcode(labelDiv, content, { format: 'CODE128', width: 1.5, height: '60%', displayValue: true, fontSize: 10 });
+    }
+
+    // --- Utility ---
+    function updateDownloadLink() {
+        const link = document.getElementById('download-link');
+        const canvas = outputContainer.querySelector('canvas');
+        if (canvas) {
+            link.href = canvas.toDataURL('image/png');
+            link.download = 'code.png';
+            link.style.display = 'inline-block';
+        }
+    }
+
+    // Initial setup for print preview
+    document.getElementById('label-content').addEventListener('input', renderLabelPreview);
+    renderLabelPreview(); // Initial render
+</script>
+</body>
+</html>
