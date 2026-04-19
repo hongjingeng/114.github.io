@@ -1,331 +1,357 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>114.ae 条码/二维码工具</title>
+<meta charset="UTF-8">
+<title>114.ae Barcode & QR Tool</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-    <!-- Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-    <script src="https://unpkg.com/@ericblade/quagga2@1.8.4/dist/quagga.min.js"></script>
+<!-- Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+<script src="https://unpkg.com/@ericblade/quagga2@1.8.4/dist/quagga.min.js"></script>
 
-    <style>
-        :root {
-            --primary-color: #0056b3;
-            --bg-color: #e9ecef;
-            --card-bg: #ffffff;
-            --border-color: #adb5bd;
-            --success-color: #198754;
-            --danger-color: #dc3545;
-        }
-        body { font-family: "Segoe UI", "Microsoft YaHei", sans-serif; margin: 0; background-color: var(--bg-color); color: #333; line-height: 1.6; }
-        .container { max-width: 1400px; margin: 0 auto; padding: 15px; }
-        header { background: linear-gradient(135deg, #343a40 0%, #495057 100%); color: white; padding: 15px 20px; border-radius: 8px 8px 0 0; display: flex; justify-content: space-between; align-items: center; }
-        header h1 { margin: 0; font-size: 1.5em; }
-        .main-layout { display: grid; grid-template-columns: 280px 1fr; gap: 15px; margin-top: 15px; }
-        @media (max-width: 900px) { .main-layout { grid-template-columns: 1fr; } }
+<style>
+:root {
+    --primary:#0056b3;
+    --success:#198754;
+    --danger:#dc3545;
+    --bg:#e9ecef;
+    --card:#ffffff;
+}
 
-        .sidebar { background: var(--card-bg); border-radius: 8px; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .sidebar button { display: block; width: 100%; padding: 15px; margin-bottom: 8px; border: 1px solid var(--border-color); background: #f8f9fa; text-align: left; cursor: pointer; border-radius: 6px; font-size: 16px; font-weight: bold; transition: all 0.2s; }
-        .sidebar button:hover { background: #e9ecef; }
-        .sidebar button.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+body {
+    margin:0;
+    font-family:"Segoe UI","Microsoft YaHei",sans-serif;
+    background:var(--bg);
+}
 
-        .content-area { background: var(--card-bg); border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+.container { max-width:1400px; margin:auto; padding:15px; }
 
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #495057; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 4px; box-sizing: border-box; font-size: 16px; }
-        .form-group textarea { min-height: 120px; resize: vertical; }
-        
-        .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        
-        .btn { padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; transition: opacity 0.2s; margin-right: 10px; margin-bottom: 10px; }
-        .btn-primary { background: var(--primary-color); color: white; }
-        .btn-success { background: var(--success-color); color: white; }
-        .btn-danger { background: var(--danger-color); color: white; }
-        .btn-warning { background: #ffc107; color: #333; }
-        .btn:hover { opacity: 0.85; }
+header {
+    background:linear-gradient(135deg,#343a40,#495057);
+    color:#fff;
+    padding:15px 20px;
+    border-radius:8px 8px 0 0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
 
-        .result-section { margin-top: 20px; border-top: 2px dashed var(--border-color); padding-top: 20px; }
-        #code-output-container { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; align-items: flex-start; min-height: 200px; background: #f8f9fa; padding: 15px; border-radius: 4px; }
-        #code-output-container canvas, #code-output-container svg { max-width: 100%; height: auto; border: 1px solid #ddd; background: white; }
-        
-        .batch-item { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 4px; background: #f9f9f9; text-align: center; }
-        .batch-item img, .batch-item svg { max-width: 200px; display: block; margin: 10px auto 0; }
-        
-        .print-label { width: 4in; height: 2in; border: 1px solid black; padding: 0.1in; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 10px auto; background: white; }
-        .print-label svg, .print-label canvas { max-width: 90%; max-height: 70%; }
+.main-layout { display:grid; grid-template-columns:280px 1fr; gap:15px; margin-top:15px; }
+@media(max-width:900px){ .main-layout{grid-template-columns:1fr;} }
 
-        footer { text-align: center; margin-top: 30px; color: #6c757d; font-size: 14px; }
-        #scanner-view { width: 100%; max-width: 500px; margin: 0 auto; border: 3px solid var(--danger-color); position: relative; background: #000; }
-        #scanner-view video { width: 100%; display: block; }
-        #scanner-result { font-size: 1.2em; color: var(--success-color); text-align: center; margin-top: 10px; font-weight: bold; min-height: 30px;}
-    </style>
+.sidebar {
+    background:var(--card);
+    border-radius:8px;
+    padding:10px;
+}
+.sidebar button {
+    width:100%;
+    padding:15px;
+    margin-bottom:8px;
+    border:1px solid #adb5bd;
+    background:#f8f9fa;
+    font-size:16px;
+    font-weight:bold;
+    border-radius:6px;
+    cursor:pointer;
+}
+.sidebar button.active {
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+}
+
+.content-area {
+    background:var(--card);
+    border-radius:8px;
+    padding:20px;
+}
+
+.tab-content { display:none; }
+.tab-content.active { display:block; }
+
+.form-group { margin-bottom:15px; }
+.form-group label { font-weight:bold; display:block; margin-bottom:8px; }
+.form-group input, .form-group textarea, .form-group select {
+    width:100%;
+    padding:12px;
+    font-size:16px;
+    border:1px solid #adb5bd;
+    border-radius:4px;
+}
+
+.btn {
+    padding:12px 20px;
+    font-size:16px;
+    font-weight:bold;
+    border:none;
+    border-radius:4px;
+    cursor:pointer;
+    margin-right:10px;
+}
+.btn-primary { background:var(--primary); color:#fff; }
+.btn-success { background:var(--success); color:#fff; }
+.btn-danger { background:var(--danger); color:#fff; }
+
+.result-section {
+    margin-top:20px;
+    border-top:2px dashed #adb5bd;
+    padding-top:20px;
+    text-align:center;
+}
+
+/* ===== 全屏 PDA 扫码 ===== */
+#scanner-fullscreen {
+    position:fixed;
+    inset:0;
+    background:#000;
+    z-index:9999;
+    display:none;
+    flex-direction:column;
+}
+#scanner-fullscreen.active { display:flex; }
+
+#fs-video {
+    flex:1;
+    object-fit:cover;
+}
+
+#fs-result {
+    height:80px;
+    background:#111;
+    color:#0f0;
+    font-size:22px;
+    font-weight:bold;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+#fs-close {
+    position:absolute;
+    top:15px;
+    right:15px;
+    background:rgba(0,0,0,0.6);
+    color:#fff;
+    border:none;
+    font-size:26px;
+    width:50px;
+    height:50px;
+    border-radius:50%;
+}
+
+footer {
+    text-align:center;
+    margin-top:30px;
+    color:#6c757d;
+    font-size:14px;
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
     <header>
         <h1>114.ae 条码/二维码工具</h1>
-        <span>PDA / 标签打印 / 批量处理</span>
+        <span>工业 PDA / 离线工具</span>
     </header>
 
     <div class="main-layout">
         <aside class="sidebar">
             <button class="nav-btn active" data-tab="generator">1. 统一生成器</button>
-            <button class="nav-btn" data-tab="scanner">2. 统一扫码器</button>
+            <button class="nav-btn" data-tab="scanner">2. 扫码（全屏）</button>
             <button class="nav-btn" data-tab="batch-gen">3. 批量生成</button>
             <button class="nav-btn" data-tab="batch-decode">4. 批量解码</button>
-            <button class="nav-btn" data-tab="print-mode">5. 打印标签模式</button>
+            <button class="nav-btn" data-tab="print-mode">5. 打印标签</button>
         </aside>
 
         <main class="content-area">
-            <!-- Unified Generator -->
+
+            <!-- Generator -->
             <div id="generator" class="tab-content active">
                 <h3>统一生成器</h3>
                 <div class="form-group">
-                    <label>码制类型</label>
+                    <label>码制</label>
                     <select id="gen-type">
-                        <option value="qrcode">二维码 (QR Code)</option>
-                        <option value="ean13">条形码 (EAN-13)</option>
-                        <option value="code128">条形码 (CODE-128)</option>
-                        <option value="code39">条形码 (CODE-39)</option>
-                        <option value="datamatrix">二维码 (DataMatrix)</option>
+                        <option value="qrcode">QR Code</option>
+                        <option value="code128">CODE-128</option>
+                        <option value="ean13">EAN-13</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>输入内容</label>
-                    <textarea id="gen-content" placeholder="输入文本、网址或编号"></textarea>
-                </div>
-                <div class="options-grid">
-                    <div class="form-group"><label>尺寸 (px)</label><input type="number" id="gen-size" value="300"></div>
-                    <div class="form-group"><label>容错/H级别</label><select id="gen-level"><option>H</option><option>Q</option><option>M</option><option>L</option></select></div>
+                    <label>内容</label>
+                    <textarea id="gen-content"></textarea>
                 </div>
                 <button class="btn btn-primary" onclick="generateSingle()">生成</button>
-                <button class="btn btn-warning" onclick="generateRandom()">随机生成</button>
+                <button class="btn btn-success" onclick="generateRandom()">随机</button>
+                <div id="gen-output" class="result-section"></div>
             </div>
 
-            <!-- Unified Scanner -->
+            <!-- Scanner Trigger -->
             <div id="scanner" class="tab-content">
-                <h3>统一扫码器 (相机)</h3>
-                <p>支持手机/PDA 后置摄像头识别二维码和条形码。</p>
-                <div id="scanner-view"><video id="scanner-video"></video></div>
-                <div id="scanner-result">等待扫描...</div>
-                <button class="btn btn-success" onclick="startScanner()">启动相机</button>
-                <button class="btn btn-danger" onclick="stopScanner()">停止</button>
-                <hr>
-                <h4>或上传图片解码</h4>
-                <input type="file" id="scanner-file" accept="image/*" multiple onchange="decodeImages(this.files)">
-                <div id="file-decode-results" class="result-section"></div>
+                <h3>扫码器</h3>
+                <p>点击下方按钮进入全屏扫码模式</p>
+                <button class="btn btn-primary" onclick="openFullScreenScanner()">打开全屏扫码</button>
             </div>
-            
+
             <!-- Batch Generate -->
             <div id="batch-gen" class="tab-content">
                 <h3>批量生成</h3>
-                <div class="form-group">
-                    <label>码制类型</label>
-                    <select id="batch-gen-type"><option value="qrcode">QR Code</option><option value="code128">CODE-128</option><option value="ean13">EAN-13</option></select>
-                </div>
-                <div class="form-group">
-                    <label>起始内容 (支持 XXX001 格式)</label>
-                    <input type="text" id="batch-gen-start" value="ITEM001">
-                </div>
-                <div class="form-group">
-                    <label>生成数量</label>
-                    <input type="number" id="batch-gen-count" value="10" min="1" max="500">
-                </div>
-                <button class="btn btn-primary" onclick="generateBatch()">开始批量生成</button>
-                <div id="batch-gen-output" class="result-section"></div>
+                <input id="batch-start" placeholder="起始值 如 ABC001">
+                <input id="batch-count" type="number" value="10">
+                <button class="btn btn-primary" onclick="batchGenerate()">生成</button>
+                <div id="batch-output" class="result-section"></div>
             </div>
 
             <!-- Batch Decode -->
             <div id="batch-decode" class="tab-content">
                 <h3>批量解码</h3>
-                <p>上传多张包含条码/二维码的图片，自动识别。</p>
-                <input type="file" id="batch-decode-input" accept="image/*" multiple onchange="handleBatchDecode(this.files)">
-                <div id="batch-decode-output" class="result-section"></div>
+                <input type="file" multiple onchange="batchDecode(this.files)">
+                <div id="batch-decode-result" class="result-section"></div>
             </div>
 
-            <!-- Print Mode -->
+            <!-- Print -->
             <div id="print-mode" class="tab-content">
-                <h3>打印标签模式</h3>
-                <p>专为 4x2 inch 标签设计。调整参数后点击“打印”。</p>
-                <div class="options-grid">
-                    <div class="form-group"><label>标签宽度 (inch)</label><input type="number" id="label-width" value="4" step="0.1"></div>
-                    <div class="form-group"><label>标签高度 (inch)</label><input type="number" id="label-height" value="2" step="0.1"></div>
-                    <div class="form-group"><label>DPI</label><input type="number" id="label-dpi" value="203" readonly></div>
-                </div>
-                <div class="form-group">
-                    <label>标签内容</label>
-                    <input type="text" id="label-content" value="TEST-001">
-                </div>
-                <button class="btn btn-primary" onclick="renderLabelPreview()">预览标签</button>
-                <button class="btn btn-success" onclick="window.print()">打印 (Ctrl+P)</button>
-                <div id="label-preview-container" style="margin-top:20px; border:1px dashed #ccc; padding:10px;"></div>
-            </div>
-
-            <!-- Shared Output -->
-            <div class="result-section">
-                <h4>当前输出</h4>
-                <div id="code-output-container">
-                    <p>请选择功能并生成</p>
-                </div>
-                <a href="#" id="download-link" class="btn btn-success" style="display:none;">下载当前图片</a>
+                <h3>打印标签</h3>
+                <input id="label-content" value="TEST-001">
+                <button class="btn btn-primary" onclick="renderLabel()">预览</button>
+                <button class="btn btn-success" onclick="window.print()">打印</button>
+                <div id="label-box" class="result-section"></div>
             </div>
 
         </main>
     </div>
-    <footer><p>114.ae Barcode & QR Tool | Single HTML File</p></footer>
+
+    <footer>114.ae Barcode & QR Tool | Single HTML File</footer>
+</div>
+
+<!-- ===== 全屏扫码层 ===== -->
+<div id="scanner-fullscreen">
+    <button id="fs-close" onclick="closeFullScreenScanner()">×</button>
+    <video id="fs-video"></video>
+    <div id="fs-result">请对准条码</div>
 </div>
 
 <script>
-    // Navigation
-    document.querySelectorAll('.sidebar .nav-btn').forEach(btn => {
-        btn.onclick = () => {
-            document.querySelectorAll('.sidebar .nav-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.getElementById(btn.dataset.tab).classList.add('active');
-        };
+/* Navigation */
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+    btn.onclick=()=>{
+        document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+        document.getElementById(btn.dataset.tab).classList.add('active');
+    };
+});
+
+let fsScannerActive=false;
+
+/* ===== 全屏扫码 ===== */
+function openFullScreenScanner(){
+    const fs=document.getElementById('scanner-fullscreen');
+    fs.classList.add('active');
+    startFsScanner();
+}
+
+function closeFullScreenScanner(){
+    Quagga.stop();
+    const v=document.getElementById('fs-video');
+    if(v.srcObject) v.srcObject.getTracks().forEach(t=>t.stop());
+    document.getElementById('scanner-fullscreen').classList.remove('active');
+    fsScannerActive=false;
+}
+
+function startFsScanner(){
+    if(fsScannerActive) return;
+    fsScannerActive=true;
+
+    Quagga.init({
+        inputStream:{
+            name:"Live",
+            type:"LiveStream",
+            target:document.getElementById('fs-video'),
+            constraints:{facingMode:"environment"}
+        },
+        decoder:{readers:["code_128_reader","ean_reader","qr_code_reader","datamatrix_reader"]},
+        locate:true
+    },err=>{
+        if(err) return alert("相机启动失败");
+        Quagga.start();
     });
 
-    const outputContainer = document.getElementById('code-output-container');
-    let scannerInstance = null;
+    Quagga.onDetected(r=>{
+        const code=r.codeResult.code;
+        document.getElementById('fs-result').innerText="✅ "+code;
+        navigator.vibrate?.(200);
+    });
+}
 
-    // --- Single Generator ---
-    function generateSingle() {
-        outputContainer.innerHTML = '';
-        const type = document.getElementById('gen-type').value;
-        const content = document.getElementById('gen-content').value;
-        const size = parseInt(document.getElementById('gen-size').value) || 300;
-        const level = document.getElementById('gen-level').value;
-        if (!content) return alert("请输入内容");
+/* ===== 生成 ===== */
+function generateSingle(){
+    const box=document.getElementById('gen-output');
+    box.innerHTML='';
+    const type=document.getElementById('gen-type').value;
+    const text=document.getElementById('gen-content').value;
+    if(type==='qrcode') new QRCode(box,{text,width:300,height:300});
+    else JsBarcode(box,text,{format:type.toUpperCase(),width:2,height:100});
+}
 
-        if (type === 'qrcode' || type === 'datamatrix') {
-            new QRCode(outputContainer, { text: content, width: size, height: size, correctLevel: QRCode.CorrectLevel[level] });
-        } else {
-            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-            outputContainer.appendChild(svg);
-            JsBarcode(svg, content, { format: type.toUpperCase(), width: 2, height: size * 0.6, displayValue: true });
-        }
-        updateDownloadLink();
-    }
-    
-    function generateRandom() {
-        const randomNum = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
-        document.getElementById('gen-content').value = `SN-${randomNum}`;
-        generateSingle();
-    }
+function generateRandom(){
+    document.getElementById('gen-content').value='SN'+Math.floor(Math.random()*1e6);
+    generateSingle();
+}
 
-    // --- Unified Scanner (Fixed & Improved) ---
-    function startScanner() {
-        const scannerView = document.getElementById('scanner-view');
-        const resultDiv = document.getElementById('scanner-result');
-        resultDiv.innerText = '正在启动相机...';
-        
-        Quagga.init({
-            inputStream: { name: "Live", type: "LiveStream", target: scannerView, constraints: { facingMode: "environment", width: { min: 640, ideal: 1280, max: 1920 }, height: { min: 480, ideal: 720, max: 1080 } } },
-            decoder: { readers: ["code_128_reader", "ean_reader", "code_39_reader", "upc_reader", "datamatrix_reader", "qr_code_reader"] },
-            locate: true
-        }, function (err) {
-            if (err) { console.error(err); resultDiv.innerText = "相机启动失败: " + err.message; return; }
-            Quagga.start();
-        });
-        
-        Quagga.onDetected(function (result) {
-            if (result && result.codeResult) {
-                resultDiv.innerText = `识别成功: ${result.codeResult.code}`;
-            }
-        });
+/* ===== 批量生成 ===== */
+function batchGenerate(){
+    const out=document.getElementById('batch-output');
+    out.innerHTML='';
+    let start=document.getElementById('batch-start').value;
+    const count=+document.getElementById('batch-count').value;
+    const m=start.match(/^(.*?)(\d+)$/);
+    let pre='',num=0,len=0;
+    if(m){pre=m[1];num=+m[2];len=m[2].length;}
+    for(let i=0;i<count;i++){
+        const val=pre+(num+i).toString().padStart(len,'0');
+        const d=document.createElement('div');
+        d.innerHTML=`<b>${val}</b>`;
+        JsBarcode(d,val,{format:'CODE128',width:2,height:80});
+        out.appendChild(d);
     }
-    function stopScanner() { 
-        Quagga.stop(); 
-        const video = document.querySelector('#scanner-view video');
-        if(video && video.srcObject) video.srcObject.getTracks().forEach(track => track.stop());
-        document.getElementById('scanner-result').innerText = '已停止';
-    }
+}
 
-    // --- File Decoder ---
-    function decodeImages(files) {
-        const resultsDiv = document.getElementById('file-decode-results');
-        resultsDiv.innerHTML = '';
-        Array.from(files).forEach(file => {
-            const reader = new FileReader();
-            reader.onload = e => {
-                Quagga.decodeSingle({ src: e.target.result, numOfWorkers: 0, inputStream: { size: 800 }, decoder: { readers: ["code_128_reader", "ean_reader", "qr_code_reader", "code_39_reader"] } }, function(result) {
-                    const item = document.createElement('div');
-                    item.className = 'batch-item';
-                    item.innerHTML = `<strong>文件:</strong> ${file.name}<br><strong>结果:</strong> ${result?.codeResult?.code || '<span style="color:red;">未识别</span>'}`;
-                    resultsDiv.appendChild(item);
-                });
-            };
-            reader.readAsDataURL(file);
-        });
-    }
-    
-    function handleBatchDecode(files) { decodeImages(files); }
+/* ===== 批量解码 ===== */
+function batchDecode(files){
+    const out=document.getElementById('batch-decode-result');
+    out.innerHTML='';
+    [...files].forEach(f=>{
+        const fr=new FileReader();
+        fr.onload=e=>{
+            Quagga.decodeSingle({
+                src:e.target.result,
+                numOfWorkers:0,
+                decoder:{readers:["code_128_reader","ean_reader","qr_code_reader"]}
+            },r=>{
+                const div=document.createElement('div');
+                div.innerText=f.name+' → '+ (r?.codeResult?.code||'未识别');
+                out.appendChild(div);
+            });
+        };
+        fr.readAsDataURL(f);
+    });
+}
 
-    // --- Batch Generate (Improved with incremental numbers) ---
-    async function generateBatch() {
-        const output = document.getElementById('batch-gen-output');
-        output.innerHTML = '';
-        const type = document.getElementById('batch-gen-type').value;
-        let startVal = document.getElementById('batch-gen-start').value;
-        const count = parseInt(document.getElementById('batch-gen-count').value) || 10;
-        
-        const match = startVal.match(/^(.*?)(\d+)$/);
-        let prefix = '', number = 0, padLength = 0;
-        if (match) { prefix = match[1]; number = parseInt(match[2]); padLength = match[2].length; }
-        else { prefix = startVal; }
-
-        for (let i = 0; i < count; i++) {
-            const currentNumber = number + i;
-            const content = prefix + String(currentNumber).padStart(padLength, '0');
-            
-            const div = document.createElement('div');
-            div.className = 'batch-item';
-            div.innerHTML = `<strong>${content}</strong>`;
-            output.appendChild(div);
-            
-            await new Promise(resolve => setTimeout(resolve, 50)); // Small delay for rendering
-            if(type === 'qrcode') new QRCode(div, { text: content, width: 150, height: 150 });
-            else JsBarcode(div, content, { format: type.toUpperCase(), width: 2, height: 80, displayValue: true });
-        }
-    }
-    
-    // --- Print Label Mode ---
-    function renderLabelPreview() {
-        const container = document.getElementById('label-preview-container');
-        container.innerHTML = '';
-        const width = document.getElementById('label-width').value;
-        const height = document.getElementById('label-height').value;
-        const content = document.getElementById('label-content').value;
-        
-        const labelDiv = document.createElement('div');
-        labelDiv.className = 'print-label';
-        labelDiv.style.width = `${width}in`;
-        labelDiv.style.height = `${height}in`;
-        container.appendChild(labelDiv);
-
-        JsBarcode(labelDiv, content, { format: 'CODE128', width: 1.5, height: '60%', displayValue: true, fontSize: 10, margin: 5 });
-    }
-
-    // --- Utility ---
-    function updateDownloadLink() {
-        const link = document.getElementById('download-link');
-        const canvas = outputContainer.querySelector('canvas');
-        if (canvas) {
-            link.href = canvas.toDataURL('image/png');
-            link.download = 'code.png';
-            link.style.display = 'inline-block';
-        }
-    }
-    
-    document.getElementById('label-content').addEventListener('input', renderLabelPreview);
-    renderLabelPreview();
+/* ===== 打印 ===== */
+function renderLabel(){
+    const box=document.getElementById('label-box');
+    box.innerHTML='';
+    JsBarcode(box,document.getElementById('label-content').value,{
+        format:'CODE128',
+        width:2,
+        height:100,
+        displayValue:true
+    });
+}
 </script>
 </body>
 </html>
