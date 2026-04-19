@@ -1,345 +1,216 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>114.ae Barcode Tool</title>
-    
-    <!-- 核心库：二维码 + 条形码 + 扫码引擎 -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-    <script src="https://unpkg.com/@ericblade/quagga2@1.8.4/dist/quagga.min.js"></script>
+<meta charset="UTF-8">
+<title>114.ae 工业条码系统</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2@1.8.4/dist/quagga.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
-    <style>
-        :root {
-            --primary: #0056b3; --success: #198754; --danger: #dc3545;
-            --bg: #f0f2f5; --card: #ffffff; --border: #d0d7de;
-        }
-        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: #333; }
-        .container { max-width: 1000px; margin: 20px auto; padding: 0 15px; }
-        header { text-align: center; margin-bottom: 20px; }
-        header h1 { color: var(--primary); margin: 0; }
-        
-        /* Tabs */
-        .tabs { display: flex; gap: 5px; border-bottom: 2px solid var(--border); margin-bottom: 20px; }
-        .tab-btn { padding: 12px 20px; cursor: pointer; border: none; background: none; font-size: 16px; font-weight: 600; color: #666; border-bottom: 3px solid transparent; }
-        .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
-        
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        
-        /* Forms */
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 14px; color: #555; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 16px; box-sizing: border-box; }
-        textarea { min-height: 100px; resize: vertical; }
-        
-        .btn { padding: 12px 24px; font-size: 16px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; color: white; transition: opacity .2s; }
-        .btn:hover { opacity: 0.85; }
-        .btn-primary { background: var(--primary); }
-        .btn-success { background: var(--success); }
-        .btn-danger { background: var(--danger); }
-        
-        /* Results */
-        .result-box { margin-top: 20px; padding: 15px; border: 1px dashed var(--border); border-radius: 8px; background: #fafafa; min-height: 120px; display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; align-items: flex-start; }
-        .result-item { background: white; padding: 10px; border: 1px solid #eee; border-radius: 4px; text-align: center; }
-        .result-item svg, .result-item canvas { max-width: 150px; display: block; margin-bottom: 5px; }
-        
-        /* Scanner */
-        #scanner-container { position: fixed; inset: 0; background: #000; z-index: 1000; display: none; flex-direction: column; }
-        #scanner-container.active { display: flex; }
-        #scanner-video { width: 100%; flex: 1; object-fit: cover; }
-        .scanner-header { padding: 10px; background: #333; color: white; text-align: center; font-weight: bold; }
-    </style>
+<style>
+:root { --p:#0056b3; --d:#dc3545; --bg:#f0f2f5; --c:#fff; --border:#d0d7de; }
+body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--bg); }
+.container { max-width:1200px; margin:auto; padding:15px; }
+header { background:linear-gradient(135deg,#343a40,#495057); color:var(--c); padding:15px; border-radius:8px 8px 0 0; text-align:center; }
+header h1 { margin:0; font-size:1.8em; }
+
+.tabs { display:flex; gap:5px; border-bottom:2px solid var(--border); margin-bottom:15px; overflow-x:auto; }
+.tab-btn { padding:12px 18px; border:none; background:#e9ecef; font-weight:bold; cursor:pointer; border-radius:6px 6px 0 0; white-space:nowrap; }
+.tab-btn.active { background:var(--p); color:var(--c); }
+
+.tab-content { display:none; background:var(--c); padding:20px; border-radius:0 0 8px 8px; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+.tab-content.active { display:block; }
+
+.form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:15px; margin-bottom:15px; }
+.form-group { margin-bottom:15px; }
+label { display:block; margin-bottom:6px; font-weight:600; color:#444; }
+input, select, textarea { width:100%; padding:12px; font-size:16px; border:1px solid var(--border); border-radius:4px; box-sizing:border-box; }
+textarea { min-height:100px; resize:vertical; }
+.btn { padding:12px 24px; font-size:16px; font-weight:bold; border:none; border-radius:6px; cursor:pointer; color:var(--c); transition:.2s; }
+.btn-primary { background:var(--p); } .btn-primary:hover { background:#004494; }
+.btn-danger { background:var(--d); } .btn-danger:hover { background:#b02a37; }
+.btn-success { background:#198754; }
+
+.result-box { margin-top:15px; padding:15px; border:1px dashed var(--border); border-radius:8px; background:#fafafa; min-height:100px; display:flex; flex-wrap:wrap; gap:15px; justify-content:center; }
+
+/* Scanner */
+#scanner-full { position:fixed; inset:0; background:#000; z-index:2000; display:none; flex-direction:column; }
+#scanner-full.active { display:flex; }
+#scanner-full video { flex:1; object-fit:cover; }
+#scanner-full .bar { height:70px; background:#111; color:#0f0; font-size:22px; display:flex; align-items:center; justify-content:center; font-weight:bold; }
+#scanner-full .close { position:absolute; top:10px; right:10px; font-size:35px; color:white; background:rgba(0,0,0,.5); border:none; border-radius:50%; width:50px; height:50px; line-height:50px; text-align:center; }
+
+/* Tag Panel */
+.tag-panel { background:#fff; border:1px solid #ccc; border-radius:8px; padding:15px; max-width:400px; margin:auto; }
+.tag-panel h3 { margin-top:0; color:var(--p); border-bottom:1px solid #eee; padding-bottom:8px; }
+.tag-field { display:flex; justify-content:space-between; margin-bottom:6px; font-size:14px; }
+.tag-label { color:#666; } .tag-value { font-weight:bold; color:#000; }
+.tag-barcode { margin-top:15px; text-align:center; }
+.tag-barcode svg { max-width:100%; height:60px; }
+
+/* Print Mode */
+@media print {
+    body * { visibility:hidden; }
+    .print-area, .print-area * { visibility:visible; }
+    .print-area { position:absolute; left:0; top:0; width:100%; padding:0; margin:0; }
+}
+.print-label { width:4in; height:2in; border:1px solid #000; margin:10px auto; padding:0.1in; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#fff; }
+.print-label svg { max-width:95%; max-height:65%; }
+.print-label .label-text { font-size:12pt; font-weight:bold; margin-top:5px; }
+</style>
 </head>
+
 <body>
-
 <div class="container">
-    <header>
-        <h1>114.ae 工业条码工具箱</h1>
-        <p>CODE-128 / EAN-13 / QR Code / 批量生成 / 扫码解码</p>
-    </header>
-
+    <header><h1>114.ae 工业条码系统</h1></header>
     <div class="tabs">
         <button class="tab-btn active" data-tab="single">单个生成</button>
-        <button class="tab-btn" data-tab="batch">批量生成</button>
+        <button class="tab-btn" data-tab="batch">批量导入</button>
+        <button class="tab-btn" data-tab="print">热敏打印</button>
         <button class="tab-btn" data-tab="scanner">扫码解码</button>
     </div>
 
     <!-- 单个生成 -->
     <div id="single" class="tab-content active">
-        <div class="form-grid">
-            <div class="form-group">
-                <label>码制类型</label>
-                <select id="single-type">
-                    <option value="CODE128">CODE-128 (通用)</option>
-                    <option value="EAN13">EAN-13 (商品码)</option>
-                    <option value="QR">QR Code (二维码)</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label>输入内容</label>
-            <textarea id="single-input" placeholder="EAN13请输入12位或13位数字"></textarea>
-        </div>
-        <button class="btn btn-primary" id="single-generate-btn">生成条码</button>
-        <button class="btn btn-success" id="single-random-btn">随机生成</button>
-        <div id="single-result" class="result-box"></div>
+        <div class="form-grid"><div class="form-group"><label>码制</label><select id="gen-type"><option value="CODE128">CODE-128</option><option value="EAN13">EAN-13</option></select></div></div>
+        <div class="form-group"><label>内容</label><textarea id="gen-input" placeholder="输入内容，EAN13需12位数字"></textarea></div>
+        <button class="btn btn-primary" id="gen-btn">生成</button>
+        <div id="gen-result" class="result-box"></div>
     </div>
 
-    <!-- 批量生成 -->
+    <!-- 批量导入 -->
     <div id="batch" class="tab-content">
-        <div class="form-grid">
-            <div class="form-group">
-                <label>码制类型</label>
-                <select id="batch-type">
-                    <option value="CODE128">CODE-128</option>
-                    <option value="EAN13">EAN-13</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>前缀 (可选)</label>
-                <input type="text" id="batch-prefix" placeholder="如: 690123">
-            </div>
-            <div class="form-group">
-                <label>起始编号</label>
-                <input type="number" id="batch-start" value="1">
-            </div>
-            <div class="form-group">
-                <label>生成数量</label>
-                <input type="number" id="batch-count" value="10" min="1" max="100">
-            </div>
-            <div class="form-group">
-                <label>补零位数</label>
-                <input type="number" id="batch-pad" value="4">
-            </div>
-        </div>
-        <button class="btn btn-primary" id="batch-generate-btn">开始批量生成</button>
+        <p>支持 Excel/CSV 粘贴或上传（第一列自动识别为条码内容）</p>
+        <div class="form-group"><label>粘贴 Excel/CSV 数据</label><textarea id="batch-paste" placeholder="A1	B1	C1&#10;A2	B2	C2"></textarea></div>
+        <div class="form-group"><label>或上传文件</label><input type="file" id="batch-file" accept=".csv,.xlsx,.xls"></div>
+        <button class="btn btn-primary" id="batch-generate-btn">批量生成</button>
         <div id="batch-result" class="result-box"></div>
+    </div>
+    
+    <!-- 热敏打印 -->
+    <div id="print" class="tab-content">
+        <div class="form-grid">
+            <div class="form-group"><label>标签宽度(mm)</label><input type="number" id="label-width" value="60"></div>
+            <div class="form-group"><label>标签高度(mm)</label><input type="number" id="label-height" value="40"></div>
+        </div>
+        <div class="form-group"><label>打印内容</label><input type="text" id="label-content" value="BAXE1901N55"></div>
+        <button class="btn btn-primary" id="print-preview-btn">生成预览</button>
+        <button class="btn btn-success" onclick="window.print()">打印 (Ctrl+P)</button>
+        <div id="print-area-wrapper" class="result-box"></div>
     </div>
 
     <!-- 扫码解码 -->
-    <div id="scanner" class="tab-content">
-        <p style="text-align:center; color:#666;">点击下方按钮启动摄像头进行扫描。</p>
-        <button class="btn btn-primary" id="scanner-start-btn" style="display:block; margin: 10px auto;">启动相机扫码</button>
-        <div id="scanner-result" style="text-align:center; font-size:18px; font-weight:bold; margin-top:10px;"></div>
+    <div id="scanner-tab" class="tab-content">
+        <button class="btn btn-primary" id="scan-open-btn" style="display:block;margin:auto;">启动相机扫码</button>
+        <div id="scan-result-text" style="text-align:center;font-size:18px;margin-top:15px;"></div>
     </div>
 </div>
 
-<!-- 全屏扫码视图 -->
-<div id="scanner-container">
-    <div class="scanner-header">扫码中... (点击空白处退出)</div>
-    <video id="scanner-video"></video>
+<!-- 全屏扫码 -->
+<div id="scanner-full">
+    <button class="close">×</button>
+    <video></video>
+    <div class="bar">请对准条码</div>
 </div>
 
 <script>
-// --- 全局变量 ---
-let scannerActive = false;
-const EAN13_REGEX = /^\d+$/;
-
-// --- Tab 切换 ---
-document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById(btn.dataset.tab).classList.add('active');
-    });
+// --- Tab Logic ---
+document.querySelectorAll('.tab-btn').forEach(btn=>btn.onclick=()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+    document.getElementById(btn.dataset.tab).classList.add('active');
 });
 
-// --- EAN-13 校验位算法 (标准) ---
-function calculateEAN13CheckDigit(code12) {
-    let sum = 0;
-    for (let i = 0; i < 12; i++) {
-        sum += parseInt(code12[i]) * (i % 2 === 0 ? 1 : 3);
+// --- EAN13 Check Digit ---
+function ean13Check(code12){ let s=0; for(let i=0;i<12;i++) s+=code12[i]*(i%2?3:1); return code12+(10-s%10)%10; }
+
+// --- Generate Single ---
+document.getElementById('gen-btn').onclick=()=>{
+    const box=document.getElementById('gen-result'); box.innerHTML='';
+    const t=document.getElementById('gen-type').value;
+    let v=document.getElementById('gen-input').value.trim();
+    if(!v) return alert('请输入内容');
+    if(t==='EAN13'){
+        if(!/^\d+$/.test(v)) return alert('EAN13只能输入数字');
+        if(v.length===12) v=ean13Check(v); else if(v.length!==13) return alert('EAN13长度错误');
     }
-    return (10 - (sum % 10)) % 10;
+    if(t==='CODE128') JsBarcode(box,v,{format:t,width:2,height:80});
+    else if(t==='EAN13') JsBarcode(box,v,{format:t,width:2,height:80,displayValue:true});
+    else new QRCode(box,{text:v,width:200,height:200});
+};
+
+// --- Batch Import (Excel/CSV) ---
+function processBatchData(data){
+    const box=document.getElementById('batch-result'); box.innerHTML='';
+    data.forEach(row=>{
+        let v=row[0]; if(!v) return;
+        if(/^\d+$/.test(v)&&v.length===12) v=ean13Check(v);
+        const d=document.createElement('div'); d.className='tag-field'; d.innerHTML=`<span class="tag-label">${v}</span>`;
+        JsBarcode(d,v,{format:'CODE128',width:1.8,height:50});
+        box.appendChild(d);
+    });
 }
 
-// --- 单个生成逻辑 ---
-document.getElementById('single-generate-btn').addEventListener('click', generateSingle);
-document.getElementById('single-random-btn').addEventListener('click', generateRandomSingle);
+document.getElementById('batch-paste').onpaste=e=>setTimeout(()=>{
+    const text=e.target.value; const rows=text.split(/\r?\n/).map(r=>r.split(/\t|,/));
+    processBatchData(rows);
+},100);
 
-function generateSingle() {
-    const type = document.getElementById('single-type').value;
-    let input = document.getElementById('single-input').value.trim();
-    const resultBox = document.getElementById('single-result');
-    resultBox.innerHTML = '';
+document.getElementById('batch-file').onchange=e=>{
+    const f=e.target.files[0]; const reader=new FileReader();
+    reader.onload=evt=>{
+        const workbook=XLSX.read(evt.target.result,{type:'array'});
+        const sheet=workbook.Sheets[workbook.SheetNames[0]];
+        const data=XLSX.utils.sheet_to_json(sheet,{header:1});
+        processBatchData(data.slice(1));
+    };
+    reader.readAsArrayBuffer(f);
+};
 
-    if (!input) { alert('请输入内容'); return; }
+// --- Print Mode ---
+document.getElementById('print-preview-btn').onclick=()=>{
+    const w=document.getElementById('label-width').value;
+    const h=document.getElementById('label-height').value;
+    const v=document.getElementById('label-content').value;
+    const wrap=document.getElementById('print-area-wrapper'); wrap.innerHTML='';
+    const label=document.createElement('div'); label.className='print-label';
+    label.style.width=`${w}mm`; label.style.height=`${h}mm`;
+    JsBarcode(label,v,{format:'CODE128',width:1.5,height:'60%',displayValue:true,fontSize:8});
+    wrap.appendChild(label);
+};
 
-    let finalContent = input;
-    let format = type;
+// --- Scanner (FIXED) ---
+let scanning=false;
+const scanFull=document.getElementById('scanner-full');
+const scanBar=scanFull.querySelector('.bar');
 
-    // EAN-13 特殊处理
-    if (type === 'EAN13') {
-        if (!EAN13_REGEX.test(input)) { alert('EAN-13 只能输入数字'); return; }
-        if (input.length === 12) {
-            finalContent = input + calculateEAN13CheckDigit(input);
-        } else if (input.length === 13) {
-            // 校验用户输入的13位是否合法
-            const base = input.substring(0, 12);
-            finalContent = base + calculateEAN13CheckDigit(base);
-        } else {
-            alert('EAN-13 请输入 12 位或 13 位数字');
-            return;
-        }
-    }
-    
-    renderCode(resultBox, format, finalContent);
-}
+function playBeep(){ try{ const a=new AudioContext(); const o=a.createOscillator(); const g=a.createGain(); o.connect(g); g.connect(a.destination); o.frequency.value=1000; o.start(); setTimeout(()=>o.stop(),150); } catch(e){} }
 
-function generateRandomSingle() {
-    const type = document.getElementById('single-type').value;
-    let randomContent = '';
-    
-    if (type === 'EAN13') {
-        let base = '';
-        for (let i = 0; i < 12; i++) base += Math.floor(Math.random() * 10);
-        randomContent = base + calculateEAN13CheckDigit(base);
-    } else if (type === 'CODE128') {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        for (let i = 0; i < 8; i++) randomContent += chars[Math.floor(Math.random() * chars.length)];
-    } else { // QR
-        randomContent = 'SN-' + Date.now();
-    }
-    
-    document.getElementById('single-input').value = randomContent;
-    generateSingle();
-}
-
-
-// --- 批量生成逻辑 (已修复) ---
-document.getElementById('batch-generate-btn').addEventListener('click', generateBatch);
-
-function generateBatch() {
-    const type = document.getElementById('batch-type').value;
-    const prefix = document.getElementById('batch-prefix').value;
-    const start = parseInt(document.getElementById('batch-start').value) || 1;
-    const count = parseInt(document.getElementById('batch-count').value) || 10;
-    const pad = parseInt(document.getElementById('batch-pad').value) || 4;
-    
-    const resultBox = document.getElementById('batch-result');
-    resultBox.innerHTML = '';
-
-    if (count > 100) { alert('单次生成最多 100 个'); return; }
-
-    for (let i = 0; i < count; i++) {
-        let num = start + i;
-        let suffix = num.toString().padStart(pad, '0');
-        let rawContent = prefix + suffix;
-        let finalContent = rawContent;
-        
-        if (type === 'EAN13' && EAN13_REGEX.test(rawContent)) {
-            if (rawContent.length === 12) {
-                finalContent = rawContent + calculateEAN13CheckDigit(rawContent);
-            } else if (rawContent.length > 13) {
-                continue; // 跳过超长数字
-            }
-        }
-        
-        renderCode(resultBox, type, finalContent, true);
-    }
-}
-
-// --- 通用渲染函数 ---
-function renderCode(container, format, content, isBatch = false) {
-    const itemDiv = document.createElement('div');
-    itemDiv.className = 'result-item';
-    
-    try {
-        if (format === 'QR') {
-            new QRCode(itemDiv, { text: content, width: 128, height: 128 });
-        } else { // Barcodes (CODE128, EAN13)
-            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-            itemDiv.appendChild(svg);
-            JsBarcode(svg, content, { 
-                format: format, 
-                width: 2, 
-                height: isBatch ? 50 : 80, 
-                displayValue: true,
-                fontSize: isBatch ? 10 : 14
-            });
-        }
-        const text = document.createElement('div');
-        text.style.fontSize = '12px';
-        text.style.wordBreak = 'break-all';
-        text.textContent = content;
-        itemDiv.appendChild(text);
-        
-    } catch (e) {
-        console.error(e);
-        itemDiv.textContent = '生成失败: ' + content;
-    }
-    
-    container.appendChild(itemDiv);
-}
-
-
-// --- 扫码解码逻辑 (已修复) ---
-document.getElementById('scanner-start-btn').addEventListener('click', toggleScanner);
-
-function toggleScanner() {
-    if (scannerActive) {
-        stopScanner();
-    } else {
-        startScanner();
-    }
-}
-
-function startScanner() {
-    const scannerContainer = document.getElementById('scanner-container');
-    const video = document.getElementById('scanner-video');
-    const resultDiv = document.getElementById('scanner-result');
-    
-    resultDiv.textContent = '正在启动相机...';
-    scannerContainer.classList.add('active');
-    
-    // 移动端必须通过 HTTPS 或 localhost 访问
-    if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-        resultDiv.textContent = '错误：请在 HTTPS 或 localhost 环境下使用扫码功能。';
-        return;
-    }
-
+document.getElementById('scan-open-btn').onclick=()=>{
+    if(scanning) return; scanning=true;
+    scanFull.classList.add('active');
     Quagga.init({
-        inputStream: { name: "Live", type: "LiveStream", target: video, constraints: { facingMode: "environment" } },
-        decoder: { readers: ["code_128_reader", "ean_reader", "qr_code_reader"] },
-        locate: true
-    }, function (err) {
-        if (err) { 
-            console.error(err);
-            resultDiv.textContent = "相机启动失败: " + err.message;
-            stopScanner();
-            return; 
-        }
-        Quagga.start();
-        scannerActive = true;
-        resultDiv.textContent = '请对准条码...';
+        inputStream:{name:"Live",type:"LiveStream",target:scanFull.querySelector('video'),constraints:{facingMode:"environment"}},
+        decoder:{readers:["code_128_reader","ean_reader","qr_code_reader"]},
+        locate:true
+    }, err=>{ if(err){alert('相机启动失败'); stopScan();} else Quagga.start(); });
+
+    Quagga.onDetected(r=>{
+        const code=r.codeResult.code;
+        scanBar.innerHTML=`✅ ${code}`;
+        playBeep();
+        navigator.clipboard.writeText(code);
+        document.getElementById('scan-result-text').innerText=`识别成功并已复制: ${code}`;
+        if(navigator.vibrate) navigator.vibrate([100,50,100]);
+        setTimeout(stopScan,1000);
     });
+};
 
-    Quagga.onDetected(function (result) {
-        if (result && result.codeResult) {
-            const code = result.codeResult.code;
-            resultDiv.textContent = '识别成功: ' + code;
-            if (navigator.vibrate) navigator.vibrate(200);
-            // 自动停止
-            setTimeout(stopScanner, 1000);
-        }
-    });
-}
-
-function stopScanner() {
-    Quagga.stop();
-    scannerActive = false;
-    const video = document.getElementById('scanner-video');
-    if (video.srcObject) video.srcObject.getTracks().forEach(t => t.stop());
-    document.getElementById('scanner-container').classList.remove('active');
-}
-
-// 点击空白处退出扫码
-document.getElementById('scanner-container').addEventListener('click', stopScanner);
-
+function stopScan(){ Quagga.stop(); scanning=false; scanFull.classList.remove('active'); const v=scanFull.querySelector('video'); if(v.srcObject) v.srcObject.getTracks().forEach(t=>t.stop()); }
+scanFull.querySelector('.close').onclick=stopScan;
 </script>
 </body>
 </html>
