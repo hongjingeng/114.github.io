@@ -693,6 +693,23 @@
     </style>
 </head>
 <body>
+    <div id="ad-1200x70"></div>
+
+<script>
+(async () => {
+  const res = await fetch('https://adapi.jingeng2026.workers.dev/ads?slot=banner-1200x70');
+  const ads = await res.json();
+  
+  if (ads.length > 0) {
+    const ad = ads[0];
+    document.getElementById('ad-1200x70').innerHTML = `
+      <a href="${ad.link}" target="_blank">
+        <img src="${ad.image_url}" style="width:100%; max-width:1200px; height:auto;" alt="${ad.title}">
+        <span style="font-size:11px; color:#999;">广告</span>
+      </a>`;
+  }
+})();
+</script>
     <!-- 跑马灯 -->
     <div class="marquee-container">
         <div class="marquee">
