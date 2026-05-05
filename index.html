@@ -764,7 +764,7 @@
           adContainer.innerHTML = `<div style="text-align:center;padding:12px;color:#888;font-size:14px;">广告加载中...</div>`;
 
           try {
-            const res = await fetch('https://adapi.jingeng2026.workers.dev/ads?slot=banner-1200x70');
+            const res = await fetch('https://ad.wemart.ae/ads?slot=banner-1200x70');
             const ads = await res.json();
             
             if (ads && ads.length > 0) {
