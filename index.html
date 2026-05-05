@@ -708,8 +708,18 @@
     <!-- 主题切换 -->
     <div class="theme-toggle" id="themeToggle">🌙</div>
 
-      <div id="ad-1200x70"></div>
+    <div class="container">
+        <!-- Tab 切换 -->
+        <div class="tab-bar">
+            <button class="tab active" id="tab-search" onclick="switchTab(0)">🔍 全网盘搜</button>
+            <button class="tab" id="tab-email" onclick="switchTab(1)">✉️ 临时邮箱</button>
+            <button class="tab" id="tab-exchange" onclick="switchTab(2)">💱 汇率查询</button>
+            <button class="tab" id="tab-domain" onclick="switchTab(3)">🔍 域名查询</button>
+            <button class="tab" id="tab-music" onclick="switchTab(4)">🎵 在线音乐</button>
+        </div>
 
+        <!-- 全网盘搜 Tab -->
+          <div id="ad-1200x70"></div>
 <script>
 (async () => {
   const res = await fetch('https://adapi.jingeng2026.workers.dev/ads?slot=banner-1200x70');
@@ -725,18 +735,6 @@
   }
 })();
 </script>
-
-    <div class="container">
-        <!-- Tab 切换 -->
-        <div class="tab-bar">
-            <button class="tab active" id="tab-search" onclick="switchTab(0)">🔍 全网盘搜</button>
-            <button class="tab" id="tab-email" onclick="switchTab(1)">✉️ 临时邮箱</button>
-            <button class="tab" id="tab-exchange" onclick="switchTab(2)">💱 汇率查询</button>
-            <button class="tab" id="tab-domain" onclick="switchTab(3)">🔍 域名查询</button>
-            <button class="tab" id="tab-music" onclick="switchTab(4)">🎵 在线音乐</button>
-        </div>
-
-        <!-- 全网盘搜 Tab -->
         <div id="search-content">
             <div class="search-header">
                 <div class="avatar-wrapper"><div class="avatar">🛸</div></div>
