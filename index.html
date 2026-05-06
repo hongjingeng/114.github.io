@@ -801,7 +801,6 @@
               const ad = ads[0];
               adContainer.innerHTML = `
                 <a href="${ad.link}" target="_blank" rel="noopener noreferrer">
-                  <img src="${ad.image_url}" 
                        alt="${ad.title}" 
                        style="width:100%; max-width:1200px; height:auto; display:block; margin:0 auto; border-radius:8px;">
                   <span style="font-size:11px; color:#999; display:block; text-align:center; margin-top:4px;">文字146x52广告</span>
@@ -831,7 +830,6 @@
               const ad = ads[0];
               adContainer.innerHTML = `
                 <a href="${ad.link}" target="_blank" rel="noopener noreferrer">
-                  <img src="${ad.image_url}" 
                        alt="${ad.title}" 
                        style="width:100%; max-width:1200px; height:auto; display:block; margin:0 auto; border-radius:8px;">
                   <span style="font-size:11px; color:#999; display:block; text-align:center; margin-top:4px;">文字380x54广告</span>
@@ -845,11 +843,6 @@
           }
         })();
         </script>
-        <!-- 嵌入代码 -->
-<div id="ad"></div>
-<script>
-fetch('https://ad.wemart.ae/ads?slot=text-146x52').then(r=>r.json()).then(ads=>{if(ads[0])document.getElementById('ad').innerHTML=`<a href="${ads[0].link}" target="_blank"><img src="${ads[0].image_url}" style="width:100%;max-width:1200px;height:auto;"></a>`;});
-</script>
         
         <!-- 全网盘搜 Tab -->
         <div id="search-content">
