@@ -785,7 +785,67 @@
           }
         })();
         </script>
+                <!-- ==================== 优化后的146x52文字广告位（移动端已修复） ==================== -->
+        <div id="ad-1200x70" class="ad-banner"></div>
+        
+        <script>
+        (async () => {
+          const adContainer = document.getElementById('ad-146x52');
+          adContainer.innerHTML = `<div style="text-align:center;padding:12px;color:#888;font-size:14px;">广告加载中...</div>`;
 
+          try {
+            const res = await fetch('https://ad.wemart.ae/ads?slot=text-146x52');
+            const ads = await res.json();
+            
+            if (ads && ads.length > 0) {
+              const ad = ads[0];
+              adContainer.innerHTML = `
+                <a href="${ad.link}" target="_blank" rel="noopener noreferrer">
+                  <img src="${ad.image_url}" 
+                       alt="${ad.title}" 
+                       style="width:100%; max-width:1200px; height:auto; display:block; margin:0 auto; border-radius:8px;">
+                  <span style="font-size:11px; color:#999; display:block; text-align:center; margin-top:4px;">广告</span>
+                </a>`;
+            } else {
+              adContainer.style.display = 'none';
+            }
+          } catch (e) {
+            console.log('广告加载失败', e);
+            adContainer.style.display = 'none';
+          }
+        })();
+        </script>
+                        <!-- ==================== 优化后的380x54文字广告位（移动端已修复） ==================== -->
+        <div id="ad-1200x70" class="ad-banner"></div>
+        
+        <script>
+        (async () => {
+          const adContainer = document.getElementById('ad-380x54');
+          adContainer.innerHTML = `<div style="text-align:center;padding:12px;color:#888;font-size:14px;">广告加载中...</div>`;
+
+          try {
+            const res = await fetch('https://ad.wemart.ae/ads?slot=text-380x54');
+            const ads = await res.json();
+            
+            if (ads && ads.length > 0) {
+              const ad = ads[0];
+              adContainer.innerHTML = `
+                <a href="${ad.link}" target="_blank" rel="noopener noreferrer">
+                  <img src="${ad.image_url}" 
+                       alt="${ad.title}" 
+                       style="width:100%; max-width:1200px; height:auto; display:block; margin:0 auto; border-radius:8px;">
+                  <span style="font-size:11px; color:#999; display:block; text-align:center; margin-top:4px;">广告</span>
+                </a>`;
+            } else {
+              adContainer.style.display = 'none';
+            }
+          } catch (e) {
+            console.log('广告加载失败', e);
+            adContainer.style.display = 'none';
+          }
+        })();
+        </script>
+        
         <!-- 全网盘搜 Tab -->
         <div id="search-content">
             <div class="search-header">
