@@ -43,7 +43,7 @@ body {
     transition: background 0.3s, color 0.3s;
 }
 
-/* ==================== 广告优化 - 移动端可见 ==================== */
+/* 广告 */
 .ad-banner {
     margin: 16px auto;
     max-width: 1200px;
@@ -53,7 +53,6 @@ body {
     border-radius: 12px;
     background: var(--card-bg);
     border: 1px solid var(--border-color);
-    overflow: hidden;
 }
 .ad-banner img {
     width: 100%;
@@ -62,7 +61,6 @@ body {
     display: block;
     margin: 0 auto;
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 /* 跑马灯 */
@@ -83,17 +81,6 @@ body {
     display: inline-block;
     animation: marquee 22s linear infinite;
     padding-left: 100%;
-}
-.marquee a {
-    color: var(--text-primary);
-    font-weight: bold;
-    text-decoration: none;
-    padding: 0 30px;
-    font-size: 15px;
-    display: inline-block;
-    background: rgba(255,255,255,0.2);
-    border-radius: 30px;
-    margin: 0 5px;
 }
 @keyframes marquee {
     0% { transform: translateX(0); }
@@ -125,23 +112,18 @@ body {
     border-color: var(--accent-color);
 }
 
+/* 主要内容样式 */
 .container {
     max-width: 920px;
     margin: 0 auto;
     padding: 90px 20px 40px;
 }
-.search-header {
+.search-header, .results-container, .exchange-card, .domain-container, .music-container, .music-player {
     background: var(--card-bg);
     border-radius: 32px;
     padding: 32px 40px;
-    margin-bottom: 24px;
     border: 1px solid var(--border-color);
-    text-align: center;
-}
-.avatar-wrapper {
-    display: flex;
-    justify-content: center;
-    margin: 15px 0 20px 0;
+    margin-bottom: 24px;
 }
 .avatar {
     width: 90px;
@@ -154,25 +136,6 @@ body {
     background: #1e3c72;
     color: #60a5fa;
     border: 4px solid rgba(255,255,255,0.6);
-}
-h1 {
-    font-size: 2.3rem;
-    font-weight: 700;
-    margin: 0 0 8px 0;
-    background: linear-gradient(135deg, #4a6cf7, #ff6b6b, #4ecdc4);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-.sub {
-    color: var(--text-secondary);
-    margin-bottom: 20px;
-    font-size: 1rem;
-}
-.search-box {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    justify-content: center;
 }
 .search-input {
     flex: 1;
@@ -195,13 +158,6 @@ h1 {
     font-weight: 600;
     cursor: pointer;
 }
-.results-container {
-    background: var(--card-bg);
-    border-radius: 32px;
-    padding: 24px;
-    border: 1px solid var(--border-color);
-    min-height: 340px;
-}
 .results-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -223,29 +179,10 @@ h1 {
     font-weight: 600;
     margin: 20px 0;
     border: 2px solid var(--accent-color);
-    min-height: 58px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
 }
-.btn-group {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-.btn {
-    min-width: 130px;
-    padding: 13px 26px;
-    border-radius: 60px;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-}
-.btn-p { background: var(--accent-color); color: white; }
-.btn-s { background: var(--tag-bg); color: var(--text-primary); }
 
-/* 邮件弹窗 */
+/* 弹窗 */
 .modal {
     display: none;
     position: fixed;
@@ -291,8 +228,26 @@ h1 {
     justify-content: center;
     flex-wrap: wrap;
 }
+.close-btn {
+    background: var(--tag-bg);
+    color: var(--text-primary);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+}
 
-/* 移动端 */
+/* 其他 */
+.btn { padding: 13px 26px; border-radius: 60px; font-weight: 600; cursor: pointer; }
+.btn-p { background: var(--accent-color); color: white; }
+.btn-s { background: var(--tag-bg); color: var(--text-primary); }
+.msg-item { background: var(--result-bg); border-radius: 20px; padding: 20px; margin-bottom: 16px; border: 1px solid var(--border-color); cursor: pointer; }
+.song-item { padding: 16px 20px; display: flex; gap: 16px; align-items: center; cursor: pointer; border-bottom: 1px solid var(--border-color); }
+.loading { text-align: center; padding: 60px; }
+.spinner { display: inline-block; width: 40px; height: 40px; border: 3px solid var(--border-color); border-top-color: var(--accent-color); border-radius: 50%; animation: spin 0.6s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
 @media (max-width: 640px) {
     .container { padding: 80px 16px 30px; }
     .search-input, .search-btn { min-width: 100%; }
