@@ -1,13 +1,17 @@
-// js/search.js - 完整从1700+行迁移
+// js/search.js
 let currentProxyBase = 'none';
 let currentProxyName = '🌐 无代理（直接访问 · 最快）';
 let currentAllResults = [];
+let activeFilter = null;
 const cache = new Map();
+
 const ORIGIN_API = 'https://so.252035.xyz/api/search?kw=';
 
 function buildApiUrl(keyword) {
     const encodedKw = encodeURIComponent(keyword);
-    return currentProxyBase === 'none' ? ORIGIN_API + encodedKw : currentProxyBase + ORIGIN_API + encodedKw;
+    const originFull = ORIGIN_API + encodedKw;
+    if (currentProxyBase === 'none') return originFull;
+    return currentProxyBase + originFull;
 }
 
 function getProxiedUrl(targetUrl) {
@@ -19,7 +23,8 @@ window.changeProxy = function() {
     const select = document.getElementById('proxySelect');
     currentProxyBase = select.value;
     currentProxyName = select.options[select.selectedIndex].text;
-    document.getElementById('statsArea').innerHTML = `✨ 已切换至 <strong>${currentProxyName}</strong>`;
+    const stats = document.getElementById('statsArea');
+    stats.innerHTML = `✨ 已切换至 <strong>${currentProxyName}</strong>`;
 };
 
 function getDiskType(url) {
@@ -62,11 +67,11 @@ function renderCard(item) {
                 <span class="badge">${diskType}</span>
                 <span class="badge">📅 ${datetime}</span>
                 <span class="badge">📡 ${escapeHtml(source)}</span>
-                ${password ? `<span class="badge password-badge">🔑 ${escapeHtml(password)}</span>` : ''}
+                ${password ? `<span class="badge password-badge">🔑 提取码: ${escapeHtml(password)}</span>` : ''}
             </div>
             <div style="display:flex; gap:8px; margin-top:12px;">
-                <a href="${escapeHtml(url)}" target="_blank" class="link-btn" style="background:#10b981;">🌐 直接打开</a>
-                <a href="${escapeHtml(getProxiedUrl(url))}" target="_blank" class="link-btn" style="background:var(--accent-color);">🚀 代理打开</a>
+                <a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="link-btn" style="background:#10b981;">🌐 直接打开</a>
+                <a href="${escapeHtml(getProxiedUrl(url))}" target="_blank" rel="noopener noreferrer" class="link-btn" style="background:var(--accent-color);">🚀 代理打开</a>
             </div>
         </div>
     </div>`;
@@ -89,10 +94,10 @@ window.initSearch = function() {
                 <input type="text" id="searchInput" class="search-input" placeholder="输入电影、剧集、短剧、书籍、音乐、软件、资料">
                 <button id="searchBtn" class="search-btn">🔍 极速搜索</button>
             </div>
-            <div id="statsArea" class="stats">✨ 点击按钮开始搜索</div>
+            <div id="statsArea" class="stats">✨ 114.ae多代理加速已启用 · 点击按钮开始搜索</div>
         </div>
         <div class="results-container">
-            <div class="results-title">📦 搜索结果</div>
+            <div class="results-title" id="resultsTitle">📦 搜索结果（按网盘来源自动分类统计 · 点击分类直达）</div>
             <div id="resultsContainer"></div>
         </div>
     </div>`;
@@ -100,44 +105,52 @@ window.initSearch = function() {
     document.getElementById('contentContainer').innerHTML = html;
 
     setTimeout(() => {
-        const input = document.getElementById('searchInput');
-        const btn = document.getElementById('searchBtn');
-        btn.addEventListener('click', () => searchResources(input.value));
-        input.addEventListener('keypress', e => {
-            if (e.key === 'Enter') searchResources(input.value);
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        searchBtn.addEventListener('click', () => searchResources(searchInput.value));
+        searchInput.addEventListener('keypress', e => {
+            if (e.key === 'Enter') searchResources(searchInput.value);
         });
     }, 100);
 };
 
 async function searchResources(keyword) {
-    if (!keyword || !keyword.trim()) return;
+    if (!keyword || keyword.trim() === '') return;
+
     const kw = keyword.trim();
     const container = document.getElementById('resultsContainer');
     const stats = document.getElementById('statsArea');
 
-    container.innerHTML = `<div class="loading"><div class="spinner"></div><div>搜索中...</div></div>`;
+    container.innerHTML = `<div class="loading"><div class="spinner"></div><div>🚀 ${currentProxyName} 请求中...</div></div>`;
 
     try {
-        const res = await fetch(buildApiUrl(kw));
-        const data = await res.json();
+        const apiUrl = buildApiUrl(kw);
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        if (data.code !== 0) throw new Error(data.message || '接口异常');
+
         let allResults = [];
-        if (data.data && data.data.merged_by_type) {
-            Object.values(data.data.merged_by_type).forEach(arr => {
-                if (Array.isArray(arr)) allResults = allResults.concat(arr);
-            });
+        const mergedByType = data.data.merged_by_type || {};
+        for (let type in mergedByType) {
+            if (Array.isArray(mergedByType[type])) {
+                allResults = allResults.concat(mergedByType[type]);
+            }
         }
+
         renderResults(allResults);
-    } catch (e) {
-        container.innerHTML = `<div class="error-state">请求失败，请切换代理重试</div>`;
+    } catch (err) {
+        container.innerHTML = `<div class="error-state">⚠️ 请求失败，请切换代理或使用无代理模式重试</div>`;
     }
 }
 
-function renderResults(results) {
+function renderResults(allResults) {
+    currentAllResults = allResults;
     const container = document.getElementById('resultsContainer');
-    let html = '<div class="results-grid">';
-    results.forEach(item => {
-        html += renderCard(item);
+    container.innerHTML = '<div class="results-grid"></div>';
+    const grid = container.querySelector('.results-grid');
+
+    allResults.forEach(item => {
+        grid.innerHTML += renderCard(item);
     });
-    html += '</div>';
-    container.innerHTML = html;
 }
